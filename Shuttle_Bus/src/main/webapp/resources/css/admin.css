@@ -195,3 +195,18 @@ input[type="text"]:disabled, input[type="text"]{
 .flatpickr-time input.flatpickr-hour, .flatpickr-time input.flatpickr-minute, .flatpickr-time input.flatpickr-second{
 	height: inherit !important;
 }
+.delete_modal{
+	width: 30%;
+	height: 200px!important;
+}
+#des_name{
+	margin-bottom: 0rem;
+	width: 230px;
+}
+#des_name_label{
+	top: -0.2rem;
+}
+.dest_{
+	height: 250px!important;
+	width: 450px;
+}

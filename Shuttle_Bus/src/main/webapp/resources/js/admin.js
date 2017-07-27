@@ -7,7 +7,23 @@ $(document).ready(function(){
     $('#modal3').modal();
     $('#edit_bus_list').modal();
     $('#delete_bus_list').modal();
-
+    
+    $('#leaveDate').flatpickr({
+		mode: "single",
+		minDate: "today",
+		dateFormat: "Y-m-d"
+    });
+    $('#returnDate').flatpickr({
+		mode: "single",
+		minDate: "today",
+		dateFormat: "Y-m-d"
+    });
+    $('#deadlineBooking').flatpickr({
+		mode: "single",
+		minDate: "today",
+		dateFormat: "Y-m-d h:i K",
+		enableTime: true
+    });
 
 
 var row={"phnom_penh":[],"Kirirom":[]};
