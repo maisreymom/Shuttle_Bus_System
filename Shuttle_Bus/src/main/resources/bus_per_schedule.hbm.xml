@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Bus_Per_Schedule" table="bus_per_schedule">
+ 	 	
+ 	 	
+ 	 	<!-- id -->
+	 	 <id name= "bus_per_schedule_id" type="string">
+            <column name="bus_per_schedule_id" />
+           
+        </id>
+	     
+	     
+          <!-- relationship with other-->
+        <many-to-one name="schedule_id" class="com.EntityClasses.Schedule_Table" fetch="select">
+            <column name="schedule_id" not-null="true" />
+        </many-to-one>
+      
+        <many-to-one name="bus_id" class="com.EntityClasses.Bus_Master" fetch="select">
+            <column name="bus_id" not-null="true" />
+        </many-to-one>
+	    <many-to-one name="user_id" class="com.EntityClasses.User_Master" fetch="select">
+            <column name="user_id" not-null="true" />
+        </many-to-one>
+	     
+	     
+	     <!-- entity -->
+        <property name="number_of_seats" type="int">
+            <column name="number_of_seats" not-null="true" />
+        </property>
+        <property name="est_departure_time" type="time">
+            <column name="est_departure_time" not-null="true" />
+        </property>
+        <property name="est_arrival_time" type="time">
+            <column name="est_arrival_time" not-null="true" />
+        </property>
+        <property name="no_of_customer" type="int">
+            <column name="no_of_customer" not-null="true" />
+        </property>
+        <property name="no_of_student" type="int">
+            <column name="no_of_student" not-null="true" />
+        </property>
+        <property name="no_of_staff" type="int">
+            <column name="no_of_staff" not-null="true" />
+        </property>
+      	<set name="passenger" table="passenger_table"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="bus_per_schedule_id" />
+            </key>
+            <one-to-many class="com.EntityClasses.Passenger" />
+        </set>
+        <one-to-one name="bus_report_table" class="com.EntityClasses.Bus_Report_Table"
+			cascade="save-update"></one-to-one>
+ 
+ 	</class>
+</hibernate-mapping>

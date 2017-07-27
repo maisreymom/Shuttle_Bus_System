@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.User_Master" table="user_master" dynamic-update="true">
+ 	 	
+ 	 	
+ 	 	<!-- id -->
+	 	<id name="user_id" type="string">
+	           <column name="user_id" />
+	    </id>
+	     
+	     
+          <!-- relationship with other-->
+        <many-to-one name="role_id" class="com.EntityClasses.Role_Master" fetch="select">
+            <column name="role_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="batch_id" class="com.EntityClasses.Batch_Master" fetch="select">
+            <column name="batch_id" not-null="true" />
+        </many-to-one>
+	     
+	     <!-- entity -->
+        <property name="username" type="string">
+            <column name="username" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" not-null="true" />
+        </property>
+        <property name="fullname" type="string">
+            <column name="fullname" not-null="true" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" not-null="true" />
+        </property>
+        <property name="phone_number" type="string">
+            <column name="phone_number" not-null="true" />
+        </property>
+        <property name="no_of_ticket" type="int">
+            <column name="no_of_ticket" not-null="false" />
+        </property>
+        <property name="no_of_donate_ticket" type="int">
+            <column name="no_of_donate_ticket" not-null="false" />
+        </property>
+        <property name="status" type="boolean">
+            <column name="status" not-null="false" />
+        </property>
+        
+         <!-- other relationship with-->
+        <set name="passenger" table="passenger_table"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.Passenger" />
+        </set>
+        
+        <set name="ticket_donation" table="ticket_donation"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.Ticket_Donation" />
+        </set>
+         <set name="bus_per_schedule" table="bus_per_schedule"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.Bus_Per_Schedule" />
+        </set>
+        <set name="permission" table="permission"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.Permission" />
+        </set>
+        <set name="emergency_request" table="emergency_request"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="user_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.Emergency_Request" />
+        </set>
+       
+ 	 	
+ 	</class>
+</hibernate-mapping>

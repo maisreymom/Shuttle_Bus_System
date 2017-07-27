@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Bus_Master" table="bus_master" dynamic-update="true">
+ 	 	
+ 	   <id name="bus_id" type="string">
+            <column name="bus_id" />
+        </id>
+        <property name="bus_model" type="string">
+            <column name="bus_model" not-null="true" />
+        </property>
+         <property name="plate_number" type="string">
+            <column name="plate_number" not-null="true" />
+        </property>
+         <property name="no_of_seat" type="int">
+            <column name="no_of_seat" not-null="true" />
+        </property>
+         <property name="bus_image" type="string">
+            <column name="bus_image" not-null="true" />
+        </property>
+      
+         <property name="status" type="boolean">
+            <column name="status" not-null="true" />
+        </property>
+        <set name="bus_per_schedule" cascade="delete" table="bus_per_schedule"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="bus_id"/>
+            </key>
+            <one-to-many class="com.EntityClasses.Bus_Per_Schedule" />
+        </set>
+ 	</class>
+</hibernate-mapping>

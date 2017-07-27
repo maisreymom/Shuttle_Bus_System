@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Schedule_Table" table="schedule_table">
+ 	 	
+ 	 	
+ 	 	<!-- id -->
+	 	<id name="schedule_id" type="string">
+	           <column name="schedule_id" />
+	    </id>
+	     
+	     
+          <!-- relationship with other-->
+        <many-to-one name="destination_id" class="com.EntityClasses.Destination_Master" fetch="select">
+            <column name="destination_id" not-null="true" />
+        </many-to-one>
+        
+	     
+	     <!-- entity -->
+        <property name="date_of_travel" type="date">
+            <column name="date_of_travel" not-null="true" />
+        </property>
+        <property name="total_available_seats" type="int">
+            <column name="total_available_seats" not-null="true" />
+        </property>
+        <property name="customer_seats" type="int">
+            <column name="customer_seats" not-null="true" />
+        </property>
+        <property name="student_seats" type="int">
+            <column name="student_seats" not-null="true" />
+        </property>
+        <property name="staff_seats" type="int">
+            <column name="staff_seats" not-null="true" />
+        </property>
+        <property name="remaining_seats" type="int">
+            <column name="remaining_seats" not-null="true" />
+        </property>
+        
+        
+         <!-- other relationship with-->
+        
+        
+        
+        <set name="bus_per_schedule" cascade="all" table="bus_per_schedule"
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="schedule_id" />
+            </key>
+            <one-to-many class="com.EntityClasses.Bus_Per_Schedule" />
+        </set>
+        <set name="emergency_request" cascade="all" table="emergency_request"
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="schedule_id" />
+            </key>
+            <one-to-many class="com.EntityClasses.Emergency_Request" />
+        </set>
+ 	 	
+ 	 	
+ 	</class>
+</hibernate-mapping>

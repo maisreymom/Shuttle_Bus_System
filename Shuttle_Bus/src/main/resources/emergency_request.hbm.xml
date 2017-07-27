@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Emergency_Request" table="emergency_request">
+ 	 	
+ 	   <id name= "id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        
+      
+         <many-to-one name="user_id" class="com.EntityClasses.User_Master" fetch="select">
+            <column name="user_id" not-null="true" />
+         </many-to-one>
+          <many-to-one name="schedule_id" class="com.EntityClasses.Schedule_Table" fetch="select">
+            <column name="schedule_id" not-null="true" />
+         </many-to-one>
+        
+         
+       
+        <property name="reason" type="string">
+            <column name="reason" not-null="true" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" not-null="true" />
+        </property>
+        
+       
+        
+ 	</class>
+</hibernate-mapping>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Passenger" table="passenger_table">
+ 	 	
+ 	   <id name="id" column="id">
+			<generator class="increment"/>
+		</id>
+        
+        <many-to-one name="destination_id" class="com.EntityClasses.Destination_Master" fetch="select">
+            <column name="destination_id" not-null="true" />
+        </many-to-one>
+         <many-to-one name="user_id" class="com.EntityClasses.User_Master" fetch="select">
+            <column name="user_id" not-null="true" />
+        </many-to-one>
+         <many-to-one name="bus_per_schedule_id" class="com.EntityClasses.Bus_Per_Schedule" fetch="select">
+            <column name="bus_per_schedule_id" />
+        </many-to-one>
+       
+        
+        <property name="date_of_booking" type="timestamp">
+            <column name="date_of_booking" not-null="true" />
+        </property>
+      
+        <property name="date_of_travel" type="date">
+            <column name="date_of_travel" not-null="true" />
+        </property>
+        <property name="seat_number" type="string">
+            <column name="seat_number" />
+        </property>
+        <property name="ticket_qrcode" type="string">
+            <column name="ticket_qrcode" />
+        </property>
+       
+        
+ 	</class>
+</hibernate-mapping>

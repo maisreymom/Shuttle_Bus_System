@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Destination_Master" table="destination_master">
+ 	 	
+ 	   <id name="destination_id" type="string">
+            <column name="destination_id" />
+       </id>
+        
+        <property name="destination_name" type="string">
+            <column name="destination_name" />
+        </property>
+      
+        <property name="departure_time" type="time">
+            <column name="departure_time" not-null="false" />
+        </property>
+        <property name="arrival_time" type="time">
+            <column name="arrival_time" not-null="false" />
+        </property>
+        <set name="schedule_table" table="schedule_table"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="destination_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.Schedule_Table" />
+        </set>
+        <set name="passenger" table="passenger_table"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="destination_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.Passenger" />
+        </set>
+        
+ 	</class>
+</hibernate-mapping>

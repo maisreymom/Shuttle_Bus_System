@@ -1,0 +1,121 @@
+		body{
+		  background-color: #fff!important;
+		  color:#64B5F6!important;
+		  padding: 0em !important;
+		  }
+		  
+		  img.responsive-img, video.responsive-video {
+		    height: 50px !important;
+		    width: 50px;
+		    margin-top:2px;
+		}
+		#emer{
+			background-color:#64B5F6!important;
+		}
+		 #BookingSession{
+		  	background-color:#64B5F6;
+		  	padding-bottom: 100px;
+		  }
+		  .title{
+		  	color:#fff;
+		  }
+		h4{
+			margin: 0rem;
+			padding-top: 50px;
+		}
+		table,tr,td,th{
+			border: 0.1px solid #d5d1d1;
+			text-align: center;
+			color:black;
+		}
+		label{
+			color: white;
+		}
+		
+		#One, #Round{
+			background-color: white;
+			margin: 20px 0px;
+			height: 50px;
+			color: black;
+		}
+		input[type="date"]{
+			border-bottom: 0px solid #9e9e9e;
+		}
+		.input-field {
+		    margin-top: 0rem;
+		}
+		.bookOne{
+			width: 106%;
+			height: 100%;
+		}
+		.bookRound{
+			background-color: #fb810b !important;
+			margin-top: 15px;
+			margin-right: 10px;
+		}
+		.bookOne{
+			background-color: #fb810b !important;
+		}
+		.select-wrapper input.select-dropdown{
+			border-bottom: 0px solid #9e9e9e;
+		}
+		input[type=text]:not(.browser-default){
+		  
+			}
+		.material-icons {
+			line-height: 2;
+			}
+		 img.responsive-img, video.responsive-video {
+		    height: 50px !important;
+		    width: 50px;
+		    margin-top:2px;
+		}
+		.brand-logo{
+			color: #64B5F6!important;
+		}
+		nav {
+		    color: black;
+		    background-color: white;
+		}
+		nav ul a {
+		    color: gray;
+		}
+		span.badge.new{
+			background-color: #64B5F6 !important;
+		}
+		label{
+			color: white;
+		}
+		[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) + label::after {
+  		  border: 2px solid #fffdfc;
+		}
+		[type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::after {
+		    background-color: White;
+		}
+		[type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::before, .with-gap[type="radio"]:checked + label::after {
+		    border: 2px solid #FFFFFF;
+		}
+		.select-wrapper input.select-dropdown{
+			border-bottom: 0px solid #9e9e9e;
+		}
+		input[type=text]:not(.browser-default){
+		    margin: 0em 0 0em 0;
+		    padding: 0em;
+		    border-bottom: 0px solid #9e9e9e;
+			width: 88%;
+			}
+		.bookOne{
+			line-height: 50px;
+		}
+		.sch {
+		    font-size: 1.64rem;
+		    line-height: 100%;
+		    margin: 3rem 0 1.6rem 0;
+		}
+		.page-footer {
+		    padding-top: 20px;
+		    background-color: #64B5F6;
+		    margin-top:100px;
+		}
+		
+		

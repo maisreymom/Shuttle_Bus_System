@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Bus_Report_Table" table="bus_report_table">
+ 	 	
+ 	 	
+ 	 	<!-- id -->
+	 	 <id name="bus_per_schedule_id" type="string">
+			<column name="bus_per_schedule_id" />
+			<generator class="foreign">
+				<param name="property">bus_per_schedule</param>
+			</generator>
+		</id>
+	     
+	     
+          <!-- relationship with other-->
+       
+        <one-to-one name="bus_per_schedule" class="com.EntityClasses.Bus_Per_Schedule"
+			constrained="true"></one-to-one>
+        
+		
+	     <!-- entity -->
+        <property name="actual_departure_time" type="time">
+            <column name="actual_departure_time" not-null="false" />
+        </property>
+        <property name="actual_arrival_time" type="time">
+            <column name="actual_arrival_time" not-null="false" />
+        </property>
+        <property name="total_time_spent" type="float">
+            <column name="total_time_spent" not-null="false" />
+        </property>
+         <property name="fuel_spent" type="float">
+            <column name="fuel_spent" not-null="false" />
+        </property>
+         <property name="distance" type="float">
+            <column name="distance" not-null="false" />
+        </property>
+        <property name="total_expense" type="float">
+            <column name="total_expense" not-null="false" />
+        </property>
+        <property name="extra_info" type="string">
+            <column name="extra_info" not-null="false" />
+        </property>
+      
+ 
+ 	</class>
+</hibernate-mapping>

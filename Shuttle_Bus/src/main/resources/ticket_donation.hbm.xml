@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Ticket_Donation" table="ticket_donation">
+ 	 	
+ 	   <id name= "id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        
+      
+         <many-to-one name="user_id" class="com.EntityClasses.User_Master" fetch="select">
+            <column name="user_id" not-null="true" />
+        </many-to-one>
+        
+         
+       
+        <property name="donate_to" type="string">
+            <column name="donate_to" not-null="true" />
+        </property>
+        <property name="receive_from" type="string">
+            <column name="receive_from" not-null="true" />
+        </property>
+        
+       
+        
+ 	</class>
+</hibernate-mapping>

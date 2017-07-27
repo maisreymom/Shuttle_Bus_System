@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+ 	<class name="com.EntityClasses.Batch_Master" table="batch_master">
+ 	 	
+ 	   <id name="batch_id" type="string">
+            <column name="batch_id" />
+        </id>
+        <property name="batch_number" type="int">
+            <column name="batch_number" not-null="true" />
+        </property>
+         <property name="date_of_leaving" type="date">
+            <column name="date_of_leaving" not-null="true" />
+        </property>
+        <property name="date_of_returning" type="date">
+            <column name="date_of_returning" not-null="true" />
+        </property>
+        <property name="status" type="boolean">
+            <column name="status" not-null="false" />
+        </property>
+        <property name="deadline_of_booking" type="timestamp">
+            <column name="deadline_of_booking" not-null="true" />
+        </property>
+        <set name="user_master" table="user_master"
+				inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="batch_id" not-null="true" />
+            </key>
+            <one-to-many class="com.EntityClasses.User_Master" />
+        </set>
+ 	</class>
+</hibernate-mapping>
