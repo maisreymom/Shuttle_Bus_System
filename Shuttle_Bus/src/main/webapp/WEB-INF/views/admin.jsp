@@ -55,6 +55,7 @@
         <li class="tab"><a  href="#test2">Report</a></li>
         <li class="tab"><a href="#test3">Shuttle Bus</a></li>
         <li class="tab"><a href="#test4">User</a></li>
+        <li class="tab"><a href="#test5">Setting</a></li>
         
       </ul>
     </div>
@@ -498,23 +499,241 @@
   </div>
   
   </div>
-
-</div>
+  <div id="test5" class="col s12">
+  	<div class="row">
+	  	<div class="col s12">
+	  			<h5 class="title">Current Batch Information</h5>
+	  	</div>
+	  		<div class="col s12">
+	  			<table class="centered bordered">
+			        <thead>
+			          <tr>
+			              <th>No.</th>
+			              <th>Batch Number</th>
+			              <th>Leave Date</th>
+			              <th>Return Date</th>
+			              <th>Deadline Booking</th>
+			              <th>Reset</th>
+			          </tr>
+			        </thead>
+			        <tbody id="">
+			        	<tr>
+							<td>1</td>
+							<td>Batch 1</td>
+							<td>12/07/2017</td>
+							<td>12/07/2017</td>
+							<td>12/07/2017: 5pm</td>
+							<td><a href="#batchEdit">Edit</a> / <a href="#batchDelete">Delete</a></td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Batch 2</td>
+							<td>12/07/2017</td>
+							<td>12/07/2017</td>
+							<td>12/07/2017: 5pm</td>
+							<td><a href="#batchEdit">Edit</a> / <a href="#batchDelete">Delete</a></td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>Batch 3</td>
+							<td>12/07/2017</td>
+							<td>12/07/2017</td>
+							<td>12/07/2017: 5pm</td>
+							<td><a href="#batchEdit">Edit</a> / <a href="#batchDelete">Delete</a></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><a href="#addBatch">Add</a></td>
+						</tr>
+			        </tbody>
+			      </table>
+	  		</div>
+	  		<div class="col s12">
+	  		<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+	          <a id="pop_up_user" class="btn-floating waves-effect waves-light btn-large" href="#modal4">
+	            <i class="material-icons">add</i>
+	          </a>
+	        </div>
+	  		</div>
+  </div>
+  <!-- Batch Edit -->
+  <div id="batchEdit" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h5 class="blue-text center">Edit Batch Information</h5>
+      <table>
+		 <tr>
+			<td>Batch Number<span class="right">:</span></td>
+			<td>Batch 1</td>
+		</tr>
+		<tr>
+			 <td>Leave Date<span class="right">:</span></td>
+			 <td>
+			 	<div class="input-field s6 flatpickr">
+				   	<input type="text" placeholder="Select Date" id="leaveDate" data-input class="input flatpickr-input active"> 
+				</div>
+			 </td>
+		</tr>
+		<tr>
+			  <td>Return Date<span class="right">:</span></td>
+			  <td>
+			 	<div class="input-field s6 flatpickr">
+				   	<input type="text" placeholder="Select Date" id="returnDate" data-input class="input flatpickr-input active"> 
+				</div>
+			 </td>
+		</tr>
+		<tr>
+			 <td>Deadline Booking<span class="right">:</span></td>
+			 <td>
+			 	<div class="input-field s6 flatpickr">
+				   	<input type="text" placeholder="Select Date" id="deadlineBooking" data-input  class="input flatpickr-input active"> 
+				</div>
+			 </td>
+		</tr>
+	  </table>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Update</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+  </div>
+  <!-- Batch Delete -->
+  <div id="batchDelete" class="modal modal-fixed-footer delete_modal">
+    <div class="modal-content">
+      <h5 class="blue-text">Delete Confirm</h5>
+      <p>Are you sure, you want to delete this batch?</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
+    </div>
+  </div>
+  <!-- Add Batch -->
+  <div id="addBatch" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h5 class="blue-text center">Add New Batch</h5>
+      <table>
+		 <tr>
+			<td>Batch Number<span class="right">:</span></td>
+			<td>Batch 4</td>
+		</tr>
+		<tr>
+			 <td>Leave Date<span class="right">:</span></td>
+			 <td>
+			 	<div class="input-field s6 flatpickr">
+				   	<input type="text" placeholder="Select Date" id="leaveDate" data-input class="input flatpickr-input active"> 
+				</div>
+			 </td>
+		</tr>
+		<tr>
+			  <td>Return Date<span class="right">:</span></td>
+			  <td>
+			 	<div class="input-field s6 flatpickr">
+				   	<input type="text" placeholder="Select Date" id="returnDate" data-input class="input flatpickr-input active"> 
+				</div>
+			 </td>
+		</tr>
+		<tr>
+			 <td>Deadline Booking<span class="right">:</span></td>
+			 <td>
+			 	<div class="input-field s6 flatpickr">
+				   	<input type="text" placeholder="Select Date" id="deadlineBooking" data-input  class="input flatpickr-input active"> 
+				</div>
+			 </td>
+		</tr>
+	  </table>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+  </div> 
+  <div class="row">
+  		<div class="col s12">
+	  		<h5 class="title">Destination Infomation</h5>
+	  	</div>
+	  	<div class="col s12">
+	  			<table class="centered bordered">
+			        <thead>
+			          <tr>
+			              <th>No.</th>
+			              <th>Destination name</th>
+			              <th>Reset</th>
+			          </tr>
+			        </thead>
+			        <tbody id="">
+			        	<tr>
+							<td>1</td>
+							<td>Kirirom to Phnom Penh</td>
+							<td><a href="#destinationEdit">Edit</a> / <a href="#destinationDelete">Delete</a></td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Phnom Penh to Kirirom</td>
+							<td><a href="#destinationEdit">Edit</a> / <a href="#destinationDelete">Delete</a></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td><a href="#addDestination">Add</a></td>
+						</tr>
+			        </tbody>
+			      </table>
+	  	</div>
+	  	<!-- Destination Edit -->
+	  <div id="destinationEdit" class="modal modal-fixed-footer dest_">
+	    <div class="modal-content">
+	      <h5 class="blue-text center">Edit Batch Information</h5>
+	      <br>
+	        Destination Name:&nbsp
+			<div class="input-field inline">
+			     <input id="des_name" type="text" class="validate">
+			     <label id="des_name_label" for="des_name">Destination Name</label>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Update</a>
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+	    </div>
+	  </div>
+	  <!-- Batch Delete -->
+	  <div id="destinationDelete" class="modal modal-fixed-footer delete_modal">
+	    <div class="modal-content">
+	      <h5 class="blue-text">Delete Confirm</h5>
+	      <p>Are you sure, you want to delete this destination?</p>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes</a>
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
+	    </div>
+	  </div>
+	  <!-- Add Destination -->
+	  <div id="addDestination" class="modal modal-fixed-footer dest_">
+	    <div class="modal-content">
+	      <h5 class="blue-text center">Add New Batch</h5>
+	      <br>
+	        Destination Name:&nbsp
+			<div class="input-field inline">
+			     <input id="des_name" type="text" class="validate">
+			     <label id="des_name_label" for="des_name">Destination Name</label>
+			</div>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a>
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+	    </div>
+	  </div>
+  </div>
+</div><!-- tab 5 -->
+</div><!-- hold tab -->
 <footer class="page-footer">
           <div class="container">
             <div class="row">
-              <div class="col l6 s12">
-                <h5 class="white-text">Footer Content</h5>
+              <div class="col s12">
                 <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-              </div>
-              <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Links</h5>
-                <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
               </div>
             </div>
           </div>
@@ -524,11 +743,7 @@
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
             </div>
           </div>
-        </footer>
+</footer>
 </body>
-<script type="text/javascript">
 
-
-
-</script>
 </html>
