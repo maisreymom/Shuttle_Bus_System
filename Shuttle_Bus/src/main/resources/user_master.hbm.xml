@@ -18,7 +18,7 @@
         <many-to-one name="batch_id" class="com.EntityClasses.Batch_Master" fetch="select">
             <column name="batch_id" not-null="true" />
         </many-to-one>
-	     
+	    
 	     <!-- entity -->
         <property name="username" type="string">
             <column name="username" not-null="true" />

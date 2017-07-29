@@ -12,105 +12,43 @@ $(document).ready(function(){
 
 var row={"phnom_penh":[],"Kirirom":[]};
 	
-	var student_k=0;
-	var student_p=0;
-	var staff;
-	var customer;
-	var key;
-	
-	var full=[[],[],[],[]];
-	var generneted={"date":[],"destination":[],"data":[]};
-		
-		
+		var data_schedule =[];
 		 $.ajax({
 			 	async:false,
 			 	cache:false,
 				type : "GET",
 				contentType : "application/json",
-				url : "schedule",
+				url : "show_schedule",
 				
 				
 				timeout : 100000,
 				success : function(data) {
-					var p=0;
-					var k=0;
-					
+					data_schedule = data;
+					tr='';
+					td='';
 					for(var i=0;i<data.length;i++){
-						key=Object.keys(data[i])[0];
-						
-						for(var j=0;j<data[i][key].length;j++){
-							
-						if(data[i][key][j]['destination']=="phnom penh"){
-							if(data[i][key][j]['role']=="student"){
-								student_p++;
-								
-							}
-						
-							row["phnom_penh"][p]={"full_name":data[i][key][j]['full_name']
-							,"email":data[i][key][j]['email']
-							,"phone":data[i][key][j]['phone']
-							,"role":data[i][key][j]['role']
-							,"batch":data[i][key][j]['batch']
-							,"user_id":data[i][key][j]['user_id']}
-							
-							p++;
-						
+						if(data[i]["student"]==undefined){
+							data[i]["student"]=0;
 						}
-						
-						else if(data[i][key][j]['destination']=="Kirirom"){
-							
-							if(data[i][key][j]['role']=="student"){
-								student_k++;
-								
-								
-							}
-							
-							
-							row["Kirirom"][k]={"full_name":data[i][key][j]['full_name']
-							,"email":data[i][key][j]['email']
-							,"phone":data[i][key][j]['phone']
-							,"role":data[i][key][j]['role']
-							,"batch":data[i][key][j]['batch']
-							,"user_id":data[i][key][j]['user_id']}
-							
-							k++;
-							
+						if(data[i]["staff"]==undefined){
+							data[i]["staff"]=0;
 						}
-						
+						if(data[i]["customer"]==undefined){
+							data[i]["customer"]=0;
 						}
-						if(k){
-							full[i].push({"date":key,"destination":"Kirirom","destination_id":"756fh7jful","student":student_k,"pass":row["Kirirom"]});
-							k=0;
-							student_k=0;
-							row["Kirirom"]=[];
-						}
-						if(p){
-							
-							full[i].push({"date":key,"destination":"Phnom Penh","destination_id":"756fh4hfyo","student":student_p,"pass":row["phnom_penh"]});
-							p=0
-							student_p=0;
-							row["phnom_penh"]=[];
-						}
-						
+
+					    td = '<td>' + data[i]["date"] +'</td>'
+						+ '<td>' + data[i]["destination"] + '</td>'
+						+ '<td>' + data[i]["student"] + '</td>'
+						+ '<td>' + data[i]["staff"] + '</td>'
+						+ '<td>' + data[i]["customer"] + '</td>'
+						+ '<td class="detail" value="'+i+'"> <a class="modal-trigger" href="#modal1">Detail</a></td>'
+						+ '<td class="set_schedule" value="'+i+'"><a class="modal-trigger" href="#modal2">Set</a></td>';
+
+						tr = tr + '<tr>' + td + '</tr>';
+
+
 					}
-					
-				
-					var tr='<tr>';
-					var td ='';
-					for(var k=0;k<full.length;k++){
-						for(var l=0;l<full[k].length;l++){
-							
-							td = "<td>" + full[k][l]["date"] + "</td>" 
-							+ "<td>" + full[k][l]["student"] + "</td>"
-							+ "<td>" + full[k][l]["destination"] + "</td>"
-							+ '<td class="detail" value="'+full[k][l]["date"]+'->' +full[k][l]["destination"]+ '"> <a class="modal-trigger" href="#modal1">Detail</a></td>'
-							+ '<td class="set_schedule" value="'+full[k][l]["date"]+'->' +full[k][l]["destination_id"]+'"><a class="modal-trigger" href="#modal2">Set</a></td>';
-							tr = tr+td +'</tr>';
-						}
-						
-					}
-					
-					
 					document.getElementById('getschedule').innerHTML = tr;
 				},
 				error : function(e) {
@@ -125,34 +63,28 @@ var row={"phnom_penh":[],"Kirirom":[]};
 		
 			var tr ='<tr>';
 			var td ='';
-			var date1;
-			var date2;
+			
+		
 
-			var arr = $(this).attr('value').split('->');
+			var arr = $(this).attr('value');
 			
+			var i = parseInt(arr);
 			
-			date1=arr[0].replace(/\s+$/, '');
-			for(var i=0;i<full.length;i++){
-				
-				for(var j=0;j<full[i].length;j++){
-					if(date1==full[i][j]["date"]&&arr[1]==full[i][j]["destination"]){
-						
-						for(var d=0;d<full[i][j]["pass"].length;d++){
-							td ='<td>' + full[i][j]["pass"][d]["full_name"] + '</td>'
-							+ '<td>' + full[i][j]["pass"][d]["batch"] + '</td>'
-							+ '<td>' + full[i][j]["pass"][d]["role"] + '</td>'
-							+ '<td>' + full[i][j]["pass"][d]["email"] + '</td>'
-							+ '<td>' + full[i][j]["pass"][d]["phone"] + '</td>'
+		
+						console.log(i);
+						console.log(data_schedule[i]);
+						for(var j=0;j<data_schedule[i]["list"].length;j++){
+							td ='<td>' + data_schedule[i]["list"][j]["name"] + '</td>'
+							+ '<td>' + data_schedule[i]["list"][j]["batch"] + '</td>'
+							+ '<td>' + data_schedule[i]["list"][j]["role"] + '</td>'
+							+ '<td>' + data_schedule[i]["list"][j]["emain"] + '</td>'
+							+ '<td>' + data_schedule[i]["list"][j]["phone"] + '</td>'
 							
 							tr = tr + td + '</tr>';
 							
 						}
-						
-					}
-						
-					
-				}
-			}
+	
+			
 			document.getElementById('detail_title').innerHTML = 'User Detail on '+arr[0];
 			document.getElementById('detail_pass').innerHTML = tr;
 			
@@ -328,9 +260,11 @@ var row={"phnom_penh":[],"Kirirom":[]};
     				});
     	 	   				
     	 	   });
+
+    		  
     		  
 		 var count_schedule=0;
-		 
+		 var count_schedule_element=[];
 		 $(".add_s").click(function() {
 		 		
 				var driver_list=[];
@@ -376,6 +310,10 @@ var row={"phnom_penh":[],"Kirirom":[]};
 		 		var bus_model ='';
 		 		var driver_name = '';
 		 		var total_seats = '';
+		 		var departure = '';
+		 		var arrival = '';
+		 		var customer ='';
+		 		var delete_schedule = '';
 	            for(var i=0;i<bus_list.length;i++){
 	            	bus_model = bus_model + '<option value="'+bus_list[i]["bus_id"]+'">' + bus_list[i]["bus_model"] + '</option>';
 	            }
@@ -384,52 +322,111 @@ var row={"phnom_penh":[],"Kirirom":[]};
 	            }
 				bus_model = '<td id="bus_model'+count_schedule+'"><select>'+ bus_model +'</select></td>';
 				driver_name = '<td id="driver_name'+count_schedule+'"><select>'+driver_name +'</select></td>';
-				total_seats = '<td id="total_seats'+count_schedule+'"><input type="number" placeholder="total seats"></td>';
-				tr = '<tr class="add_input">' + bus_model + driver_name + total_seats + '</tr>';
+				total_seats = '<td id="total_seats'+count_schedule+'"><input type="text" placeholder="total seats"></td>';
+				departure = '<td><div class="flatpickr departure  data_departure'+count_schedule+'">'
+              				+'<input type="text" placeholder="Select Time" data-input  class=" input flatpickr-input active"></div></td>';
+              	arrival = '<td><div class="flatpickr arrival data_arrival'+count_schedule+'">'
+                +'<input type="text" placeholder="Select Time" data-input  class="input flatpickr-input active"></div></td>';
+                customer = '<td ><select multiple class="customer'+count_schedule+'"><option>customer1</option>'
+                +'<option>customer2</option><option>customer3</option></select></td>';
+                delete_schedule = '<td class="delete_icon"><i class="material-icons" value="'+count_schedule+'">delete</i></td>'
+				tr = '<tr class="add_input" id="tr_'+count_schedule+'">' + bus_model + driver_name + customer+total_seats + departure + arrival+delete_schedule+'</tr>';
 				
 					
-					
-					$("#add_more_schedule" ).append( tr );
-					$('select').material_select();
-					count_schedule++;
+				
+				$("#add_more_schedule" ).append( tr );
+				$('select').material_select();
+				count_schedule_element[count_schedule_element.length]= count_schedule;
+				count_schedule++;
+				console.log(count_schedule_element);
+				$(".departure input").flatpickr({
+		    	 		enableTime: true,
+					    noCalendar: true,
+					    enableSeconds: false, 
+					    time_24hr: false,
+					    dateFormat: "H:i", 
+					    defaultHour: 12,
+					    defaultMinute: 0
+		   			 });
+				  $(".arrival input").flatpickr({
+		    	 		enableTime: true,
+					    noCalendar: true,
 
-			
+					    enableSeconds: false, // disabled by default
+
+					    time_24hr: false, // AM/PM time picker is used by default
+
+					    // default format
+					    dateFormat: "H:i", 
+
+					    // initial values for time. don't use these to preload a date
+					    defaultHour: 12,
+					    defaultMinute: 0
+		   			 });
+			$(".delete_icon i").click(function() {
+    		var data = $(this).attr("value");
+    		
+    		document.getElementById('tr_'+data).innerHTML = '';
+    		
+    		
+    		//console.log(count_schedule_element);
+    		
+    		for(var i = 0 ;i<count_schedule_element.length;i++){
+    			if(count_schedule_element[i]==parseInt(data)){
+    				count_schedule_element.splice(i, 1);
+    				break;
+    			}
+    		}
+    			
+    		
+    		console.log(count_schedule_element);
+    		return data;
+		  
+    	});
+
 		 });
-    	var collect_id=[];
-    	var date_of_travel='';
-    	var destination_schedule='';
+    	
+
+
     	$("#set_schedule").click(function() {
     		var schedule_data=[];
-    		console.log(collect_id);
+    		var data_list = data_schedule[index_of]["list"];
     		var assign_id=[];
     		var remaining_seats=0;
-    		for(var i=0;i<count_schedule;i++){
-				
-				for(var j=0;j<parseInt($("#total_seats"+i+" input" ).val());j++){
-					if(collect_id[0]){
-						console.log(j);
-						assign_id[j] = collect_id[0];
-						collect_id.shift();
+    		
+    		console.log(data_list);
+    		for(var i=0;i<count_schedule_element.length;i++){
+				var id_customer = $(".customer"+count_schedule_element[i]+" select").val();
+				console.log(id_customer);
+				for(var j=0;j<parseInt($("#total_seats"+count_schedule_element[i]+" input" ).val());j++){
+					if(id_customer[0]){
+						assign_id[j] = id_customer[0];
+						id_customer.shift();
+					}
+					else if(data_list[0]){
+						
+						assign_id[j] = data_list[0]["name"];
+						data_list.shift();
 						
 					}
 					else break;
 					
 				}
+				console.log($(".customer"+count_schedule_element[i]+" select").val().length);
+				remaining_seats = parseInt($("#total_seats"+count_schedule_element[i]+" input" ).val()) -assign_id.length;
 				
-				remaining_seats = parseInt($("#total_seats"+i+" input" ).val()) -assign_id.length;
-				
-				schedule_data[i] = {"bus_id":$( "#bus_model"+i+" select" ).val(),
-									"driver_name":$( "#driver_name"+i+" select" ).val(),
-									"total_seats":parseInt($( "#total_seats"+i+" input" ).val()),
+				schedule_data[i] = {"bus_id":$( "#bus_model"+count_schedule_element[i]+" select" ).val(),
+									"driver_name":$( "#driver_name"+count_schedule_element[i]+" select" ).val(),
+									"total_seats":parseInt($( "#total_seats"+count_schedule_element[i]+" input" ).val()),
 									"passenger_id":assign_id,
-									"customer":0,
+									"customer":$(".customer"+count_schedule_element[i]+" select").val().length,
 									"student":assign_id.length,
 									"staff":0,
 									"remaining_seats":remaining_seats,
-									"date_of_travel":date_of_travel,
-									"destination_id":destination_schedule,
-									"est_arrival":$(".arrival input").val(),
-									"est_departure":$(".departure input").val()};
+									"date_of_travel":data_schedule[index_of]["date"],
+									"destination_id":data_schedule[index_of]["destination"],
+									"est_arrival":$('.data_arrival'+count_schedule_element[i]+' input').val(),
+									"est_departure":$('.data_departure'+count_schedule_element[i]+' input').val()};
 
 				assign_id = [];
 
@@ -462,32 +459,13 @@ var row={"phnom_penh":[],"Kirirom":[]};
     		
 			
     	});
-
+    	var index_of=0;
     	$(".set_schedule").click(function() {
 
-			var arr = $(this).attr('value').split('->');
-			date_of_travel = arr[0];
-			destination_schedule = arr[1];
-			date1=arr[0].replace(/\s+$/, '');
-			for(var i=0;i<full.length;i++){
-				
-				for(var j=0;j<full[i].length;j++){
-					if(date1==full[i][j]["date"]&&arr[1]==full[i][j]["destination_id"]){
-						
-						for(var d=0;d<full[i][j]["pass"].length;d++){
-							
-							collect_id[d] = full[i][j]["pass"][d]["user_id"];
-							
-							
-						}
-						
-					}
-						
-					
-				}
-			}
+			var arr = $(this).attr('value');
+			index_of = arr;
 			
-
+			document.getElementById('remaining_seats').innerHTML = data_schedule[index_of]["list"].length;
     	});
 
 

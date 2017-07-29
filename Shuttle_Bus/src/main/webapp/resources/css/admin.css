@@ -159,13 +159,14 @@ margin-top: 0px;
 		margin-top:100px;
 		background-color:#29b6f6;
 }
-.add_s li{
-	display:inline-block;
+.add_s{
+	display:block;
 	font-size:17px;
 	color:#29b6f6;
 	padding: 2px;
+	width: 80px;
 }
-.add_s li:hover{
+.add_s:hover{
 	cursor:pointer;
 	
 }
@@ -173,7 +174,7 @@ margin-top: 0px;
 	font-size:16px !important;
 }
 .add_input .select-wrapper input.select-dropdown{
-	border: none;
+	
 }
 .add_input td{
 	border: none;
@@ -194,4 +195,17 @@ input[type="text"]:disabled, input[type="text"]{
 
 .flatpickr-time input.flatpickr-hour, .flatpickr-time input.flatpickr-minute, .flatpickr-time input.flatpickr-second{
 	height: inherit !important;
+}
+.modal_schedule{
+	width: 75%;
+}
+.delete_icon i:hover{
+	cursor: pointer;
+	color:#F50057;
+}
+.delete_icon {
+	color: #E91E63;
+}
+.select-wrapper span.caret{
+	font-size: 5px;
 }

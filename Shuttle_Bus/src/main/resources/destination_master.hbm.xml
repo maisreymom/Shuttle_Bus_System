@@ -12,11 +12,8 @@
             <column name="destination_name" />
         </property>
       
-        <property name="departure_time" type="time">
-            <column name="departure_time" not-null="false" />
-        </property>
-        <property name="arrival_time" type="time">
-            <column name="arrival_time" not-null="false" />
+        <property name="status" type="boolean">
+            <column name="status" />
         </property>
         <set name="schedule_table" table="schedule_table"
 				inverse="true" lazy="false" fetch="select">

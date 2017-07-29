@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +18,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 
 
@@ -26,6 +28,8 @@ import org.hibernate.criterion.Projections;
 
 
 
+
+import org.hibernate.transform.Transformers;
 
 import com.EntityClasses.Batch_Master;
 import com.EntityClasses.Bus_Master;
@@ -39,6 +43,7 @@ import com.EntityClasses.User_Master;
 import com.ModelClasses.Add_Bus;
 import com.ModelClasses.Model_User;
 import com.ModelClasses.Set_Schedule;
+import com.ModelClasses.Shuttle;
 import com.mysql.fabric.xmlrpc.base.Data;
 
 public class Admin_Imp implements Admin_Inf{
@@ -588,6 +593,7 @@ public class Admin_Imp implements Admin_Inf{
          	bps.setBus_per_schedule_id(id[i]);
          	brt.setBus_per_schedule(bps);
          	session.saveOrUpdate(brt);
+         	
      	}
      	
      	
@@ -611,6 +617,76 @@ public class Admin_Imp implements Admin_Inf{
         }
 	
     }
+	public  List<Map<String,Object>> showSchedule() {
+		
+	       Configuration con=new Configuration();
+	       con.configure("hibernate.cfg.xml");
+	       SessionFactory sf=con.buildSessionFactory();
+	       Session session=sf.openSession();
+	      
+	       Criteria criteria = session.createCriteria(Passenger.class);
+	       criteria.setProjection(Projections.projectionList()
+	               .add(Projections.groupProperty("date_of_travel").as("date_of_travel"))
+	               .add(Projections.groupProperty("destination_id").as("destination_id"))
+	               .add(Projections.property("date_of_travel").as("date_of_travel"))
+	               .add(Projections.property("destination_id").as("destination_id")));
+	       criteria.setResultTransformer(Transformers.aliasToBean(Passenger.class));
+	       List<Passenger> list = criteria.list();
+	       List<Map<String,Object>> data = new ArrayList<Map<String,Object>>();
+	       try {
+	       for (Passenger ps : list) {
+	          
+	    	   List<Passenger> pass = new ArrayList<Passenger>();
+	    	   
+	    	   String hql = "From Passenger P where P.destination_id.destination_name='"+ps.getDestination_id().getDestination_name()+"'"
+	    			   +" and P.date_of_travel='"+ps.getDate_of_travel()+"'";
+	    	   Query qpass = session.createQuery(hql);
+	    	   pass = qpass.list();
+	    	   
+	           String group = "select count(E.user_id.role_id.role_name),  E.user_id.role_id.role_name "
+	           		+"from Passenger E where E.destination_id.destination_name='" + ps.getDestination_id().getDestination_name()
+	           		+"' and E.date_of_travel='"+ps.getDate_of_travel() +"' " 
+	                +"GROUP BY E.user_id.role_id.role_name";
+			       Query query = session.createQuery(group);
+			       List<Object[]> results = query.list();
+		   Map<String,Object> map = new HashMap<String,Object>();
+	       map.put("destination", ps.getDestination_id().getDestination_name());
+	       map.put("date", ps.getDate_of_travel());
+	       for(Object[] sh: results){
+	    	   map.put(sh[1].toString(), sh[0].toString());
+	    	   
+	    	   
+	       }
+	       List<Map<String,Object>> list_pass = new ArrayList<Map<String,Object>>();
+	       for(Passenger ob_pass:pass){
+	    	   Map<String,Object> map_pass = new HashMap<String,Object>();
+	    	   map_pass.put("name", ob_pass.getUser_id().getFullname());
+	    	   map_pass.put("batch", ob_pass.getUser_id().getBatch_id().getBatch_number());
+	    	   map_pass.put("role", ob_pass.getUser_id().getRole_id().getRole_name());
+	    	   map_pass.put("email", ob_pass.getUser_id().getEmail());
+	    	   map_pass.put("phone", ob_pass.getUser_id().getPhone_number());
+	    	   map_pass.put("user_id", ob_pass.getUser_id().getUser_id());
+	    	   
+	    	   list_pass.add(map_pass);
+	    	   
+	       }
+	       map.put("list", list_pass);
+	       data.add(map);
+	       
+	       }
+	       
+	      
+	        
+	       } catch (RuntimeException e) {
+	    	  
+	           e.printStackTrace();
+	          
+	       } finally {
+	           session.flush();
+	           session.close();
+	       }
+	       return data;
+	}
 	
 	
 	public static void main(String arg[]){
@@ -619,18 +695,67 @@ public class Admin_Imp implements Admin_Inf{
 	       con.configure("hibernate.cfg.xml");
 	       SessionFactory sf=con.buildSessionFactory();
 	       Session session=sf.openSession();
+	       Criteria criteria = session.createCriteria(Passenger.class);
+	       criteria.setProjection(Projections.projectionList()
+	               .add(Projections.groupProperty("date_of_travel").as("date_of_travel"))
+	               .add(Projections.groupProperty("destination_id").as("destination_id"))
+	               .add(Projections.property("date_of_travel").as("date_of_travel"))
+	               .add(Projections.property("destination_id").as("destination_id")));
+	       criteria.setResultTransformer(Transformers.aliasToBean(Passenger.class));
+	       List<Passenger> list = criteria.list();
+	       List<Map<String,Object>> data = new ArrayList<Map<String,Object>>();
+	       for (Passenger ps : list) {
+	          
+	    	   List<Passenger> pass = new ArrayList<Passenger>();
+	    	   
+	    	   String hql = "From Passenger P where P.destination_id.destination_name='"+ps.getDestination_id().getDestination_name()+"'"
+	    			   +" and P.date_of_travel='"+ps.getDate_of_travel()+"'";
+	    	   Query qpass = session.createQuery(hql);
+	    	   pass = qpass.list();
+	    	   
+	           String group = "select count(E.user_id.role_id.role_name),  E.user_id.role_id.role_name "
+	           		+"from Passenger E where E.destination_id.destination_name='" + ps.getDestination_id().getDestination_name()
+	           		+"' and E.date_of_travel='"+ps.getDate_of_travel() +"' " 
+	                +"GROUP BY E.user_id.role_id.role_name";
+			       Query query = session.createQuery(group);
+			       List<Object[]> results = query.list();
+		   Map<String,Object> map = new HashMap<String,Object>();
+	       map.put("destination", ps.getDestination_id().getDestination_name());
+	       map.put("date", ps.getDate_of_travel());
+	       for(Object[] sh: results){
+	    	   map.put(sh[1].toString(), sh[0].toString());
+	    	   
+	    	   
+	       }
+	       List<Map<String,Object>> list_pass = new ArrayList<Map<String,Object>>();
+	       for(Passenger ob_pass:pass){
+	    	   Map<String,Object> map_pass = new HashMap<String,Object>();
+	    	   map_pass.put("name", ob_pass.getUser_id().getFullname());
+	    	   map_pass.put("batch", ob_pass.getUser_id().getBatch_id().getBatch_number());
+	    	   map_pass.put("role", ob_pass.getUser_id().getRole_id().getRole_id());
+	    	   map_pass.put("email", ob_pass.getUser_id().getEmail());
+	    	   map_pass.put("phone", ob_pass.getUser_id().getPhone_number());
+	    	   map_pass.put("user_id", ob_pass.getUser_id().getUser_id());
+	    	   list_pass.add(map_pass);
+	    	   
+	       }
+	       map.put("list", list_pass);
+	       data.add(map);
+	       
+	       }
 	       
 	       try {
 	           trns = session.beginTransaction();
 	           
-	       	String hql = "update Passenger p set p.ticket_qrcode=:sn where p.user_id in ( '21lruks8nme', '74jcfhd380', '7rvqg6dlbuvi')";
-        	Query query = session.createQuery(hql);
-        	query.setParameter("sn","hjkldfhfhg");
-        	 int res = query.executeUpdate();
+	       
+        	
         	
 	        session.getTransaction().commit();
-	           
+	       
 	       } catch (RuntimeException e) {
+	    	   if (trns != null) {
+	                
+	            }
 	           e.printStackTrace();
 	          
 	       } finally {

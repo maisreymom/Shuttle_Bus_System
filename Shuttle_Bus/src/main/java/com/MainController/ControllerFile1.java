@@ -319,6 +319,15 @@ public class ControllerFile1{
 				
 	}
 	
+	@RequestMapping(value="/show_schedule",method = RequestMethod.GET)
+	public @ResponseBody List<Map<String,Object>> showSchedule(){
+				Admin_Imp ad = new Admin_Imp();
+				
+				
+				return ad.showSchedule();
+				
+	}
+	
 }
 	
 

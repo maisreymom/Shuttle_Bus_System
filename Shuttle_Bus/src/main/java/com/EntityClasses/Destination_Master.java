@@ -1,19 +1,12 @@
 package com.EntityClasses;
 
-import java.util.Date;
+
 import java.util.Set;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 public class Destination_Master{
 	
 	private String destination_id;
 	private String destination_name;
-	@Temporal(TemporalType.TIME)
-	private Date departure_time;
-	@Temporal(TemporalType.TIME)
-	private Date arrival_time;
+	private boolean status;
 	
 	private Set<Passenger> passenger;
 	
@@ -25,10 +18,6 @@ public class Destination_Master{
 	public Destination_Master(String destination_id ){
 		this.destination_id = destination_id;
 	}
-	
-	
-	
-	
 	public String getDestination_id() {
 		return destination_id;
 	}
@@ -42,18 +31,11 @@ public class Destination_Master{
 		this.destination_name = destination_name;
 	}
 	
-	
-	public Date getDeparture_time() {
-		return departure_time;
+	public boolean isStatus() {
+		return status;
 	}
-	public void setDeparture_time(Date departure_time) {
-		this.departure_time = departure_time;
-	}
-	public Date getArrival_time() {
-		return arrival_time;
-	}
-	public void setArrival_time(Date arrival_time) {
-		this.arrival_time = arrival_time;
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	public Set<Schedule_Table> getSchedule_table() {
 		return schedule_table;

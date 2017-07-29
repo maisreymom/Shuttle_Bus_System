@@ -72,11 +72,12 @@
         <thead>
           <tr>
               <th>Date</th>
-
-              <th>No of Student</th>
               <th>Destination</th>
-              <th>Passenger Detail</th>
-               <th>Schedule</th>
+              <th>Student</th>
+              <th>Staff</th>
+              <th>Customer</th>
+              <th>Detail</th>
+              <th>Schedule</th>
           </tr>
         </thead>
 
@@ -109,45 +110,28 @@
     </div>
   	</div>
 
-  	<div id="modal2" class="modal modal-fixed-footer">
+  	<div id="modal2" class="modal modal-fixed-footer modal_schedule">
     <div class="modal-content wrap_modal">
     <div class="">
     	<div class="col s6"> <h6><b>Date:</b> <span>Fri, 12/june/2017</span></h6></div>
     	<div class="col s6"><h6><b>Destination: </b><span class="modal_destination">Kirirom to Phnom Penh</span></h6></div>
 
-    	<table class="schedule_table">
-    		<tr>
-    			<td>Customer: </td>
-    			<td>
-        				<div class="input-field col s10">
-          					<input placeholder="Customer" id="Customer" type="text" class="validate">
-        				</div>
-    			</td>
-    			<td>
-    				Departure:
-    			</td>
-    			<td>
-    				<div class=" col s10 flatpickr departure">
-              <input type="text" placeholder="Select Time" data-input  class=" input flatpickr-input active"> 
-           </div>
-    			</td>
-    			<td>
-    				Arrival:
-    			</td>
-    			<td>
-    				<div class=" col s10 flatpickr arrival">
-                <input type="text" placeholder="Select Time" data-input  class="input flatpickr-input active"> 
-            </div>
-    			</td>
-    		</tr>
-    	</table>
+    	
+          <div class="col s3">Total Seats: <span id="remaining_seats"></span> </div>
+       
 
-      <table class="centered">
+      <table>
         <thead>
           <tr>
               <th>Bus Model</th>
               <th>Driver Name</th>
+              <th>Customer</th>
               <th>Total Seats</th>
+              <th>Departure</th>
+              <th>Arrival</th>
+             
+              <th></th>
+              
           </tr>
         </thead>
 
@@ -156,10 +140,10 @@
 
         </tbody>
       </table>
-      <ul class="add_s">
-        <li><i class="material-icons icon">add_circle</i> Add</li>
+    
+      <span class="add_s"><i class="material-icons icon">add_circle</i> Add</span>
       
-      </ul>
+    
 
 
     </div>
