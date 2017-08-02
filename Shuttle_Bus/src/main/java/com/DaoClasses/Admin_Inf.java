@@ -5,9 +5,11 @@ import java.util.Map;
 
 import com.EntityClasses.Batch_Master;
 import com.EntityClasses.Bus_Master;
-import com.EntityClasses.Bus_Per_Schedule;
+
+
 import com.EntityClasses.Destination_Master;
-import com.EntityClasses.Passenger;
+
+
 import com.EntityClasses.Role_Master;
 import com.EntityClasses.Schedule_Table;
 import com.EntityClasses.User_Master;
@@ -18,7 +20,6 @@ import com.ModelClasses.Model_User;
 import com.ModelClasses.Set_Schedule;
 public interface Admin_Inf {
 	public List<User_Master> User();
-	public List<List<Passenger>> Schedule();
 	public List<Bus_Master> Schedule_Bus();
 	public List<Schedule_Table> Schedule_Report();
 	public  boolean Add_Shuttle (Add_Bus add_bus);
@@ -29,7 +30,6 @@ public interface Admin_Inf {
 	public  boolean Delete_Bus (String delete_id);
 	public  List<User_Master> Driver();
 	public  boolean setSchedule (Set_Schedule[] set);
-	public  boolean setBus(Map<String,List<String>> upd);
 	public List<Destination_Master> getDes();
 	public String desUpdate(Destination des_id);
 	public Boolean desDelete(String des);
@@ -39,4 +39,8 @@ public interface Admin_Inf {
 	public Boolean addBatch(BatchUpdate bat);
 	public Boolean addDestin(String des_name);
 	public void autoUpdateBatchData();
+	public  boolean setBus(Map<String,List<String>> upd,String date,String dest);
+	//public  boolean setBus(Map<String,List<String>> upd,String date,String dest);
+	public List<Map<String,Object>> detailSchedule(String date_of_travel,String Destination_id);
+
 }

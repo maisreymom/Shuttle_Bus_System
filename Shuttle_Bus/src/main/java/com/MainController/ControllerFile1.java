@@ -33,8 +33,12 @@ import com.EntityClasses.Passenger;
 import com.EntityClasses.Role_Master;
 import com.EntityClasses.Schedule_Table;
 import com.EntityClasses.User_Master;
+
 import com.ModelClasses.BatchUpdate;
 import com.ModelClasses.Destination;
+
+import com.ModelClasses.Date_Dest;
+
 import com.ModelClasses.Model_User;
 import com.ModelClasses.Report_Date;
 import com.ModelClasses.Set_Schedule;
@@ -58,43 +62,6 @@ public class ControllerFile1{
 		
 	}
 
-	@RequestMapping(value="/schedule",method = RequestMethod.GET)
-		public @ResponseBody List<Map<String,Object>> bookingPage(){
-			
-			List<List<Passenger>> destlist = new ArrayList<List<Passenger>>();
-			Admin_Inf dest = new Admin_Imp();
-			destlist = dest.Schedule();
-			
-			List<Map<String,Object>> schedule=new ArrayList<Map<String,Object>>();  
-			
-			for(int i=0;i<destlist.size();i++){
-				
-				Map <String,Object> date = new HashMap<String,Object>();
-				List<Map<String,Object>> listDate=new ArrayList<Map<String,Object>>(); 
-				for(int j=0;j<destlist.get(i).size();j++){
-					Map <String,Object> data = new HashMap<String,Object>();
-					data.put("destination",destlist.get(i).get(j).getDestination_id().getDestination_name());
-					data.put("destination_id", destlist.get(i).get(j).getDestination_id().getDestination_id());
-					data.put("role",destlist.get(i).get(j).getUser_id().getRole_id().getRole_name());
-					data.put("batch",destlist.get(i).get(j).getUser_id().getBatch_id().getBatch_number());
-					data.put("full_name",destlist.get(i).get(j).getUser_id().getFullname());
-					data.put("email",destlist.get(i).get(j).getUser_id().getEmail());
-					data.put("phone",destlist.get(i).get(j).getUser_id().getPhone_number());
-					data.put("user_id",destlist.get(i).get(j).getUser_id().getUser_id());
-					listDate.add(data);
-					System.out.println(listDate);
-				}
-				
-				date.put(destlist.get(i).get(0).getDate_of_travel().toString(), listDate);
-				System.out.println(date);
-				
-				schedule.add(date);
-				
-			}
-			return schedule;
-		}
-	
-	
 	@RequestMapping(value="/user",method = RequestMethod.GET)
 	public  @ResponseBody List<Map<String,Object>> User(){
 			
@@ -331,6 +298,19 @@ public class ControllerFile1{
 				
 	}
 	
+
+	@RequestMapping(value="/detail_pass_schedule",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String,Object>> detailPassSchedule(@RequestBody Date_Dest obj){
+				Admin_Imp ad = new Admin_Imp();
+				System.out.println(obj.getDate_of_travel());
+				
+				return ad.detailSchedule(obj.getDate_of_travel(), obj.getDestination_id());
+				
+	}
+	
+	
+
+
 	
 	
 	@RequestMapping(value="/get_destionation",method = RequestMethod.GET)

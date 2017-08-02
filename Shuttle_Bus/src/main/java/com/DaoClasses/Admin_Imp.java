@@ -2,7 +2,11 @@ package com.DaoClasses;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Time;
+
 import java.text.DateFormat;
+
+import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -79,67 +83,6 @@ public class Admin_Imp implements Admin_Inf{
 
 	}
 
-	public List<List<Passenger>> Schedule() {
-		List<List<Passenger>> date = new ArrayList<List<Passenger>>(); 
-        Transaction trns = null;
-        Configuration con=new Configuration();
-        con.configure("hibernate.cfg.xml");
-     	SessionFactory sf=con.buildSessionFactory();
-     	Session session=sf.openSession();
-        
-        try {
-            trns = session.beginTransaction();
-            String hql ="FROM Passenger";
-            Query query =  session.createQuery(hql);
-        
-			List results = session.createCriteria(Passenger.class)
-					
-            	    .setProjection( Projections.projectionList()
-            	       
-            	        .add( Projections.groupProperty("date_of_travel"))
-            	    )
-            	    .list();
-			
-            
-            List<Passenger> list = query.list();
-            
-			
-			
-            for(int i=0;i<results.size();i++){
-            	List<Passenger> dat = new ArrayList<Passenger>(); 
-            	for(int j=0;j<list.size();j++){
-            		if(list.get(j).getDate_of_travel().toString().equals(results.get(i).toString())){
-            			
-            			dat.add(list.get(j));
-            			
-            			
-            		}
-            			
-            		}
-            	
-            	date.add(dat);
-            	}
-           
-            	
-            	/*for(int i=0;i<date.size();i++){
-            		for(int j=0;j<date.get(i).size();j++){
-            			System.out.println(date.get(i).get(j).getDate_of_travel());
-            		}
-            		 
-            }*/
-           
-            
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-           
-        } finally {
-            session.flush();
-            
-        }
-        
-        return date;
-    }
-	
 	public List<User_Master> User() {
 		 List<User_Master> list = new  ArrayList<User_Master> ();
         Transaction trns = null;
@@ -501,7 +444,7 @@ public class Admin_Imp implements Admin_Inf{
 		
 		
 		schedule.setSchedule_id(schedule_id);
-		schedule.setDate_of_travel(Date.valueOf(set[0].getDate_of_travel()));
+		schedule.setDate_of_travel(Date.valueOf(ad.Date(set[0].getDate_of_travel())));
 		schedule.setDestination_id(dm);
 		schedule.setStudent_seats(set[0].getStudent());
 		schedule.setStaff_seats(set[0].getStaff());
@@ -528,8 +471,8 @@ public class Admin_Imp implements Admin_Inf{
 			bps.setBus_per_schedule_id(bps_id);
 			bps.setNumber_of_seats(set[i].getTotal_seats());
 			bps.setUser_id(user);
-			bps.setEst_arrival_time(Time.valueOf(set[i].getEst_arrival()));
-			bps.setEst_departure_time(Time.valueOf(set[i].getEst_departure()));
+			bps.setEst_arrival_time(Time.valueOf(set[i].getEst_arrival()+":00"));
+			bps.setEst_departure_time(Time.valueOf(set[i].getEst_departure()+":00"));
 			
 			
 			id[i]=bps_id;
@@ -550,7 +493,7 @@ public class Admin_Imp implements Admin_Inf{
             session.save(schedule);
         	session.getTransaction().commit();
             
-            return ad.setBus(map)&&ad.setBusReport(id);
+            return ad.setBus(map,ad.Date(set[0].getDate_of_travel()),set[0].getDestination_id())&&ad.setBusReport(id);
         } catch (RuntimeException e) {
             if (trns != null) {
                 trns.rollback();
@@ -562,7 +505,7 @@ public class Admin_Imp implements Admin_Inf{
         }
 	
     }
-	public  boolean setBus(Map<String,List<String>> upd) {
+	public  boolean setBus(Map<String,List<String>> upd,String date,String dest) {
 	 	Transaction trns = null;
 	 	Configuration con=new Configuration();
         con.configure("hibernate.cfg.xml");
@@ -582,7 +525,7 @@ public class Admin_Imp implements Admin_Inf{
 				}
 				
 			}
-			hql = hql + ")";
+			hql = hql + ") and p.date_of_travel='"+date+"' and p.destination_id.destination_id='"+dest+"'";
 			Query query = session.createQuery(hql);
 			//query.setParameter("sn","hjkldfhfhg");
         	 query.executeUpdate();
@@ -650,7 +593,7 @@ public class Admin_Imp implements Admin_Inf{
 	       con.configure("hibernate.cfg.xml");
 	       SessionFactory sf=con.buildSessionFactory();
 	       Session session=sf.openSession();
-	      
+	       Admin_Imp ad = new Admin_Imp();
 	       Criteria criteria = session.createCriteria(Passenger.class);
 	       criteria.setProjection(Projections.projectionList()
 	               .add(Projections.groupProperty("date_of_travel").as("date_of_travel"))
@@ -664,11 +607,17 @@ public class Admin_Imp implements Admin_Inf{
 	       for (Passenger ps : list) {
 	          
 	    	   List<Passenger> pass = new ArrayList<Passenger>();
+	    	   List<Passenger> cus = new ArrayList<Passenger>();
 	    	   
 	    	   String hql = "From Passenger P where P.destination_id.destination_name='"+ps.getDestination_id().getDestination_name()+"'"
-	    			   +" and P.date_of_travel='"+ps.getDate_of_travel()+"'";
+	    			   +" and P.date_of_travel='"+ps.getDate_of_travel()+"' and P.user_id.role_id.role_name!='customer'";
 	    	   Query qpass = session.createQuery(hql);
 	    	   pass = qpass.list();
+	    	   
+	    	   String customer = "From Passenger P where P.destination_id.destination_name='"+ps.getDestination_id().getDestination_name()+"'"
+	    			   +" and P.date_of_travel='"+ps.getDate_of_travel()+"' and P.user_id.role_id.role_name='customer'";
+	    	   Query qcustomer = session.createQuery(customer);
+	    	   cus = qcustomer.list();
 	    	   
 	           String group = "select count(E.user_id.role_id.role_name),  E.user_id.role_id.role_name "
 	           		+"from Passenger E where E.destination_id.destination_name='" + ps.getDestination_id().getDestination_name()
@@ -678,7 +627,20 @@ public class Admin_Imp implements Admin_Inf{
 			       List<Object[]> results = query.list();
 		   Map<String,Object> map = new HashMap<String,Object>();
 	       map.put("destination", ps.getDestination_id().getDestination_name());
+	       map.put("destination_id", ps.getDestination_id().getDestination_id());
 	       map.put("date", ps.getDate_of_travel());
+	       //map.put("schedule", );
+	       map.put("status",ad.dataSchedule(ps.getDate_of_travel().toString(),ps.getDestination_id().getDestination_id()));
+	    	   /*Schedule_Table sh =  new Schedule_Table();
+	    	   sh = ad.dataSchedule(ps.getDate_of_travel().toString(),ps.getDestination_id().getDestination_id());
+	    	   Map<String,Object> schedule_map = new HashMap<String,Object>();
+	    	   schedule_map.put("schedule_id",sh.getSchedule_id());
+	    	   schedule_map.put("total_seats",sh.getTotal_available_seats());
+	    	   schedule_map.put("staff",sh.getStaff_seats());
+	    	   schedule_map.put("customer",sh.getCustomer_seats());
+	    	   schedule_map.put("student",sh.getStudent_seats());
+	    	   schedule_map.put("remaining",sh.getRemaining_seats());*/
+	    	
 	       for(Object[] sh: results){
 	    	   map.put(sh[1].toString(), sh[0].toString());
 	    	   
@@ -697,7 +659,21 @@ public class Admin_Imp implements Admin_Inf{
 	    	   list_pass.add(map_pass);
 	    	   
 	       }
+	       List<Map<String,Object>> list_cus = new ArrayList<Map<String,Object>>();
+	       for(Passenger ob_pass:cus){
+	    	   Map<String,Object> map_pass = new HashMap<String,Object>();
+	    	   map_pass.put("name", ob_pass.getUser_id().getFullname());
+	    	   map_pass.put("batch", ob_pass.getUser_id().getBatch_id().getBatch_number());
+	    	   map_pass.put("role", ob_pass.getUser_id().getRole_id().getRole_name());
+	    	   map_pass.put("email", ob_pass.getUser_id().getEmail());
+	    	   map_pass.put("phone", ob_pass.getUser_id().getPhone_number());
+	    	   map_pass.put("user_id", ob_pass.getUser_id().getUser_id());
+	    	   
+	    	   list_cus.add(map_pass);
+	    	   
+	       }
 	       map.put("list", list_pass);
+	       map.put("list_cus", list_cus);
 	       data.add(map);
 	       
 	       }
@@ -717,6 +693,7 @@ public class Admin_Imp implements Admin_Inf{
 	
 	
 	
+
 	public List<Destination_Master> getDes() {
 		   List<Destination_Master> list = new  ArrayList<Destination_Master> ();
 	       Transaction trns = null;
@@ -1004,13 +981,15 @@ public class Admin_Imp implements Admin_Inf{
 	   }
 
 
+
 	public static void main(String arg[]){
 		 Transaction trns = null;
 	       Configuration con=new Configuration();
 	       con.configure("hibernate.cfg.xml");
 	       SessionFactory sf=con.buildSessionFactory();
 	       Session session=sf.openSession();
-	       Criteria criteria = session.createCriteria(Passenger.class);
+	       Admin_Imp add = new Admin_Imp();
+	       /*Criteria criteria = session.createCriteria(Passenger.class);
 	       criteria.setProjection(Projections.projectionList()
 	               .add(Projections.groupProperty("date_of_travel").as("date_of_travel"))
 	               .add(Projections.groupProperty("destination_id").as("destination_id"))
@@ -1057,7 +1036,12 @@ public class Admin_Imp implements Admin_Inf{
 	       map.put("list", list_pass);
 	       data.add(map);
 	       
-	       }
+	       }*/
+	       
+    	   System.out.println(add.dataSchedule("2017-05-1","756fh4hfyo"));
+	       
+	    
+	      
 	       
 	       try {
 	           trns = session.beginTransaction();
@@ -1080,7 +1064,86 @@ public class Admin_Imp implements Admin_Inf{
 	       
 		  
 		}
-	
+
+	public String Date(String date_convert){
+		SimpleDateFormat format1 = new SimpleDateFormat("MMM d, y");
+	       SimpleDateFormat format2 = new SimpleDateFormat("y-MM-dd");
+	       java.util.Date date;
+	       String format = "";
+			try {
+				date =  format1.parse(date_convert);
+				format = format2.format(date);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		return format;
+	}
+	public boolean dataSchedule(String date_of_travel,String Destination_id){
+	   Transaction trns = null;
+       Configuration con=new Configuration();
+       con.configure("hibernate.cfg.xml");
+       SessionFactory sf=con.buildSessionFactory();
+       Session session=sf.openSession();
+		
+	   boolean status =false;
+	   String hql = "From Schedule_Table S where S.date_of_travel='"+date_of_travel+"' and S.destination_id.destination_id='"+Destination_id+"'";
+ 	   Query qpass = session.createQuery(hql);
+ 	   List<Schedule_Table> ll= qpass.list();
+ 	   
+ 	   if(ll.size()>0){
+ 		  status = true;
+ 	   }
+	  
+	 return status;
+	}
+	public List<Map<String,Object>> detailSchedule(String date_of_travel,String Destination_id){
+		   Transaction trns = null;
+	       Configuration con=new Configuration();
+	       con.configure("hibernate.cfg.xml");
+	       SessionFactory sf=con.buildSessionFactory();
+	       Session session=sf.openSession();
+		   Admin_Imp ad = new Admin_Imp();
+		   
+	       List<Map<String,Object>> data = new ArrayList<Map<String,Object>>();
+		   String hql = "From Schedule_Table S where S.date_of_travel='"+ad.Date(date_of_travel)+"' and S.destination_id.destination_id='"+Destination_id+"'";
+	 	   Query qpass = session.createQuery(hql);
+	 	   List<Schedule_Table> ll= qpass.list();
+	 	   
+	 	   if(ll.size()>0){
+	 		   for(Bus_Per_Schedule bps:ll.get(0).getBus_per_schedule()){
+	 			  Map<String,Object> pass_map = new HashMap<String,Object>();
+	 			  List<Map<String,Object>> detail_list = new ArrayList<Map<String,Object>>();
+	 			  pass_map.put("bus", bps.getBus_id().getBus_model());
+	 			  pass_map.put("driver", bps.getUser_id().getFullname());
+	 			  pass_map.put("total_seats", bps.getNumber_of_seats());
+	 			  pass_map.put("departure", bps.getEst_departure_time());
+	 			  pass_map.put("arrivel", bps.getEst_arrival_time());
+	 			  pass_map.put("departure", bps.getEst_departure_time());
+	 			  for(Passenger ps: bps.getPassenger()){
+	 				 Map<String,Object> detail_map = new HashMap<String,Object>();
+	 				 detail_map.put("name", ps.getUser_id().getFullname());
+	 				 detail_map.put("batch", ps.getUser_id().getBatch_id().getBatch_number());
+	 				 detail_map.put("role", ps.getUser_id().getRole_id().getRole_name());
+	 				 detail_map.put("email", ps.getUser_id().getEmail());
+	 				 detail_map.put("phone", ps.getUser_id().getPhone_number());
+	 				 detail_map.put("user_id", ps.getUser_id().getUser_id());
+	 				 detail_list.add(detail_map);
+	 			  }
+	 			  pass_map.put("detail", detail_list);
+	 			  data.add(pass_map);
+	 			  
+	 		   }
+	 		   
+		 	
+		 	   
+	 	   }
+	 	   
+		  
+		 return data;
+		}
+
 	private String Key(int mount){
 		 SecureRandom random = new SecureRandom();
 		    String key;

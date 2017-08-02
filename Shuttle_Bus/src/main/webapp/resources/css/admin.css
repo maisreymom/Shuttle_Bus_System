@@ -221,4 +221,19 @@ input[type="text"]:disabled, input[type="text"]{
 	height: 250px!important;
 	width: 450px;
 }
+
+
+#toast-container {
+  top: auto !important;
+  right: auto !important;
+  bottom: 10%;
+  left:7%;  
+}
+.toast{
+	background-color: white;
+	color: #E91E63;
+}
+.jconfirm .jconfirm-box{
+	width: 330px;
+
 }
