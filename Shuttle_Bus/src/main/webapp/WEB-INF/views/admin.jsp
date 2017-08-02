@@ -11,10 +11,13 @@
 
 
 	<!-- Compiled and minified JavaScript -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.js"></script>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.2.3/jquery-confirm.min.css">
   <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
   <script src="https://unpkg.com/flatpickr"></script>
 
@@ -113,9 +116,9 @@
 
   	<div id="modal2" class="modal modal-fixed-footer modal_schedule">
     <div class="modal-content wrap_modal">
-    <div class="">
-    	<div class="col s6"> <h6><b>Date:</b> <span>Fri, 12/june/2017</span></h6></div>
-    	<div class="col s6"><h6><b>Destination: </b><span class="modal_destination">Kirirom to Phnom Penh</span></h6></div>
+ 
+    	<div class="col s6"> <h6><b>Date:</b> <span id="date_title">Fri, 12/june/2017</span></h6></div>
+    	<div class="col s6"><h6><b>Destination: </b><span class="modal_destination" id="destination_title">Kirirom to Phnom Penh</span></h6></div>
 
     	
           <div class="col s3">Total Seats: <span id="remaining_seats"></span> </div>
@@ -130,7 +133,7 @@
               <th>Total Seats</th>
               <th>Departure</th>
               <th>Arrival</th>
-             
+              <th>Customer Only</th>
               <th></th>
               
           </tr>
@@ -147,15 +150,76 @@
     
 
 
-    </div>
 
 
 
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id="set_schedule">Set</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id="cancel_schedule">Cancel</a>
+      <a href="#!" class="modal-action waves-effect waves-green btn-flat" id="set_schedule">Set</a>
     </div>
   </div>
+
+  <div id="view_schedule" class="modal modal-fixed-footer modal_schedule">
+    <div class="modal-content">
+      <div class="col s6"> <h6><b>Date:</b> <span id="date_title">Fri, 12/june/2017</span></h6></div>
+      <div class="col s6"><h6><b>Destination: </b><span class="modal_destination" id="destination_title">Kirirom to Phnom Penh</span></h6></div>
+
+      <table>
+        <thead>
+          <tr>
+              <th>Bus</th>
+              <th>Driver</th>
+              <th>Remaining</th>
+              <th>Total Seats</th>
+              <th>Departure</th>
+              <th>Arrival</th>
+              <th>Customer Only</th>
+              <th>Detail</th>
+          </tr>
+        </thead>
+
+        <tbody id="view_pass">
+
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+    </div>
+
+
+      <div id="detail_c_pass" class="modal modal-fixed-footer modal_schedule">
+    <div class="modal-content wrap_modal">
+ 
+      <div class="col s6"> <h6><b>Date:</b> <span id="date_title">Fri, 12/june/2017</span></h6></div>
+      <div class="col s6"><h6><b>Destination: </b><span class="modal_destination" id="destination_title">Kirirom to Phnom Penh</span></h6></div>
+      <table>
+          <tr>
+              <th>Name</th>
+              <th>Batch</th>
+              <th>Role</th>
+              <th>Email</th>
+              <th>Phone</th>
+          </tr>
+        </thead>
+        </thead>
+
+        <tbody id="view_c_pass">
+        
+
+        </tbody>
+      </table>
+
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id="cancel_schedule">Cancel</a>
+      
+    </div>
+  </div>
+
+
 
   </div>
 
@@ -276,6 +340,7 @@
               <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat edit_bus_btn">EDIT</a>
             </div>
           </div>
+          
       </div>
 
       <div class="col s12">

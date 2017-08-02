@@ -7,8 +7,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 public class Batch_Master {
-	private String Batch_id;
-	private int Batch_number;
+	private String batch_id;
+	private int batch_number;
 
 	@Temporal(TemporalType.DATE)
 	private Date date_of_returning;
@@ -29,18 +29,17 @@ public class Batch_Master {
 		this.user_master = user_master;
 	}
 	public String getBatch_id() {
-		return Batch_id;
+		return batch_id;
 	}
 	public void setBatch_id(String batch_id) {
-		Batch_id = batch_id;
+		this.batch_id = batch_id;
 	}
 	public int getBatch_number() {
-		return Batch_number;
+		return batch_number;
 	}
 	public void setBatch_number(int batch_number) {
-		Batch_number = batch_number;
+		this.batch_number = batch_number;
 	}
-	
 	public Date getDate_of_returning() {
 		return date_of_returning;
 	}
@@ -66,6 +65,4 @@ public class Batch_Master {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	
-	
 }
