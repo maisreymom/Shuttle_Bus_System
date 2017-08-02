@@ -7,9 +7,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 public class Batch_Master {
-	private String Batch_id;
+	private String batch_id;
 	private int Batch_number;
-
 	@Temporal(TemporalType.DATE)
 	private Date date_of_returning;
 	
@@ -19,7 +18,21 @@ public class Batch_Master {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deadline_of_booking;
 	
-	private boolean status;
+	private String status;
+	
+	
+	public String getBatch_id() {
+		return batch_id;
+	}
+	public void setBatch_id(String batch_id) {
+		this.batch_id = batch_id;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	private Set<User_Master> user_master;
 
 	public Set<User_Master> getUser_master() {
@@ -28,12 +41,7 @@ public class Batch_Master {
 	public void setUser_master(Set<User_Master> user_master) {
 		this.user_master = user_master;
 	}
-	public String getBatch_id() {
-		return Batch_id;
-	}
-	public void setBatch_id(String batch_id) {
-		Batch_id = batch_id;
-	}
+
 	public int getBatch_number() {
 		return Batch_number;
 	}
@@ -60,12 +68,7 @@ public class Batch_Master {
 	public void setDeadline_of_booking(Date deadline_of_booking) {
 		this.deadline_of_booking = deadline_of_booking;
 	}
-	public boolean isStatus() {
-		return status;
-	}
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+
 	
 	
 }

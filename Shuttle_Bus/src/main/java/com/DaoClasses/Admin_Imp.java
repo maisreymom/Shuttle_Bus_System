@@ -2,12 +2,13 @@ package com.DaoClasses;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,6 +31,7 @@ import org.hibernate.criterion.Projections;
 
 
 import org.hibernate.transform.Transformers;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import com.EntityClasses.Batch_Master;
 import com.EntityClasses.Bus_Master;
@@ -40,13 +42,42 @@ import com.EntityClasses.Passenger;
 import com.EntityClasses.Role_Master;
 import com.EntityClasses.Schedule_Table;
 import com.EntityClasses.User_Master;
+import com.HibernateUtil.HibernateUtil;
 import com.ModelClasses.Add_Bus;
+import com.ModelClasses.BatchUpdate;
+import com.ModelClasses.Destination;
 import com.ModelClasses.Model_User;
 import com.ModelClasses.Set_Schedule;
 import com.ModelClasses.Shuttle;
 import com.mysql.fabric.xmlrpc.base.Data;
 
 public class Admin_Imp implements Admin_Inf{
+	
+	
+	
+	public String dateFormate(java.util.Date date){
+		Calendar cal = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    System.out.println(sdf.format(cal.getTime())); 
+	    String today=sdf.format(cal.getTime());
+		return today;
+		
+	}
+	
+	public String nowDate() {
+	    Calendar cal = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    String today=sdf.format(cal.getTime());
+	    return today;
+
+	}
+	public static String nowDateTime() {
+	    Calendar cal = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    String today=sdf.format(cal.getTime());
+	    return today;
+
+	}
 
 	public List<List<Passenger>> Schedule() {
 		List<List<Passenger>> date = new ArrayList<List<Passenger>>(); 
@@ -220,15 +251,11 @@ public class Admin_Imp implements Admin_Inf{
 	        add.setNo_of_seat(add_bus.getTotal_seats());
 	        add.setBus_image("http://helloworld.jpg");
 	        
-			
-			
 		    Configuration con=new Configuration();
 	        con.configure("hibernate.cfg.xml");
 	     	SessionFactory sf=con.buildSessionFactory();
 	     	Session session=sf.openSession();
 	        try {
-	        	
-	        	
 	            trns = session.beginTransaction();
 	            session.save(add);
 	            session.getTransaction().commit();
@@ -689,6 +716,294 @@ public class Admin_Imp implements Admin_Inf{
 	}
 	
 	
+	
+	public List<Destination_Master> getDes() {
+		   List<Destination_Master> list = new  ArrayList<Destination_Master> ();
+	       Transaction trns = null;
+	       Configuration con=new Configuration();
+	       con.configure("hibernate.cfg.xml");
+	       SessionFactory sf=con.buildSessionFactory();
+	       Session session=sf.openSession();
+	       String sta="true";
+	       try {
+	           trns = session.beginTransaction();
+	           String hql ="FROM Destination_Master WHERE status=:st";
+	           Query query =  session.createQuery(hql);
+	           query.setString("st", sta);
+	           list = query.list();
+	           
+	       } catch (RuntimeException e) {
+	           e.printStackTrace();
+	          
+	       } finally {
+	           session.flush();
+	           session.close();
+	       }
+	       
+	       return list;
+	   }
+	
+	public Boolean addDestin(String des_name) {
+		Transaction trns = null;
+        Destination_Master add = new Destination_Master();
+        Admin_Imp ad = new Admin_Imp();
+        String status="true";
+		String key = ad.Key(15);
+        add.setDestination_id(key);
+        add.setDestination_name(des_name);
+        add.setStatus(status);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            session.save(add);
+            session.getTransaction().commit();
+            return true;
+        } catch (RuntimeException e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+           
+            session.close();
+        }
+	   }
+	
+	public String desUpdate(Destination des) {
+	       Transaction trns = null;
+	       Configuration con=new Configuration();
+	       con.configure("hibernate.cfg.xml");
+	       SessionFactory sf=con.buildSessionFactory();
+	       Session session=sf.openSession();
+	       System.out.println(des.getDes_update());
+	       try {
+	           trns = session.beginTransaction();
+	           String hql = "UPDATE Destination_Master set destination_name = :name "  + 
+	                   "WHERE destination_id = :id";
+		      Query query = session.createQuery(hql);
+		      query.setString("id", des.getDes_id());
+		      query.setString("name", des.getDes_update());
+		      int result = query.executeUpdate();
+		      session.getTransaction().commit();
+	 
+	       } catch (RuntimeException e) {
+	           e.printStackTrace();
+	          
+	       } finally {
+	           session.flush();
+	           session.close();
+	       }
+	       
+	       return null;
+	   }
+	
+	public Boolean desDelete(String des) {
+			Boolean ret=true;
+	       Transaction trns = null;
+	       Configuration con=new Configuration();
+	       con.configure("hibernate.cfg.xml");
+	       SessionFactory sf=con.buildSessionFactory();
+	       Session session=sf.openSession();
+	       try {
+	    	     String fal="false";
+	     		 trns = session.beginTransaction();
+		           String hql = "UPDATE Destination_Master set status = :st "  + 
+		                   "WHERE destination_id = :id";
+			      Query query = session.createQuery(hql);
+			      query.setString("id", des);
+			      query.setString("st", fal);
+			      int result = query.executeUpdate();
+			      session.getTransaction().commit();
+			      System.out.println(result);
+	 
+	       } catch (RuntimeException e) {
+	           e.printStackTrace();
+	           ret=false;
+	          
+	       } finally {
+	           session.flush();
+	           session.close();
+	       }
+		return ret;  
+	   }
+	
+	public List<Batch_Master> get_batch() {
+		   List<Batch_Master> list = new  ArrayList<Batch_Master> ();
+	       Transaction trns = null;
+	       Configuration con=new Configuration();
+	       con.configure("hibernate.cfg.xml");
+	       SessionFactory sf=con.buildSessionFactory();
+	       Session session=sf.openSession();
+	       String sta="true";
+	       try {
+	           trns = session.beginTransaction();
+	           String hql ="FROM Batch_Master WHERE status=:st order by batch_number asc";
+	           Query query =  session.createQuery(hql);
+	           query.setString("st", sta);
+	           list = query.list();
+	           
+	       } catch (RuntimeException e) {
+	           e.printStackTrace();
+	          
+	       } finally {
+	           session.flush();
+	           session.close();
+	       }
+	       
+	       return list;
+	   }
+	
+	public Boolean batUpdate(BatchUpdate bat) {
+		   Boolean ret=true;
+	       Transaction trns = null;
+	       Session session = HibernateUtil.getSessionFactory().openSession();
+	       System.out.println();
+	       try {
+	    	   trns = session.beginTransaction();
+	    	   String hql = "UPDATE Batch_Master set date_of_leaving = :leave, "  + 
+		        		  "date_of_returning= :return, "+
+		        		   "deadline_of_booking= :deadline "+
+		        		   "WHERE batch_id = :id";
+	      Query query = session.createQuery(hql);
+	      query.setString("id", bat.getBatch_id());
+	      query.setDate("leave", java.sql.Date.valueOf(bat.getDate_of_leaving()));
+	      query.setDate("return", java.sql.Date.valueOf(bat.getDate_of_returning()));
+	      query.setTimestamp("deadline", java.sql.Timestamp.valueOf(bat.getDeadline_of_booking()));
+	      int result = query.executeUpdate();
+	      session.getTransaction().commit();
+	      System.out.println(result);
+	 
+	       } catch (RuntimeException e) {
+	           e.printStackTrace();
+	           ret= false;
+	          
+	       } finally {
+	           session.flush();
+	           session.close();
+	       }
+	       
+	       return ret;
+	   }
+	
+	public Boolean addBatch(BatchUpdate bat) {
+		Transaction trns = null;
+        Batch_Master add = new Batch_Master();
+        Admin_Imp ad = new Admin_Imp();
+        String status="true";
+		String key = ad.Key(15);
+        add.setBatch_id(key);
+        add.setBatch_number(bat.getBatch_number());
+        add.setDate_of_leaving(java.sql.Date.valueOf(bat.getDate_of_leaving()));
+        add.setDate_of_returning(java.sql.Date.valueOf(bat.getDate_of_returning()));
+        add.setDeadline_of_booking(java.sql.Timestamp.valueOf(bat.getDeadline_of_booking()));
+        add.setStatus(status);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            session.save(add);
+            session.getTransaction().commit();
+            return true;
+        } catch (RuntimeException e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+           
+            session.close();
+        }
+	   }
+	
+	public Boolean deleteBatch(String des) {
+	   Boolean ret=true;
+       Transaction trns = null;
+       Configuration con=new Configuration();
+       con.configure("hibernate.cfg.xml");
+       SessionFactory sf=con.buildSessionFactory();
+       Session session=sf.openSession();
+       try {
+    	     String fal="false";
+     		 trns = session.beginTransaction();
+	           String hql = "UPDATE Batch_Master set status = :st "  + 
+	                   "WHERE batch_id = :id";
+		      Query query = session.createQuery(hql);
+		      query.setString("id", des);
+		      query.setString("st", fal);
+		      int result = query.executeUpdate();
+		      session.getTransaction().commit();
+		      System.out.println(result);
+ 
+       } catch (RuntimeException e) {
+           e.printStackTrace();
+           ret=false;
+          
+       } finally {
+           session.flush();
+           session.close();
+       }
+	return ret;  
+   }
+	
+	public void autoUpdateBatchData() {
+	       Transaction trns = null;
+	       Admin_Imp adm=new Admin_Imp();
+	       Session session = HibernateUtil.getSessionFactory().openSession();
+	       try {
+	    	   Query q = session.createQuery("from Batch_Master");
+	    	   System.out.println(q.list().size());
+	    	   for(int i=0;i<q.list().size();i++){
+	    		   trns = session.beginTransaction();
+	    		   Batch_Master bat = (Batch_Master)q.list().get(i);
+		    	   //String lea_date=adm.plusSevenDate(bat.getDate_of_leaving());
+		    	   System.out.println(bat.getDate_of_returning());
+		    	   System.out.println(java.sql.Date.valueOf(adm.nowDate()));
+		    	   System.out.println(bat.getDate_of_leaving());
+		    	   System.out.println(bat.getDate_of_returning());
+		    	   System.out.println(bat.getDeadline_of_booking());
+		    	   
+		    	   if(java.sql.Date.valueOf(adm.nowDate()).after(bat.getDate_of_returning())){
+		    		     Calendar c1 = Calendar.getInstance(); 
+			      	     c1.setTime(bat.getDate_of_leaving()); 
+			      	     c1.add(Calendar.DATE, 7);
+			      	     String lea_date=c1.get(Calendar.YEAR) + "-" + (c1.get(Calendar.MONTH) + 1) + "-" + c1.get(Calendar.DATE);
+				      	 
+				      	 
+				      	 Calendar c2 = Calendar.getInstance();
+			    	     c2.setTime(bat.getDate_of_returning()); 
+			    	     c2.add(Calendar.DATE, 7);
+			    	     String ret_date=c2.get(Calendar.YEAR) + "-" + (c2.get(Calendar.MONTH) + 1) + "-" + c2.get(Calendar.DATE);
+			    	     
+			    	     
+			    	     Calendar c3 = Calendar.getInstance();
+			    	     c3.setTime(bat.getDeadline_of_booking()); 
+			    	     c3.add(Calendar.DATE, 7);
+			    	     String deadline=c3.get(Calendar.YEAR) + "-" + (c3.get(Calendar.MONTH) + 1) + "-" + c3.get(Calendar.DATE);
+			    	     
+			    	     System.out.println(bat.getDate_of_leaving());
+			    	     System.out.println(bat.getDate_of_returning());
+			    	     System.out.println(bat.getDeadline_of_booking());
+			    	     
+			    	     bat.setDate_of_leaving(java.sql.Date.valueOf(lea_date));
+			    	     bat.setDeadline_of_booking(java.sql.Date.valueOf(deadline));
+			    	     bat.setDate_of_returning(java.sql.Date.valueOf(ret_date));
+		    	   }
+		    	   
+		    	   session.update(bat);
+		    	   session.getTransaction().commit();
+	    	   }
+	    	  
+	       } catch (RuntimeException e) {
+	           e.printStackTrace();
+	          
+	       } finally {
+	           session.flush();
+	           session.close();
+	       }
+	   }
+
+
 	public static void main(String arg[]){
 		 Transaction trns = null;
 	       Configuration con=new Configuration();
@@ -765,6 +1080,7 @@ public class Admin_Imp implements Admin_Inf{
 	       
 		  
 		}
+	
 	private String Key(int mount){
 		 SecureRandom random = new SecureRandom();
 		    String key;

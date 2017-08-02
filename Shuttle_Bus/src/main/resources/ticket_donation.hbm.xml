@@ -6,24 +6,23 @@
  	 	
  	   <id name= "id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="increment" />
         </id>
-        
+        <property name="no_of_ticket" type="java.lang.Integer">
+            <column name="no_of_ticket" not-null="true" />
+        </property>
+        <property name="created_at" type="date">
+            <column name="created_at" not-null="true" />
+        </property>
       
-         <many-to-one name="user_id" class="com.EntityClasses.User_Master" fetch="select">
-            <column name="user_id" not-null="true" />
+      
+         <many-to-one name="donate_to" class="com.EntityClasses.User_Master" fetch="select">
+            <column name="donate_to" not-null="true" />
         </many-to-one>
         
-         
-       
-        <property name="donate_to" type="string">
-            <column name="donate_to" not-null="true" />
-        </property>
-        <property name="receive_from" type="string">
+         <many-to-one name="receive_from" class="com.EntityClasses.User_Master" fetch="select">
             <column name="receive_from" not-null="true" />
-        </property>
-        
-       
+        </many-to-one>
         
  	</class>
 </hibernate-mapping>

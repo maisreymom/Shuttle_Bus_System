@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,8 @@ import com.EntityClasses.Passenger;
 import com.EntityClasses.Role_Master;
 import com.EntityClasses.Schedule_Table;
 import com.EntityClasses.User_Master;
+import com.ModelClasses.BatchUpdate;
+import com.ModelClasses.Destination;
 import com.ModelClasses.Model_User;
 import com.ModelClasses.Report_Date;
 import com.ModelClasses.Set_Schedule;
@@ -328,17 +331,100 @@ public class ControllerFile1{
 				
 	}
 	
+	
+	
+	@RequestMapping(value="/get_destionation",method = RequestMethod.GET)
+	public @ResponseBody List<Map<String,Object>> getDestination(){
+		List<Destination_Master> bus = new ArrayList<Destination_Master>();
+		Admin_Inf admin = new Admin_Imp();
+		bus = admin.getDes();
+		List<Map<String,Object>> desList = new ArrayList<Map<String,Object>>();
+		for(int i=0;i<bus.size();i++){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("destination_name", bus.get(i).getDestination_name());
+			map.put("destination_id", bus.get(i).getDestination_id());
+			desList.add(map);
+			
+		}
+		return desList;
+	}
+	@RequestMapping(value="/add_destination",method = RequestMethod.POST)
+	public @ResponseBody Boolean addDestination(@RequestBody String new_des){
+		System.out.println(new_des);
+		Admin_Inf admin = new Admin_Imp();
+		Boolean ret=admin.addDestin(new_des);
+		return ret;
+	}
+	
+	@RequestMapping(value="/update_destination",method = RequestMethod.POST)
+	public @ResponseBody String updateDes(@RequestBody Destination des){
+		String desUpdate;
+		System.out.println(des);
+		Admin_Inf admin = new Admin_Imp();
+		admin.desUpdate(des);
+		return null;
+	}
+	
+	@RequestMapping(value="/delete_destination",method = RequestMethod.POST)
+	public @ResponseBody Boolean deleteDes(@RequestBody String des){
+		Boolean ret;
+		System.out.println(des);
+		Admin_Inf admin = new Admin_Imp();
+		ret=admin.desDelete(des);
+		return ret;
+	}
+	
+	@RequestMapping(value="/get_batch",method = RequestMethod.GET)
+	public @ResponseBody List<Map<String,Object>> getBatch(){
+		List<Batch_Master> batch = new ArrayList<Batch_Master>();
+		Admin_Inf admin = new Admin_Imp();
+		batch = admin.get_batch();
+		List<Map<String,Object>> desList = new ArrayList<Map<String,Object>>();
+		for(int i=0;i<batch.size();i++){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("batch_id", batch.get(i).getBatch_id());
+			map.put("batch_number", batch.get(i).getBatch_number());
+			map.put("date_of_leaving", batch.get(i).getDate_of_leaving());
+			map.put("date_of_returning", batch.get(i).getDate_of_returning());
+			map.put("deadline_of_booking", batch.get(i).getDeadline_of_booking());
+			map.put("status", batch.get(i).getStatus());
+			desList.add(map);	
+		}
+		System.out.println(desList);
+		System.out.println(desList);
+		return desList;
+	}
+	
+	@RequestMapping(value="/update_batch",method = RequestMethod.POST)
+	public @ResponseBody Boolean updateBatch(@RequestBody BatchUpdate bat){
+		System.out.println(bat.getBatch_id());
+		Admin_Inf admin = new Admin_Imp();
+		Boolean ret=admin.batUpdate(bat);
+		return ret;
+	}
+	@RequestMapping(value="/delete_batch",method = RequestMethod.POST)
+	public @ResponseBody Boolean delete_batch(@RequestBody String bat){
+		Boolean ret;
+		Admin_Inf admin = new Admin_Imp();
+		ret=admin.deleteBatch(bat);
+		return ret;
+	}
+	@RequestMapping(value="/add_batch",method = RequestMethod.POST)
+	public @ResponseBody Boolean addBatch(@RequestBody BatchUpdate bat){
+		Admin_Inf admin = new Admin_Imp();
+		Boolean ret=admin.addBatch(bat);
+		return ret;
+	}
+	
+	@Scheduled(cron="0 0 0 * * *")
+    public void updateEmployeeInventory(){
+        System.out.println("Started cron job");
+        Admin_Inf admin = new Admin_Imp();
+		admin.autoUpdateBatchData();
+    }
 }
 	
 
-
-
-
-
-	
-
-	
-	
 
 
 

@@ -57,7 +57,7 @@ public class Teacher_Implement{
 		Session session = HibernateUtil.getSessionFactory().openSession();
      	try {
             trns = session.beginTransaction();
-            String hql ="FROM Destination_Master";
+            String hql ="FROM Destination_Master WHERE status='true'";
             Query query =  session.createQuery(hql);
             dest = query.list();
         } catch (RuntimeException e) {
@@ -74,13 +74,13 @@ public class Teacher_Implement{
 		List<Schedule_Table> sche = new ArrayList<Schedule_Table>();
 		Transaction trns = null;
 		LocalDate date = LocalDate.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-		String today= formatter.format(date).toString();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY/MM/dd");
+		String today= formatter.format(date);
         Session session = HibernateUtil.getSessionFactory().openSession();
      	try {
             trns = session.beginTransaction();
             Criteria c = session.createCriteria(Schedule_Table.class, "sch");
-            c.add(Restrictions.ge("sch.date_of_travel", today));
+            c.add(Restrictions.ge("sch.date_of_travel", new Date()));
             c.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
             sche=c.list();
         }catch (RuntimeException e){
@@ -105,43 +105,25 @@ public class Teacher_Implement{
             e.printStackTrace();
             return bus;
         } finally {
-           // session.flush();
-            //session.close();
+           session.flush();
+           session.close();
         }
         return bus;
 	}
 	
 	
 	public Boolean BookService(Teacher[] passen){
-		Boolean confirm=false;
+		System.out.println(passen[0].getDestination_id());
+		Boolean confirm=null;
 		Transaction trns = null;
-		 Date now = new Date();
         User_Master user=new User_Master("t4jrtfh385");   
         Destination_Master destTo=new Destination_Master(passen[0].getDestination_id());
-        System.out.println("TeacherImp"+passen.length);
-        Destination_Master destBack = null;
-        Passenger passengerBack = null;
-       
         Passenger passengerTo = new Passenger();
-        	System.out.println(passen[0].getDate_of_travel());
         	passengerTo.setDate_of_booking(new Date());
         	passengerTo.setUser_id(user);
         	passengerTo.setDestination_id(destTo);
-        	passengerTo.setDate_of_travel(java.sql.Date.valueOf(passen[0].getDate_of_travel()));
-        Set<Passenger> ps = new HashSet<Passenger>(); 
-       if(passen.length==1){
-    	    ps.add(passengerTo);
-        }
-       else{
-    	   destBack=new Destination_Master(passen[1].getDestination_id());
-           passengerBack = new Passenger();
-           passengerTo.setDate_of_booking(new Date());
-       	   passengerTo.setUser_id(user);
-       	   passengerTo.setDestination_id(destTo);
-       	   passengerTo.setDate_of_travel(java.sql.Date.valueOf(passen[0].getDate_of_travel()));
-           ps.add(passengerTo);
-   	       ps.add(passengerBack);
-       }
+        	passengerTo.setDate_of_travel(java.sql.Date.valueOf(passen[0].getDate_of_travel().toString().trim()));
+            Set<Passenger> ps = new HashSet<Passenger>(); 
 	    user.setPassenger(ps);
 	    destTo.setPassenger(ps);
 	    Configuration con=new Configuration();
@@ -150,13 +132,26 @@ public class Teacher_Implement{
      	Session session=sf.openSession();
         try {
             trns = session.beginTransaction();
-            session.save(passengerTo);
             if(passen.length==2){
+            	Destination_Master destBack=new Destination_Master(passen[1].getDestination_id());
+                Passenger passengerBack = new Passenger();
+                passengerBack.setDate_of_booking(new Date());
+                passengerBack.setUser_id(user);
+                passengerBack.setDestination_id(destBack);
+                passengerBack.setDate_of_travel(java.sql.Date.valueOf(passen[1].getDate_of_travel().toString().trim()));
+                ps.add(passengerTo);
+        	    ps.add(passengerBack);
             	destBack.setPassenger(ps);
+            	session.save(passengerTo);
             	session.save(passengerBack);
+            }else{
+            	ps.add(passengerTo);
+            	session.save(passengerTo);
             }
             session.getTransaction().commit();
+            confirm=true;
         } catch (RuntimeException e) {
+        	confirm=false;
             if (trns != null) {
                 trns.rollback();
             }
@@ -208,8 +203,8 @@ public class Teacher_Implement{
             e.printStackTrace();
             return bus;
         } finally {
-           // session.flush();
-            //session.close();
+            session.flush();
+            session.close();
         }
         return bus;
 	}
@@ -266,14 +261,20 @@ public class Teacher_Implement{
         }      
         return bus_per_id;
 	}
-	public static String now(String dateFormat) {
+	public static String nowDate() {
 	    Calendar cal = Calendar.getInstance();
-	    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-	    return sdf.format(cal.getTime());
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    String today=sdf.format(cal.getTime());
+	    return today;
 
 	}
-	
-	//not yet
+	public static String nowDateTime() {
+	    Calendar cal = Calendar.getInstance();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    String today=sdf.format(cal.getTime());
+	    return today;
+
+	}
 	public String arrivedConfim(String bus_per_id){
 		Calendar cal = Calendar.getInstance();
 	    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
@@ -339,29 +340,8 @@ public class Teacher_Implement{
 	
 	public static void main(String arg[]){		
 		Calendar cal = Calendar.getInstance();
-	    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss a");
-	    String time= sdf.format(cal.getTime());
-		System.out.println(time);
-		//LocalTime time1 = LocalTime.now();  
-		Transaction trns = null;
-        Session session = HibernateUtil.getSessionFactory().openSession();
-     	try {
-     		trns = session.beginTransaction();
-            Query q = session.createQuery("update Bus_Report_Table set actual_departure_time=:recievedDate where bus_per_schedule_id=:Id");
-            q.setString("recievedDate",time);
-            q.setString("Id", "123eee");
-            q.executeUpdate();
-            trns.commit();  
-        }catch (RuntimeException e) {
-            if (trns != null) {
-                trns.rollback();
-            }
-            e.printStackTrace();
-            return ;
-        } finally {
-           
-            //session.close();
-        }
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    System.out.println(sdf.format(cal.getTime())); 
 	}
 
 	

@@ -12,7 +12,7 @@
             <column name="destination_name" />
         </property>
       
-        <property name="status" type="boolean">
+        <property name="status" type="string">
             <column name="status" />
         </property>
         <set name="schedule_table" table="schedule_table"

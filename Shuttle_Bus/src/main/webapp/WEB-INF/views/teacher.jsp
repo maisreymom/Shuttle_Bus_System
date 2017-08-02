@@ -434,7 +434,7 @@
    		 //handle event select destinaton
    		 $('#fromDes').change(function(){
 			from = $("#fromDes").val();
-			console.log("from: "+from);
+			console.log(from);
 			if(itera_date_travel==2){
 				var toDesForm='<select id="toDes" class="validate">';
 				for(i=0;i<destination.length;i++){
@@ -544,21 +544,17 @@
 			
 		 //Booking Select
 		 $('#book_now').click(function(){
-			 console.log(back+" "+from+" "+date_of_travel.length);
+			 console.log(from);
 			 if((back==null&&itera_date_travel==2)||from==null||date_of_travel.length==0){
 				 alert("Unvalid Data!"); 
 			 }
 			 else{
-				 console.log("book");
-				 var date_of_booking =new Date($.now());
-				 var destination_id=[back,from];
-				 submit = [];
+				 var destination_id=[from,back];
+				 var submit = [];
 		      	 for(var i=0;i<itera_date_travel;i++){	 
 		      		submit[i]={"destination_id":destination_id[i],
-		      				"date_of_travel":date_of_travel[i],
-		      				"date_of_booking":""+date_of_booking};
+		      				"date_of_travel":date_of_travel[i]};
 		      		}
-		      	    console.log(submit);
 		      	  $.ajax({
 						type : "POST",
 						url : "booking",
@@ -567,7 +563,12 @@
 						timeout : 100000,
 						success : function(data) {
 							console.log(data);	
-							alert("Booking Done");
+							if(data){
+								alert("Booking Done");
+							}
+							else{
+								alert("Booking Error");
+							}
 						},
 						error : function(e) {
 							console.log("ERROR: ", e);

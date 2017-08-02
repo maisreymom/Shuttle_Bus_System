@@ -208,6 +208,7 @@ input[type="text"]:disabled, input[type="text"]{
 }
 .select-wrapper span.caret{
 	font-size: 5px;
+}
 .delete_modal{
 	width: 30%;
 	height: 200px!important;
@@ -216,10 +217,8 @@ input[type="text"]:disabled, input[type="text"]{
 	margin-bottom: 0rem;
 	width: 230px;
 }
-#des_name_label{
-	top: -0.2rem;
-}
-.dest_{
+.dest_form{
 	height: 250px!important;
 	width: 450px;
+}
 }

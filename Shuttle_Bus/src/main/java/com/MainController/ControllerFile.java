@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +17,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.DaoClasses.Admin_Imp;
+import com.DaoClasses.Admin_Inf;
+import com.DaoClasses.StudentDao;
+import com.DaoClasses.Student_Implement;
 import com.DaoClasses.Teacher_Implement;
 import com.EntityClasses.Authentic;
+import com.EntityClasses.Batch_Master;
 import com.EntityClasses.Bus_Per_Schedule;
 import com.EntityClasses.Bus_Report_Table;
 import com.EntityClasses.Destination_Master;
 import com.EntityClasses.Passenger;
 import com.EntityClasses.Schedule_Table;
 import com.EntityClasses.User_Master;
+import com.ModelClasses.Donate;
 import com.ModelClasses.Teacher;
 import com.ServiceClasses.usersService;
 
@@ -170,7 +177,6 @@ public class ControllerFile {
         	dests.put("destination_id", dest.get(i).getDestination_id());
         	destReturn.add(dests);
         }
-		System.out.println(destReturn);
 		return destReturn;
 	}
 	
@@ -206,7 +212,6 @@ public class ControllerFile {
 	@RequestMapping(value="/scheduleData",method = RequestMethod.POST)
 	public @ResponseBody List<Map> getscheduleData(){
 		List<Map> scheReturn = new ArrayList<Map>();
-		System.out.println("Schedule1");
 		List<Schedule_Table> schedule = new ArrayList<Schedule_Table>();
 		Teacher_Implement sl= new Teacher_Implement();
 		schedule = sl.getSchdule(); 
@@ -319,8 +324,48 @@ public class ControllerFile {
 		return passReturn;
 		}
 	
+	@RequestMapping(value="/req_donate",method = RequestMethod.GET)
+	public @ResponseBody List<Map> get_req_donate(){
+		List<Batch_Master> bat = new ArrayList<Batch_Master>();
+		List<Map> batReturn = new ArrayList<Map>();
+		StudentDao sl= new Student_Implement();
+		bat=sl.Batch();
+		for(int i=0;i<bat.size();i++){
+        	Map<String,Object> dests = new HashMap<String,Object>();
+        	dests.put("batch_id", bat.get(i).getBatch_id());
+        	dests.put("batch_number", bat.get(i).getBatch_number());
+        	batReturn.add(dests);
+        }
+		System.out.println(batReturn);
+		return batReturn;
+	}
 	
-	
+	@RequestMapping(value="/req_donate_username",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String,Object>> get_req_donate_username(@RequestBody Donate donate){
+		List<User_Master> user = new ArrayList<User_Master>();
+		StudentDao admin = new Student_Implement();
+		user = admin.Bat_User(donate);
+		List<Map<String,Object>> userList = new ArrayList<Map<String,Object>>();
+		for(int i=0;i<user.size();i++){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("user_id", user.get(i).getUser_id());
+			map.put("username", user.get(i).getUsername());
+			userList.add(map);	
+		}
+		return userList;
+			
+	}
+	@RequestMapping(value="/start_donate",method = RequestMethod.POST)
+	public @ResponseBody Boolean get_start_donate(@RequestBody Donate donate){
+		System.out.println(donate.getDonate_to());
+		System.out.println(donate.getReceive_from());
+		System.out.println(donate.getNo_ticket());
+		StudentDao stu = new Student_Implement();
+		Boolean ret = stu.donate(donate);
+		return ret;
+			
+	}
+
 	
 	
 	/*

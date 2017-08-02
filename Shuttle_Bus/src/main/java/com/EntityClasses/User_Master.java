@@ -19,7 +19,6 @@ public class User_Master {
 	private Set<Passenger> passenger;
 	private Set<Ticket_Donation> ticket_donation ;
 	private Set<Bus_Per_Schedule> bus_per_schedule;
-	
 	private Set<Emergency_Request> emergency_request;
 	private Set<Permission> permission;
 	

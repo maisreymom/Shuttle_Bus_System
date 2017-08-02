@@ -1,13 +1,19 @@
 package com.EntityClasses;
 
+import java.util.Date;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 public class Ticket_Donation {
 
 	
 	private int id;
-	private User_Master user_id;
-	private String donate_to;
-	private String receive_from;
-	
+	private int no_of_ticket;
+	@Temporal(TemporalType.DATE)
+	private Date created_at;
+	private User_Master donate_to;
+	private User_Master receive_from;
 	
 	public int getId() {
 		return id;
@@ -15,23 +21,28 @@ public class Ticket_Donation {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public User_Master getUser_id() {
-		return user_id;
+	public int getNo_of_ticket() {
+		return no_of_ticket;
 	}
-	public void setUser_id(User_Master user_id) {
-		this.user_id = user_id;
+	public void setNo_of_ticket(int no_of_ticket) {
+		this.no_of_ticket = no_of_ticket;
 	}
-	public String getDonate_to() {
+	public Date getCreated_at() {
+		return created_at;
+	}
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
+	}
+	public User_Master getDonate_to() {
 		return donate_to;
 	}
-	public void setDonate_to(String donate_to) {
+	public void setDonate_to(User_Master donate_to) {
 		this.donate_to = donate_to;
 	}
-	public String getReceive_from() {
+	public User_Master getReceive_from() {
 		return receive_from;
 	}
-	public void setReceive_from(String receive_from) {
+	public void setReceive_from(User_Master receive_from) {
 		this.receive_from = receive_from;
 	}
-	
 }

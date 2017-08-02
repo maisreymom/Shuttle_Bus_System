@@ -15,17 +15,14 @@
 
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
-  <script src="https://unpkg.com/flatpickr"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+    <script src="https://unpkg.com/flatpickr"></script>
 
 	<spring:url value="/resources/css/admin.css" var="admincss" />
 	<spring:url value="/resources/js/admin.js" var="adminjs" />
 	<link href="${admincss}" rel="stylesheet" />
 	<script src ="${adminjs}" type="text/javascript"></script>
-	<script type="text/javascript">
 
-
-	</script>
 </head>
 <body>
 <nav class="nav-extended">
@@ -129,28 +126,15 @@
               <th>Customer</th>
               <th>Total Seats</th>
               <th>Departure</th>
-              <th>Arrival</th>
-             
-              <th></th>
-              
+              <th>Arrival</th>  
+              <th></th>   
           </tr>
         </thead>
-
         <tbody id="add_more_schedule">
-         
-
         </tbody>
       </table>
-    
       <span class="add_s"><i class="material-icons icon">add_circle</i> Add</span>
-      
-    
-
-
     </div>
-
-
-
     </div>
     <div class="modal-footer">
       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id="set_schedule">Set</a>
@@ -516,26 +500,11 @@
 			              <th>Reset</th>
 			          </tr>
 			        </thead>
-			        <tbody id="">
+			        <tbody id="get_batch_info">
+			        	<!-- 
 			        	<tr>
 							<td>1</td>
 							<td>Batch 1</td>
-							<td>12/07/2017</td>
-							<td>12/07/2017</td>
-							<td>12/07/2017: 5pm</td>
-							<td><a href="#batchEdit">Edit</a> / <a href="#batchDelete">Delete</a></td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Batch 2</td>
-							<td>12/07/2017</td>
-							<td>12/07/2017</td>
-							<td>12/07/2017: 5pm</td>
-							<td><a href="#batchEdit">Edit</a> / <a href="#batchDelete">Delete</a></td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Batch 3</td>
 							<td>12/07/2017</td>
 							<td>12/07/2017</td>
 							<td>12/07/2017: 5pm</td>
@@ -549,23 +518,18 @@
 							<td></td>
 							<td><a href="#addBatch">Add</a></td>
 						</tr>
+			        	 --> 
 			        </tbody>
 			      </table>
-	  		</div>
-	  		<div class="col s12">
-	  		<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-	          <a id="pop_up_user" class="btn-floating waves-effect waves-light btn-large" href="#modal4">
-	            <i class="material-icons">add</i>
-	          </a>
-	        </div>
 	  		</div>
   </div>
   <!-- Batch Edit -->
   <div id="batchEdit" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h5 class="blue-text center">Edit Batch Information</h5>
-      <table>
-		 <tr>
+      <table id="table_edit_batch">
+      <!-- 
+      	<tr>
 			<td>Batch Number<span class="right">:</span></td>
 			<td>Batch 1</td>
 		</tr>
@@ -593,21 +557,26 @@
 				</div>
 			 </td>
 		</tr>
+       -->
 	  </table>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Update</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+	    <span id="bat_update">
+	    	<!-- <a class="modal-action modal-close waves-effect waves-green btn-flat">Update</a> -->
+	    </span>
+        <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
     </div>
   </div>
   <!-- Batch Delete -->
   <div id="batchDelete" class="modal modal-fixed-footer delete_modal">
     <div class="modal-content">
       <h5 class="blue-text">Delete Confirm</h5>
-      <p>Are you sure, you want to delete this batch?</p>
+      <p id="delete_batch_warning"></p>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes</a>
+      <span id="delete_batch_id">
+      		<!-- <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes</a>  -->  
+      </span>
       <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
     </div>
   </div>
@@ -618,13 +587,13 @@
       <table>
 		 <tr>
 			<td>Batch Number<span class="right">:</span></td>
-			<td>Batch 4</td>
+			<td id="new_batch"></td>
 		</tr>
 		<tr>
 			 <td>Leave Date<span class="right">:</span></td>
 			 <td>
 			 	<div class="input-field s6 flatpickr">
-				   	<input type="text" placeholder="Select Date" id="leaveDate" data-input class="input flatpickr-input active"> 
+				   	<input type="text" placeholder="Select Date" id="new_leaveDate" data-input class="input flatpickr-input active"> 
 				</div>
 			 </td>
 		</tr>
@@ -632,7 +601,7 @@
 			  <td>Return Date<span class="right">:</span></td>
 			  <td>
 			 	<div class="input-field s6 flatpickr">
-				   	<input type="text" placeholder="Select Date" id="returnDate" data-input class="input flatpickr-input active"> 
+				   	<input type="text" placeholder="Select Date" id="new_returnDate" data-input class="input flatpickr-input active"> 
 				</div>
 			 </td>
 		</tr>
@@ -640,15 +609,15 @@
 			 <td>Deadline Booking<span class="right">:</span></td>
 			 <td>
 			 	<div class="input-field s6 flatpickr">
-				   	<input type="text" placeholder="Select Date" id="deadlineBooking" data-input  class="input flatpickr-input active"> 
+				   	<input type="text" placeholder="Select Date" id="new_deadline" data-input  class="input flatpickr-input active"> 
 				</div>
 			 </td>
 		</tr>
 	  </table>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat add_new_batch">Add</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
     </div>
   </div> 
   <div class="row">
@@ -664,66 +633,50 @@
 			              <th>Reset</th>
 			          </tr>
 			        </thead>
-			        <tbody id="">
-			        	<tr>
-							<td>1</td>
-							<td>Kirirom to Phnom Penh</td>
-							<td><a href="#destinationEdit">Edit</a> / <a href="#destinationDelete">Delete</a></td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Phnom Penh to Kirirom</td>
-							<td><a href="#destinationEdit">Edit</a> / <a href="#destinationDelete">Delete</a></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td></td>
-							<td><a href="#addDestination">Add</a></td>
-						</tr>
+			        <tbody id="getDes">
 			        </tbody>
 			      </table>
 	  	</div>
 	  	<!-- Destination Edit -->
-	  <div id="destinationEdit" class="modal modal-fixed-footer dest_">
+	  <div id="destinationEdit" class="modal modal-fixed-footer dest_form">
 	    <div class="modal-content">
 	      <h5 class="blue-text center">Edit Batch Information</h5>
 	      <br>
 	        Destination Name:&nbsp
-			<div class="input-field inline">
-			     <input id="des_name" type="text" class="validate">
-			     <label id="des_name_label" for="des_name">Destination Name</label>
+			<div class="input-field inline" id="getDesText">
+			     <input id="des_name" type="text" class="validate" value="">  
 			</div>
 	    </div>
 	    <div class="modal-footer">
-	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Update</a>
-	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+	      <span id="des_edit_footer"></span>
+	      <a href="#!" class="modal-action modal-close btn-flat">Cancel</a>
 	    </div>
 	  </div>
-	  <!-- Batch Delete -->
+	  <!-- Destination Delete -->
 	  <div id="destinationDelete" class="modal modal-fixed-footer delete_modal">
 	    <div class="modal-content">
 	      <h5 class="blue-text">Delete Confirm</h5>
 	      <p>Are you sure, you want to delete this destination?</p>
 	    </div>
 	    <div class="modal-footer">
-	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Yes</a>
-	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
+		    <span id="getDesDelete">
+		    </span>
+	        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">No</a>
 	    </div>
 	  </div>
 	  <!-- Add Destination -->
-	  <div id="addDestination" class="modal modal-fixed-footer dest_">
+	  <div id="addDestination" class="modal modal-fixed-footer dest_form">
 	    <div class="modal-content">
 	      <h5 class="blue-text center">Add New Batch</h5>
 	      <br>
 	        Destination Name:&nbsp
 			<div class="input-field inline">
-			     <input id="des_name" type="text" class="validate">
-			     <label id="des_name_label" for="des_name">Destination Name</label>
+			     <input id="new_des_name" type="text" class="validate">
 			</div>
 	    </div>
 	    <div class="modal-footer">
-	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Add</a>
-	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+	      <a class="modal-action modal-close waves-effect waves-green btn-flat add_new_des">Add</a>
+	      <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
 	    </div>
 	  </div>
   </div>
@@ -745,5 +698,4 @@
           </div>
 </footer>
 </body>
-
 </html>
