@@ -11,36 +11,57 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
   
+  <!-- 
+    <spring:url value="/resources/css/library/css_materialize.min.css" var="css_materialize" />
+  <link href="${css_materialize}" rel="stylesheet" />
+  <spring:url value="/resources/css/library/flatpickr.min.css" var="css_flatpickr" />
+  <link href="${css_flatpickr}" rel="stylesheet" />
+  <spring:url value="/resources/css/library/Material_Icons.css" var="material_icons" />
+  <link href="${material_icons}" rel="stylesheet" />
+   -->
+
   <spring:url value="/resources/css/student.css" var="studentcss" />
   <link href="${studentcss}" rel="stylesheet" />
-  
+  <style type="text/css">
+  	.more_noti {
+	    margin: 0rem 0 1rem 0!important;
+    }
+    #seemore{
+    	width:50%!important;
+    }
+	
+  </style>
 </head>
 <body>
  <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
       <ul class="right hide-on-med-and-down">
       	<li>
-        	<a class="dropdown-icon" href="#" data-activates='request'><i class="large material-icons">dialpad</i></a>
+        	<a class="dropdown-icon" data-activates='request'><i class="large material-icons">dialpad</i></a>
         </li>	
         <li>
-        	<a class="dropdown-icon" href="#" data-activates='request'><i class="material-icons">notifications</i></a>
+        	<a class="dropdown-icon" data-activates='notification'><i class="material-icons">notifications</i></a>
         </li>
         <li>
         	<a href="#" class="dropdown-user-info" href="#" data-activates='user_info'><i class="material-icons Medium">account_circle</i></a>
         </li>
       </ul>
-      	<ul id='request' class='dropdown-content'>
-	    <li><a href="#emergencyForm">Emergency Booking</a></li><li class="divider"></li>
-	    <li><a href="#exchangeSeat">Exchange Seat</a></li><li class="divider"></li>
-	    <li><a id="req_donate" href="#donateTicket">Donate Ticket</a></li><li class="divider"></li>
-	    <li><a href="#donateTicket">Permission</a></li><li class="divider"></li>
+      <ul id='request' class='dropdown-content'>
+	    <li><a id="req_donate" href="#donateTicket"><i class="material-icons left">loyalty</i>Donate Ticket</a></li><li class="divider"></li>
+	    <li><a href="#permission"><i class="material-icons left">lock_open</i>Permission</a></li><li class="divider"></li>
+	    <span id="li_exchange"></span>
+		<span id="li_emergency"><li><a id="emer_booking" href="#emergencyForm">Emergency Booking</a></li></span>
 	  </ul>
-	  
+	  <!-- For Notification -->
+	  <ul id='notification' class='dropdown-content'>
+	  </ul>
 
 	  <ul id='user_info' class='dropdown-content'>
-		  	<li><a href="#!">User Name</a></li><li class="divider"></li>
+	  <!-- 
+	  	<li><a href="#!">User Name</a></li><li class="divider"></li>
 		    <li><a href="#!">No. of Ticket:&nbsp &nbsp<span>10</span></a></li><li class="divider"></li>
 		    <li><a href="#!">Log Out</a></li><li class="divider"></li>
+	   -->  	
 	  </ul>
 	  <ul id="nav-mobile" class="side-nav">
 	  		<li><div class="divider"></div></li>
@@ -50,42 +71,99 @@
 		    <li><div class="divider"></div></li>
 		    <li><a href="mobileSchedule"><i class="material-icons">event</i>Schedule Up to Date</a></li>
 		    <li><div class="divider"></div></li>
-		    <!-- 
-		    	<li><a href="#!"><i class="material-icons">assignment_late</i>Emergency Booking</a></li>
-			    <li><div class="divider"></div></li>
-			    <li><a href="#!"><i class="material-icons">cached</i>Donate Ticket</a></li>
-			    <li><div class="divider"></div></li>
-			    <li><a href="#!"><i class="material-icons">settings</i>Setting</a></li>
-		     -->
 	  </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
   </nav>
  <!-- Request Form Modals Not Yet-->
   <div>
-  	<div id="emergencyForm" class="modal modal-fixed-footer modal_request">
+	<div id="emergencyForm" class="modal modal-fixed-footer modal_request">
 		    <div class="modal-content">
-		      <h4>Modal Header</h4>
-		      <p>A bunch of text</p>
+		      <h5 class="center sch light-blue-text">Schedule Up to Date</h5><br>
+		      <table class="centered highlight bordered">
+		        <thead>
+		          <tr>
+		              <th>Date</th>
+		              <th>Destination</th>         
+		              <th>Total Seats</th>
+		              <th>Customer</th>
+		              <th>Staff</th>
+		              <th>Student</th>
+		              <th>Remaining</th>
+		              <th>Passenger</th>
+		              <th>Request</th>
+		          </tr>
+		        </thead>
+		        <tbody id="getEmergencyForm"></tbody>
+		      </table>
+		      <br><br>
 		    </div>
 		    <div class="modal-footer">
-		      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Request</a>
-		      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat">Back</a>
 		    </div>
 		</div>
-		<div id="exchangeSeat" class="modal modal-fixed-footer modal_request">
+	<div id="emer_reasonForm" class="modal modal-fixed-footer modal_request">
 		    <div class="modal-content">
-		      <h4>Modal Header</h4>
-		      <p>A bunch of text</p>
+		      <h5 class="center red-text">Emergency Booking Request</h5>
+		      <br>
+		      <div class="row">
+			     <form class="col l12">
+			         <div class="input-field ">
+			            <textarea id="emer_reason" class="materialize-textarea"></textarea>
+			            <label for="permission_reason">Please give some reason here before request!</label>
+			         </div>
+			    </form>
+			  </div>
 		    </div>
 		    <div class="modal-footer">
-		      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exchange</a>
-		      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		      <span id="getBtnEnergency"></span>
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		    </div>
+	</div>
+	<div id="permission" class="modal modal-fixed-footer modal_request">
+		    <div class="modal-content">
+		      <h5 class="center light-blue-text">Permission Request</h5>
+		      <br>
+		      <div class="row">
+			     <form class="col l12 input-field flatpickr">
+			         Permission Date:&nbsp&nbsp
+			         <input type="text" placeholder="Select Date" id="permission_date" data-input class="input flatpickr-input active">
+			    	 <div class="input-field col s12 ">
+			            <textarea id="permission_reason" class="materialize-textarea"></textarea>
+			            <label for="permission_reason">Please give some reason here!</label>
+			         </div>
+			    </form>
+			  </div>
+		    </div>
+		    <div class="modal-footer">
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat permission_request">Request</a>
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
 		    </div>
 		</div>
-		<div id="donateTicket" class="modal modal-fixed-footer modal_request">
+	<div id="exchangeSeat" class="modal modal-fixed-footer modal_request">
 		    <div class="modal-content">
-		      <h5 class="center text-orange">Donate Ticket</h5>
+		      <h5 class="center light-blue-text">Exchange Shuttle Bus Seat</h5>
+		      <br>
+		      <div class="row">
+			     <form class="col l12">
+			          Exchange Seat to:&nbsp&nbsp
+			          <div class="input-field inline right donate_select">
+			            <select id="exchange_batch">
+					    </select>
+			            <select id="exchange_to_username">
+					    </select>
+			          </div>
+			    </form>
+			  </div>
+		    </div>
+		    <div class="modal-footer">
+		      <a id="exchange_seat" class="modal-action modal-close waves-effect waves-green btn-flat ">Exchange</a>
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		    </div>
+		</div>
+	<div id="donateTicket" class="modal modal-fixed-footer modal_request">
+		    <div class="modal-content">
+		      <h5 class="center light-blue-text">Donate Ticket</h5>
 		      <br>
 		      <div class="row">
 			     <form class="col l12">
@@ -110,12 +188,27 @@
 		    </div>
 		</div>
   </div>
+  <!-- See more  -->
+  <div id="seemore" class="modal modal-fixed-footer">
+  	<div><h5 class="center light-blue-text">Header</h5></div>
+		<ul id="list_noti" class="collection more_noti">
+		<!-- 
+		  <li class="collection-item">Alvin</li>
+	      <li class="collection-item">Alvin</li>
+	      <li class="collection-item">Alvin</li>
+	      <li class="collection-item">Alvin</li>
+	      <li class="collection-item">Alvin</li>
+	      <li class="collection-item">Alvin</li>
+	      <li class="collection-item">Alvin</li>
+		 -->
+	    </ul>
+  </div>
 <div class="container hide-on-med-and-down">
   	<br>
       <h5 class="header center orange-text"><b>vKirirom Shuttle Bus System</b></h5>
       <p class="header col s12 light center">A modern responsive front-end framework based on Material Design</p>
 </div>
-<div id="session" class="section hide-on-med-and-down">    
+<div id="session" class="section hide-on-med-and-down" disabled>    
       <div class="light-blue lighten-1">
       		<br><br>
       		<div class="container">
@@ -260,11 +353,17 @@
     </div>
   </footer>
 
-
   <!--  Scripts  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script> 
   <script src="https://unpkg.com/flatpickr"></script>
+  <!-- 
+  <spring:url value="/resources/js/library/https _ajax.googleapis.com_ajax_libs_jquery_3.2.1_jquery.min.js" var="jquery" />
+  <script src ="${jquery}" type="text/javascript"></script>
+  <spring:url value="/resources/js/library/materialize_0.98.0_js_materialize.min.js" var="js_materialize" />
+  <script src ="${js_materialize}" type="text/javascript"></script>
+   -->
+  
   <spring:url value="/resources/js/student.js" var="studentjs" />
   <script src ="${studentjs}" type="text/javascript"></script>
   </body>

@@ -32,6 +32,14 @@
         <property name="ticket_qrcode" type="string">
             <column name="ticket_qrcode" />
         </property>
+        
+        <property name="created_at" type="timestamp">
+            <column name="created_at" not-null="true" />
+        </property>
+        <property name="updated_at" type="timestamp">
+            <column name="updated_at" not-null="true" />
+        </property>
+        
        
         
  	</class>

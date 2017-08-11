@@ -55,8 +55,13 @@
                 <column name="schedule_id" />
             </key>
             <one-to-many class="com.EntityClasses.Emergency_Request" />
-        </set>
- 	 	
- 	 	
+        </set> 
+        <set name="exchange_seat" cascade="all" table="exchange_seat"
+				inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="schedule_id" />
+            </key>
+            <one-to-many class="com.EntityClasses.Exchange_Seat" />
+        </set> 
  	</class>
 </hibernate-mapping>

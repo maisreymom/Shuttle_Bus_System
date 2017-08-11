@@ -12,6 +12,8 @@ public class Ticket_Donation {
 	private int no_of_ticket;
 	@Temporal(TemporalType.DATE)
 	private Date created_at;
+	@Temporal(TemporalType.DATE)
+	private Date updated_at;
 	private User_Master donate_to;
 	private User_Master receive_from;
 	
@@ -32,6 +34,12 @@ public class Ticket_Donation {
 	}
 	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
+	}
+	public Date getUpdated_at() {
+		return updated_at;
+	}
+	public void setUpdated_at(Date updated_at) {
+		this.updated_at = updated_at;
 	}
 	public User_Master getDonate_to() {
 		return donate_to;

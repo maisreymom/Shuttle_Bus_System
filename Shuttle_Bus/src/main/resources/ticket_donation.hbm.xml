@@ -11,10 +11,12 @@
         <property name="no_of_ticket" type="java.lang.Integer">
             <column name="no_of_ticket" not-null="true" />
         </property>
-        <property name="created_at" type="date">
+        <property name="created_at" type="timestamp">
             <column name="created_at" not-null="true" />
         </property>
-      
+        <property name="updated_at" type="timestamp">
+            <column name="updated_at" not-null="true" />
+        </property>
       
          <many-to-one name="donate_to" class="com.EntityClasses.User_Master" fetch="select">
             <column name="donate_to" not-null="true" />

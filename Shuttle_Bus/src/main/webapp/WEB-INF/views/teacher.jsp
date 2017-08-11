@@ -355,8 +355,8 @@
 					userInfoForm+='<li><a href="#!">'+data.username
 								+'</a></li><li class="divider"></li><li><a href="#!">'+
 								data.user_id+'</a></li><li class="divider"></li><li><a href="#!">No.Ticket:&nbsp &nbsp'+
-								date.number_of_ticket+'</a></li><li class="divider"><li><a href="logout">Log Out</a></li><li class="divider"></li>'
-					document.getElementById("user_info").innerHTML = select;
+								data.number_of_ticket+'</a></li><li class="divider"><li><a href="logout">Log Out</a></li><li class="divider"></li>'
+					document.getElementById("user_info").innerHTML = userInfoForm;
 				},
 				error : function(e) {
 					console.log("ERROR: ", e);

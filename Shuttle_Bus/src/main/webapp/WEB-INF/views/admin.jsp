@@ -198,6 +198,7 @@
       <div class="col s6"> <h6><b>Date:</b> <span id="date_title">Fri, 12/june/2017</span></h6></div>
       <div class="col s6"><h6><b>Destination: </b><span class="modal_destination" id="destination_title">Kirirom to Phnom Penh</span></h6></div>
       <table>
+      <thead>
           <tr>
               <th>Name</th>
               <th>Batch</th>
@@ -206,10 +207,8 @@
               <th>Phone</th>
           </tr>
         </thead>
-        </thead>
 
         <tbody id="view_c_pass">
-        
 
         </tbody>
       </table>

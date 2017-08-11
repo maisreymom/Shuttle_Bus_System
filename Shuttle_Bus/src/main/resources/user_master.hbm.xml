@@ -44,7 +44,7 @@
         <property name="no_of_donate_ticket" type="int">
             <column name="no_of_donate_ticket" not-null="false" />
         </property>
-        <property name="status" type="boolean">
+        <property name="status" type="string">
             <column name="status" not-null="false" />
         </property>
         
@@ -78,7 +78,6 @@
             </key>
             <one-to-many class="com.EntityClasses.Emergency_Request" />
         </set>
-       
  	 	
  	</class>
 </hibernate-mapping>

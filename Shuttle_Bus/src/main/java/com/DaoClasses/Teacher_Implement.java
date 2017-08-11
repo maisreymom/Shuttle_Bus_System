@@ -30,9 +30,9 @@ import com.EntityClasses.User_Master;
 import com.HibernateUtil.HibernateUtil;
 import com.ModelClasses.Teacher;
 
-public class Teacher_Implement{
+public class Teacher_Implement implements TeacherDao{
 	
-	public List<User_Master> getUserInfo(){
+	public List<User_Master> getUserInfo(String user_id){
 		List<User_Master> user = new ArrayList<User_Master>();
 		Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -69,6 +69,29 @@ public class Teacher_Implement{
         }
         return dest;
 	}
+	
+	
+	public List<Schedule_Table> checkSchdule(){
+		List<Schedule_Table> sche = new ArrayList<Schedule_Table>();
+		Transaction trns = null;
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY/MM/dd");
+		String today= formatter.format(date);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+     	try {
+            trns = session.beginTransaction();
+            Criteria c = session.createCriteria(Schedule_Table.class, "sch");
+            c.add(Restrictions.ge("sch.date_of_travel", new Date()));
+            c.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+            sche=c.list();
+        }catch (RuntimeException e){
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+     	}
+        return sche;
+	}
 		
 	public List<Schedule_Table> getSchdule(){
 		List<Schedule_Table> sche = new ArrayList<Schedule_Table>();
@@ -100,13 +123,14 @@ public class Teacher_Implement{
             trns = session.beginTransaction();
             String hql ="FROM Bus_Per_Schedule as e where e.schedule_id = '"+sch_id+"'";
             Query query =  session.createQuery(hql);
-           bus = query.list();
+            bus = query.list();
+            System.out.println(bus.get(1).getNumber_of_seats());
         } catch (RuntimeException e) {
             e.printStackTrace();
             return bus;
         } finally {
-           session.flush();
-           session.close();
+          // session.flush();
+           //session.close();
         }
         return bus;
 	}
@@ -114,16 +138,19 @@ public class Teacher_Implement{
 	
 	public Boolean BookService(Teacher[] passen){
 		System.out.println(passen[0].getDestination_id());
+		System.out.println(passen[0].getDate_of_travel());
 		Boolean confirm=null;
 		Transaction trns = null;
         User_Master user=new User_Master("t4jrtfh385");   
         Destination_Master destTo=new Destination_Master(passen[0].getDestination_id());
         Passenger passengerTo = new Passenger();
-        	passengerTo.setDate_of_booking(new Date());
-        	passengerTo.setUser_id(user);
-        	passengerTo.setDestination_id(destTo);
-        	passengerTo.setDate_of_travel(java.sql.Date.valueOf(passen[0].getDate_of_travel().toString().trim()));
-            Set<Passenger> ps = new HashSet<Passenger>(); 
+        passengerTo.setDate_of_booking(new Date());
+        passengerTo.setUser_id(user);
+        passengerTo.setDestination_id(destTo);
+        passengerTo.setDate_of_travel(java.sql.Date.valueOf(passen[0].getDate_of_travel().toString().trim()));
+        passengerTo.setCreated_at(new Date());
+        passengerTo.setUpdated_at(new Date());
+        Set<Passenger> ps = new HashSet<Passenger>(); 
 	    user.setPassenger(ps);
 	    destTo.setPassenger(ps);
 	    Configuration con=new Configuration();
@@ -139,6 +166,8 @@ public class Teacher_Implement{
                 passengerBack.setUser_id(user);
                 passengerBack.setDestination_id(destBack);
                 passengerBack.setDate_of_travel(java.sql.Date.valueOf(passen[1].getDate_of_travel().toString().trim()));
+                passengerBack.setCreated_at(new Date());
+                passengerBack.setUpdated_at(new Date());
                 ps.add(passengerTo);
         	    ps.add(passengerBack);
             	destBack.setPassenger(ps);

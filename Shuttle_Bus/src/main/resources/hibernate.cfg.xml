@@ -29,6 +29,7 @@
    <mapping resource ="bus_master.hbm.xml" />
    <mapping resource ="permission.hbm.xml" />
    <mapping resource ="emergency_request.hbm.xml" />
+   <mapping resource ="exchange_seat.hbm.xml" />
   
   </session-factory>
 </hibernate-configuration>

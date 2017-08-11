@@ -6,7 +6,7 @@
  	 	
  	   <id name= "id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="increment" />
         </id>
         
       
@@ -16,17 +16,22 @@
           <many-to-one name="schedule_id" class="com.EntityClasses.Schedule_Table" fetch="select">
             <column name="schedule_id" not-null="true" />
          </many-to-one>
-        
-         
-       
+
         <property name="reason" type="string">
             <column name="reason" not-null="true" />
         </property>
         <property name="status" type="string">
             <column name="status" not-null="true" />
         </property>
+        <!-- 
+        <property name="created_at" type="timestamp">
+            <column name="created_at" not-null="true" />
+        </property>
+        <property name="updated_at" type="timestamp">
+            <column name="updated_at" not-null="true" />
+        </property>
+         -->
         
-       
-        
+
  	</class>
 </hibernate-mapping>

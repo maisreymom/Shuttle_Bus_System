@@ -1022,7 +1022,7 @@ $(document).ready(function(){
     	 	  
     	 	var batch=[];
     	 	var new_batch;
-    	 	//Get Destination
+    	 	//Get Batch
      	     $.ajax({
      	 	 	async:false,
      	 	 	cache:false,
@@ -1031,6 +1031,7 @@ $(document).ready(function(){
      	 		url : "get_batch",
      	 		timeout : 100000,
      	 		success : function(data) {
+					Console.log("Get Batch "+data);
      	 			batch=data;
      	 			new_batch=data[data.length-1].batch_number+1;
      	 			var batch_form="";
