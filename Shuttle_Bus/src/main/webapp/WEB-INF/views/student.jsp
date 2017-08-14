@@ -27,9 +27,20 @@
 	    margin: 0rem 0 1rem 0!important;
     }
     #seemore{
-    	width:50%!important;
+    	width:60%!important;
     }
-	
+	.img_rqcode{
+		width: 300px;
+    	height: 280px;
+	}
+	#rqcodeForm,#cancel_booking{
+		width: 500px!important;
+    	height: 500px!important;
+	}
+	#cancel_booking{
+		width: 350px!important;
+    	height: 250px!important;
+	}
   </style>
 </head>
 <body>
@@ -40,32 +51,25 @@
         	<a class="dropdown-icon" data-activates='request'><i class="large material-icons">dialpad</i></a>
         </li>	
         <li>
-        	<a class="dropdown-icon" data-activates='notification'><i class="material-icons">notifications</i></a>
+        	<a id="notifications_icon" class="dropdown-icon" data-activates='notification'></a>
         </li>
         <li>
         	<a href="#" class="dropdown-user-info" href="#" data-activates='user_info'><i class="material-icons Medium">account_circle</i></a>
         </li>
       </ul>
       <ul id='request' class='dropdown-content'>
-	    <li><a id="req_donate" href="#donateTicket"><i class="material-icons left">loyalty</i>Donate Ticket</a></li><li class="divider"></li>
-	    <li><a href="#permission"><i class="material-icons left">lock_open</i>Permission</a></li><li class="divider"></li>
+	    <li><a id="req_donate" href="#donateTicket"><i class="Tiny material-icons left">loyalty</i>Donate Ticket</a></li><li class="divider"></li>
+	    <li><a href="#permission"><i class="Tiny material-icons left">lock_open</i>Permission</a></li><li class="divider"></li>
 	    <span id="li_exchange"></span>
-		<span id="li_emergency"><li><a id="emer_booking" href="#emergencyForm">Emergency Booking</a></li></span>
+		<span id="li_emergency"><li><a id="emer_booking" href="#emergencyForm"><i class="Tiny material-icons left">assignment_late</i>Emergency Booking</a></li></span>
 	  </ul>
 	  <!-- For Notification -->
-	  <ul id='notification' class='dropdown-content'>
-	  </ul>
-
-	  <ul id='user_info' class='dropdown-content'>
-	  <!-- 
-	  	<li><a href="#!">User Name</a></li><li class="divider"></li>
-		    <li><a href="#!">No. of Ticket:&nbsp &nbsp<span>10</span></a></li><li class="divider"></li>
-		    <li><a href="#!">Log Out</a></li><li class="divider"></li>
-	   -->  	
-	  </ul>
+	  <ul id='notification' class='dropdown-content'></ul>
+	  <!-- User Detial Dropdoe -->
+	  <ul id='user_info' class='dropdown-content'></ul>
 	  <ul id="nav-mobile" class="side-nav">
 	  		<li><div class="divider"></div></li>
-		    <li><a href="#!"><i class="material-icons">account_circle</i>Name: Mai Mom</a></li>
+		    <li><a href="#!"><i class="material-icons">account_circle</i>Name: Mai Mom </a></li>
 		    <li><div class="divider"></div></li>
 		    <li><a href="#!"><i class="material-icons">loyalty</i>No. of Ticket:&nbsp &nbsp<span>10</span></a></li>
 		    <li><div class="divider"></div></li>
@@ -75,7 +79,7 @@
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
   </nav>
- <!-- Request Form Modals Not Yet-->
+ <!-- Request Form Modals Not Yet-->           
   <div>
 	<div id="emergencyForm" class="modal modal-fixed-footer modal_request">
 		    <div class="modal-content">
@@ -104,7 +108,7 @@
 		</div>
 	<div id="emer_reasonForm" class="modal modal-fixed-footer modal_request">
 		    <div class="modal-content">
-		      <h5 class="center red-text">Emergency Booking Request</h5>
+		      <h5 class="center red-text">Emergency Booking Request </h5>
 		      <br>
 		      <div class="row">
 			     <form class="col l12">
@@ -188,20 +192,32 @@
 		    </div>
 		</div>
   </div>
+  
+  <!-- View Ticket -->
+  <div id="rqcodeForm" class="modal modal-fixed-footer modal_request">
+	<div class="modal-content center">
+		<h5 class="center light-blue-text">Bus ticket Qrcode</h5>
+		 <div id="rqcode"></div>
+	</div>
+	<div class="modal-footer">
+		 <a class="modal-action modal-close waves-effect waves-green btn-flat ">Back</a>
+	</div>
+  </div>
+  <!-- Concel Booking Before Deadline -->
+  <div id="cancel_booking" class="modal modal-fixed-footer modal_request">
+	<div class="modal-content center">
+		<h5 class="center light-blue-text">Cancel Confirm</h5>
+		 <div id="getCancelInfo"></div>
+	</div>
+	<div class="modal-footer">
+		<span id="clk_cancel_booking"></span>
+		 <a class="modal-action modal-close waves-effect waves-green btn-flat ">No</a>
+	</div>
+</div>
   <!-- See more  -->
   <div id="seemore" class="modal modal-fixed-footer">
-  	<div><h5 class="center light-blue-text">Header</h5></div>
+  	<div><h5 class="center light-blue-text">Notification List</h5></div>
 		<ul id="list_noti" class="collection more_noti">
-		<!-- 
-		  <li class="collection-item">Alvin</li>
-	      <li class="collection-item">Alvin</li>
-	      <li class="collection-item">Alvin</li>
-	      <li class="collection-item">Alvin</li>
-	      <li class="collection-item">Alvin</li>
-	      <li class="collection-item">Alvin</li>
-	      <li class="collection-item">Alvin</li>
-		 -->
-	    </ul>
   </div>
 <div class="container hide-on-med-and-down">
   	<br>
@@ -295,7 +311,10 @@
 			</div>
 	  </div>   	
   </div>
+
+<!-- Show Schedule Up to date -->
 <div class="container hide-on-med-and-down" >
+	 <div id="my_schedule"></div>
    	 <h5 class="center sch light-blue-text">Schedule Up to Date</h5><br>
       <table class="centered highlight bordered">
         <thead>

@@ -42,7 +42,7 @@ import com.ModelClasses.Date_Dest;
 import com.ModelClasses.Model_User;
 import com.ModelClasses.Report_Date;
 import com.ModelClasses.Set_Schedule;
-import com.ModelClasses.Teacher;
+import com.ModelClasses.Booking;
 import com.ModelClasses.Add_Bus;
 import com.ServiceClasses.usersService;
 

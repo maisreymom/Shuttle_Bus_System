@@ -16,7 +16,15 @@ public class Ticket_Donation {
 	private Date updated_at;
 	private User_Master donate_to;
 	private User_Master receive_from;
+	private String notification;
 	
+	
+	public String getNotification() {
+		return notification;
+	}
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
 	public int getId() {
 		return id;
 	}

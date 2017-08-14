@@ -25,6 +25,9 @@
          <many-to-one name="schedule_id" class="com.EntityClasses.Schedule_Table" fetch="select">
             <column name="schedule_id" not-null="true" />
         </many-to-one>
+        <property name="notification" type="string">
+            <column name="notification" not-null="true" />
+        </property>
         
  	</class>
 </hibernate-mapping>

@@ -19,37 +19,28 @@
 <body>
 	
 <!--Header-->
-<div class="navbar-fixed">
-    <nav>
-		<div class="container">
-			<div class="nav-wrapper">
-			<div class="row">
-				<div class="col s12 m6">
-					 <a href="#" class="brand-logo">Logo</a>
-				</div>		
-				<div class="col s0 l6">
-					<ul id="nav-mobile" class="right hide-on-med-and-down">
-			        <li class="avatar">
-				        <a id="getProfile"  href="#">
-				      		<img src="https://s-media-cache-ak0.pinimg.com/736x/64/fb/c9/64fbc98e98bebd0c06dc5f9345724658.jpg" alt="" class="circle profile">
-				   		</a>
-			   		 </li>      
-			      </ul>
-				</div>
-			</div>
-	    </div>
-		</div> 
+<nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <ul class="right hide-on-med-and-down">
+        <li>
+        	<a class="dropdown-user-info" href="#" data-activates='user_info'><i class="material-icons Medium">account_circle</i></a>
+        </li>
+      </ul>
+	  <!-- User Detial Dropdoe -->
+	  <ul id='user_info' class='dropdown-content'>
+	  	<li>
+        	<a id="notifications_icon" class="dropdown-icon" data-activates='notification'></a>
+        </li>
+	  </ul>
+    </div>
   </nav>
-  </div>
 <br>
 <div class="container">
 		<div class="row">
-			<div class="col s12">
-				<h5 class="title">Shuttle Bus Information</h5>
+			<div id="my_schedule"></div>
+			<h5 class="title">Shuttle Bus Information</h5>
 				<br>
-			</div>
-			<div class="col s12">
-				<table class="bordered centered highlight">
+			<table class="bordered centered highlight">
 			        <thead>
 			          <tr>
 			              <th>Date</th>
@@ -66,12 +57,11 @@
 			          </tr>
 			        </thead>
 			        <tbody id="getSchedule"></tbody>
-     		 </table>	
-		</div>
+     		 </table>
 		</div>
 	</div>
 <!-- Modal Structure -->
-	  <div id="user_detail" class="modal modal-fixed-footer">
+<div id="user_detail" class="modal modal-fixed-footer">
 		    <div class="modal-content">
 		      <h5 class="center title">List of Passengers</h5>
 		      <table class="bordered centered highlight">
@@ -120,187 +110,6 @@
 </footer>		
 
 <script type="text/javascript">
-$(document).ready(function(){
-$.ajax({
-		type : "GET",
-		async:false,
-		cache:false,
-		contentType : "application/json",
-		url : "driverSchedule",
-		timeout : 100000,
-		success : function(data) {
-			    var scheduleForm="";
-				for(i=0;i<data.length;i++){	
-   					scheduleForm+='<tr><td>'+data[i].date_of_travel
-				   				+'</td><td>'+data[i].bus_model
-				   				+'</td><td>'+data[i].driver_name
-   								+'</td><td>'+data[i].destination_name
-   								+'</td><td>'+data[i].total_available_seats
-   								+'</td><td>'+data[i].customer_seats
-   								+'</td><td>'+data[i].staff_seats
-   								+'</td><td>'+data[i].student_seats
-   								+'</td><td>'+data[i].est_departure_time+" to "+data[i].est_arrival_time
-   								+'</td><td><a class="userDetail" value="'+data[i].bus_per_schedule_id
-   						        +'" style="color:#ff9800;cursor:pointer">detail</a></td>';
-   					//Get today
-   					var currentTime = new Date()
-					var month = currentTime.getMonth() + 1
-					var day = currentTime.getDate()
-					var year = currentTime.getFullYear()
-					if(day<10) {
-						day = '0'+day
-					} 
-					if(month<10) {
-						month = '0'+month
-					} 
-					var today = day + "/" + month + "/" + year;
-   					if(data[i].date_of_travel==today){
-   						var check = checkConfirm(data[i].bus_per_schedule_id);
-   						console.log(check);
-   						if(check.actual_departure_time==""||check.actual_departure_time==null){
-   							scheduleForm+='</td><td id="'+data[i].bus_per_schedule_id+'"><a class="btn light-blue lighten-1 leaveConfirm" value="'+data[i].bus_per_schedule_id+'">Leave</a></td></tr>';
-   						}else if(check.actual_arrival_time==""||check.actual_arrival_time==null){
-   							scheduleForm+='</td><td id="'+data[i].bus_per_schedule_id+'"><a class="btn light-blue lighten-1 arriveConfirm" value="'+data[i].bus_per_schedule_id+'">Arrive</a></td></tr>';
-   						}else{//if already done both
-   							scheduleForm+='</td><td><a class="btn red lighten-4 driverConfirm"  disabled>Arrived</a></td></tr>';
-   						}		
-   					}else{
-   						scheduleForm+='</td><td><a class="btn red lighten-4" disabled>Leave</a></td></tr>';
-   					}	        	    	
-			}
-			document.getElementById('getSchedule').innerHTML=scheduleForm;
-		},
-		error : function(e) {
-			console.log("ERROR: ", e);
-		},
-		done : function(e) {
-			console.log("DONE");
-		}
-	});
-	
-function checkConfirm(bus_id) {
-	var confirm="";
-	console.log("check confirm  "+bus_id);
-	$.ajax({
-			type : "POST",
-  			async:false,
-			cache:false,
-				contentType :"application/json",
-				data :bus_id,
-				url : "checkConfirm",
-				timeout : 100000,
-				success : function(data) {
-					confirm=data;
-				},
-				error : function(e) {
-					console.log("ERROR: ", e);
-				},
-				done : function(e) {
-					console.log("DONE");
-				}
-			});
-    return confirm;
-}
-	
-//Confirm Leave 
-$('.leaveConfirm').click(function() {
-		    var bus_id=$(this).attr("value") ;
-		    console.log("leave "+bus_id);
-   	   		$.ajax({
-   	   				type : "POST",
-	   	   			async:false,
-	   				cache:false,
-   	   				contentType : "application/json",
-   	   				data :bus_id,
-   	   				url : "leaveConfirm",
-   	   				timeout : 100000,
-   	   				success : function(bus_set) {
-   	   					var arriveForm='<a class="btn light-blue lighten-1 arriveConfirm" value="'+bus_set+'">Arrive</a>'
-   	   					document.getElementById(bus_set).innerHTML = arriveForm;
-   	   				},
-   	   				error : function(e) {
-   	   					console.log("ERROR: ", e);
-   	   				},
-   	   				done : function(e) {
-   	   					console.log("DONE");
-   	   				}
-   	   			});
-   	   	$('.arriveConfirm').click(function() {
-   		 var bus_id=$(this).attr("value") ;
-   		    console.log("arrive "+bus_id);
-   		 	arriveConfirm(bus_id);
-   		    });
-   	   		
-});
-
-$('.arriveConfirm').click(function() {
-		 var bus_id=$(this).attr("value") ;
-		  console.log("arrive "+bus_id);
-		  arriveConfirm(bus_id);
-	  		
-});
-function arriveConfirm(bus_per_id){
-	$.ajax({
-			type : "POST",
-  			async:false,
-			cache:false,
-				contentType : "application/json",
-				data :bus_per_id,
-				url : "arriveConfirm",
-				timeout : 100000,
-				success : function(bus_set) {
-					var arriveForm='<a class="btn red lighten-4 driverConfirm"  disabled>Arrived</a>'
-					document.getElementById(bus_set).innerHTML = arriveForm;
-				},
-				error : function(e) {
-					console.log("ERROR: ", e);
-				},
-				done : function(e) {
-					console.log("DONE");
-				}
-	});
-}
-
-	    
-
-//Passenger Detail
-$('.userDetail').click(function() {
-   		    var bus_id=$(this).attr("value") ;
-	   	    console.log(bus_id);
-	   	   		$.ajax({
-	   	   				type : "POST",
-		   	   			async:false,
-		   				cache:false,
-	   	   				contentType : "application/json",
-	   	   				data :bus_id,
-	   	   				url : "driverGetDetail",
-	   	   				timeout : 100000,
-	   	   				success : function(data) {
-	   	   					var passenger_modal="";
-	   	  					for(i=0;i<data.length;i++){
-	   			   					passenger_modal+='<tr><td>'+(i+1)
-	   			   								+'</td><td>'+data[i].driver_name
-	   			   								+'</td><td>'+data[i].passenger_name
-	   			   								+'</td><td>'+data[i].batch
-	   			   								+'</td><td>'+data[i].role
-	   			   								+'</td><td>'+data[i].seat_number
-	   			   								+'</td></tr>';	
-	   	  						}
-	   	  						document.getElementById('getDetail').innerHTML=passenger_modal;
-								$('#user_detail').modal('open');
-	   	   					          
-	   	   					},
-	   	   					error : function(e) {
-	   	   						console.log("ERROR: ", e);
-	   	   					},
-	   	   					done : function(e) {
-	   	   						console.log("DONE");
-	   	   					}
-	   	   				});
-	   	   		 	
-
-   	    });
-}); 	 
 
 </script>
 </body>

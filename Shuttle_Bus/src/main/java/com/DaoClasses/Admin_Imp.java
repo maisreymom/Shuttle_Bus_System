@@ -776,7 +776,7 @@ public class Admin_Imp implements Admin_Inf{
 	   }
 	
 	public Boolean desDelete(String des) {
-			Boolean ret=true;
+			Boolean ret=false;
 	       Transaction trns = null;
 	       Configuration con=new Configuration();
 	       con.configure("hibernate.cfg.xml");
@@ -785,14 +785,14 @@ public class Admin_Imp implements Admin_Inf{
 	       try {
 	    	     String fal="false";
 	     		 trns = session.beginTransaction();
-		           String hql = "UPDATE Destination_Master set status = :st "  + 
+		         String hql = "UPDATE Destination_Master set status = :st "  + 
 		                   "WHERE destination_id = :id";
 			      Query query = session.createQuery(hql);
 			      query.setString("id", des);
 			      query.setString("st", fal);
 			      int result = query.executeUpdate();
 			      session.getTransaction().commit();
-			      System.out.println(result);
+			      ret=true;
 	 
 	       } catch (RuntimeException e) {
 	           e.printStackTrace();

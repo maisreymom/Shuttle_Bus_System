@@ -4,6 +4,7 @@ public class PermissionRequest {
 	public String user_id;
 	public String date_of_request;
 	public String reason;
+	public String status;
 	public String getUser_id() {
 		return user_id;
 	}
@@ -21,6 +22,12 @@ public class PermissionRequest {
 	}
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

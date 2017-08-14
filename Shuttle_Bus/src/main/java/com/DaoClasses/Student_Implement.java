@@ -1,14 +1,18 @@
 package com.DaoClasses;
 
+import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -28,6 +32,7 @@ import com.EntityClasses.Schedule_Table;
 import com.EntityClasses.Ticket_Donation;
 import com.EntityClasses.User_Master;
 import com.HibernateUtil.HibernateUtil;
+import com.ModelClasses.Cancel_Ticket;
 import com.ModelClasses.Donate;
 import com.ModelClasses.EmergencyBooking;
 import com.ModelClasses.ExchangeSeat;
@@ -51,10 +56,41 @@ public class Student_Implement implements StudentDao{
 	    return today;
 
 	}
-	
-	public List<User_Master> getUserInfo(String user_id){
+	public String Date(String date_convert){
+		SimpleDateFormat format1 = new SimpleDateFormat("MMM d, y");
+	       SimpleDateFormat format2 = new SimpleDateFormat("y-MM-dd");
+	       java.util.Date date;
+	       String format = "";
+			try {
+				date =  format1.parse(date_convert);
+				format = format2.format(date);
+			} catch (ParseException e1) {
+				
+				e1.printStackTrace();
+			}
+			
+		return format;
+	}
+	public String DateTime(String date_convert){
+		SimpleDateFormat format1 = new SimpleDateFormat("MMM d, y HH:mm:ss");
+	       SimpleDateFormat format2 = new SimpleDateFormat("y-MM-dd HH:mm:ss");
+	       java.util.Date date;
+	       String format = "";
+			try {
+				date =  format1.parse(date_convert);
+				format = format2.format(date);
+			} catch (ParseException e1) {
+				
+				e1.printStackTrace();
+			}
+			
+		return format;
+	}
+	public List<Map<String, Object>> getUserInfo(String user_id){
 		List<User_Master> user = new ArrayList<User_Master>();
+		Student_Implement stu=new Student_Implement();
 		Transaction trns = null;
+		List<Map<String,Object>> userReturn = new ArrayList<Map<String,Object>>();
         Session session = HibernateUtil.getSessionFactory().openSession();
      	try {
             trns = session.beginTransaction();
@@ -62,14 +98,26 @@ public class Student_Implement implements StudentDao{
             Query query =  session.createQuery(hql);
             query.setString("id", user_id);
             user = query.list();
+            String date_of_leaving=stu.Date(user.get(0).getBatch_id().getDate_of_leaving().toString());
+            String date_of_returning=stu.Date(user.get(0).getBatch_id().getDate_of_returning().toString());
+           // String deadline_of_booking=stu.Date(user.get(0).getBatch_id().getDeadline_of_booking().toString());;
+            Map<String,Object> users = new HashMap<String,Object>();
+        	users.put("fullname", user.get(0).getFullname());
+        	users.put("username", user.get(0).getUsername());
+        	users.put("batch_number", user.get(0).getBatch_id().getBatch_number());
+        	users.put("date_of_leaving", user.get(0).getBatch_id().getDate_of_leaving().toString());
+        	users.put("date_of_returning", user.get(0).getBatch_id().getDate_of_returning().toString());
+        	//users.put("deadline_of_booking", deadline_of_booking);
+        	users.put("no_of_ticket", user.get(0).getNo_of_ticket());
+        	userReturn.add(users);
+        	System.out.println(userReturn);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            return user;
         } finally {
             session.flush();
             session.close();
         }
-        return user;
+        return userReturn;
 	}
 	
 	public List<Batch_Master> Batch() {
@@ -87,8 +135,8 @@ public class Student_Implement implements StudentDao{
 	           e.printStackTrace();
 	          
 	       } finally {
-	           session.flush();
-	           session.close();
+	          // session.flush();
+	          // session.close();
 	       }
 	       
 	       return list;
@@ -235,7 +283,7 @@ public class Student_Implement implements StudentDao{
         }
 	   }
 	
-	public List<Schedule_Table> checkSchdule(String user_id){
+	public List<Schedule_Table> checkSchduleEmer(String user_id){
 		List<Passenger> pas=new ArrayList<Passenger>(); 
 		List<Schedule_Table> sche = new ArrayList<Schedule_Table>();
 		Transaction trns = null;
@@ -245,6 +293,7 @@ public class Student_Implement implements StudentDao{
             String hql ="FROM Passenger WHERE user_id!=:us_id and bus_per_schedule_id!=null";
             Query query =  session.createQuery(hql);
             query.setString("us_id", user_id);
+            //query.setDate("today", new Date());
             pas = query.list();         
             
             Criteria c = session.createCriteria(Schedule_Table.class, "sch");
@@ -273,14 +322,14 @@ public class Student_Implement implements StudentDao{
         add.setSchedule_id(sch_id);
         add.setReason(book.getReason());
         add.setStatus(status);
-        //add.setCreated_at(new Date());
-        //add.setUpdated_at(new Date());
+        add.setCreated_at(new Date());
+        add.setUpdated_at(new Date());
+        add.setNotification("new");
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = session.beginTransaction();
             session.save(add);
             session.getTransaction().commit();
-            return true;
         } catch (RuntimeException e) {
             if (trns != null) {
                 trns.rollback();
@@ -290,6 +339,7 @@ public class Student_Implement implements StudentDao{
         } finally {
             session.close();
         }
+        return true;
 	   }
 	
 	public Boolean permission_request(PermissionRequest pr) {
@@ -302,6 +352,7 @@ public class Student_Implement implements StudentDao{
         add.setCreated_at(new Date());
         add.setUpdated_at(new Date());
         add.setReason(pr.getReason());
+        add.setNotification("new");
         add.setStatus(status);
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -319,6 +370,30 @@ public class Student_Implement implements StudentDao{
             session.close();
         }
 	   }
+	public Boolean cancel_ticket(Cancel_Ticket cancel) {
+		System.out.println(cancel.date_of_travel);
+		Transaction trns = null;
+		Student_Implement stu = new Student_Implement();
+		String date_of_travel=stu.Date(cancel.date_of_travel);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+        	trns = session.beginTransaction();
+            String hql = "Delete Passenger where user_id = :id and date_of_travel=:date and destination_id=:des" ;
+		      Query query = session.createQuery(hql);
+		      query.setString("id", cancel.getUser_id());
+		      query.setString("date", date_of_travel);
+		      query.setString("des", cancel.destination_id);
+		      int result = query.executeUpdate();
+		      session.getTransaction().commit();
+		      System.out.println(result);
+        }catch (RuntimeException e) {
+            return false;
+        } finally {
+            session.close();
+        }
+		return true;
+	   }
+	
 	
 	public List<Map<String, Object>> booking_notification(NotificationModel noti) {
 		Transaction trns = null;
@@ -333,22 +408,24 @@ public class Student_Implement implements StudentDao{
             Query query =  session.createQuery(hql);
             query.setString("us_id", noti.getUser_id());
             query.setDate("today", new Date());
-            if(noti.getValue()==0){
-            	query.setMaxResults(8);
-            }else{
-            	query.setMaxResults(noti.getValue()*10);
-            }
             pass = query.list();
             System.out.println(pass.size());
     		if(pass.size()!=0){
     			for(int i=0;i<pass.size();i++){
     				Map<String,Object> passenger = new HashMap<String,Object>();
     				passenger.put("destination_name",pass.get(i).getDestination_id().getDestination_name() );
+    				passenger.put("destination_id",pass.get(i).getDestination_id().getDestination_id());
     				passenger.put("date_of_travel", pass.get(i).getDate_of_travel());
     				passenger.put("updated_at", pass.get(i).getUpdated_at());
+    				passenger.put("notification", pass.get(i).getNotification());	
     				if(pass.get(i).getBus_per_schedule_id()!=null){
     					//Booking Approved
+    					ByteArrayOutputStream out = QRCode.from(pass.get(i).getTicket_qrcode().toString()).to(ImageType.PNG).stream();  
+    					byte[] test = out.toByteArray();
+    					String encodedImage = Base64.getEncoder().encodeToString(test);
+    					passenger.put("qrcode", encodedImage);
     					passenger.put("status", "booking_approved");
+    					passenger.put("bus_per_sch_id", pass.get(i).getBus_per_schedule_id().getBus_per_schedule_id());
     				}else{
     					sch=stu.checkSchedule(pass.get(i).getDestination_id().getDestination_id(),pass.get(i).getDate_of_travel());
     					if(sch.size()==0){
@@ -375,6 +452,7 @@ public class Student_Implement implements StudentDao{
 	   }
 	
 	public List<Map<String, Object>> donate_notification(NotificationModel noti) {
+		System.out.println("Value: "+noti.getValue());
 		Transaction trns = null;
 		StudentDao stu = new Student_Implement();
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
@@ -391,12 +469,14 @@ public class Student_Implement implements StudentDao{
             	query.setMaxResults(noti.getValue()*10);
             }
             tic_donate = query.list(); 
+            System.out.println(tic_donate.size());
             for(int i=0;i<tic_donate.size();i++){
             	Map<String,Object> donate = new HashMap<String,Object>();
                 donate.put("receive_from", tic_donate.get(i).getReceive_from().getFullname());
                 donate.put("no_of_ticket", tic_donate.get(i).getNo_of_ticket());
                 donate.put("updated_at", tic_donate.get(i).getUpdated_at());
                 donate.put("status", "donated");
+                donate.put("notification", tic_donate.get(i).getNotification());
                 list.add(donate);            
                }
 
@@ -411,7 +491,49 @@ public class Student_Implement implements StudentDao{
         return list;
 	   }
 	
+	public List<Map<String, Object>> emergency_notification(NotificationModel noti) {
+		System.out.println("Value: "+noti.getValue());
+		Transaction trns = null;
+		StudentDao stu = new Student_Implement();
+		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+		List<Emergency_Request> emer_book = new ArrayList<Emergency_Request>();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            String hql ="FROM Emergency_Request WHERE user_id=:id";
+            Query query =  session.createQuery(hql);
+            query.setString("id", noti.getUser_id());
+            if(noti.getValue()==0){
+            	query.setMaxResults(8);
+            }else{
+            	query.setMaxResults(noti.getValue()*10);
+            }
+            emer_book = query.list(); 
+            System.out.println(emer_book.size());
+            for(int i=0;i<emer_book.size();i++){
+            	Map<String,Object> emer = new HashMap<String,Object>();
+            	emer.put("date_of_travel", emer_book.get(i).getSchedule_id().getDate_of_travel());
+            	emer.put("destination_name", emer_book.get(i).getSchedule_id().getDestination_id().getDestination_name());
+            	emer.put("updated_at", emer_book.get(i).getUpdated_at());
+            	emer.put("status", emer_book.get(i).getStatus());
+            	emer.put("reason", emer_book.get(i).getReason());
+            	emer.put("notification", emer_book.get(i).getNotification());
+                list.add(emer);            
+               }
+
+        } catch (RuntimeException e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return list;
+	   }
+	
 	public List<Map<String, Object>> exchange_seat_notification(NotificationModel noti) {
+		System.out.println("Value: "+noti.getValue());
 		Transaction trns = null;
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		List<Exchange_Seat> exch_seat= new ArrayList<Exchange_Seat>();
@@ -427,7 +549,7 @@ public class Student_Implement implements StudentDao{
             	query.setMaxResults(noti.getValue()*10);
             }
             exch_seat = query.list(); 
-            
+            System.out.println(exch_seat.size());
             for(int i=0;i<exch_seat.size();i++){
             	Map<String,Object> exch = new HashMap<String,Object>();
             	exch.put("exchange_from", exch_seat.get(i).getExchange_from().getFullname());
@@ -435,6 +557,7 @@ public class Student_Implement implements StudentDao{
             	exch.put("destination", exch_seat.get(i).getSchedule_id().getDestination_id().getDestination_name());
             	exch.put("updated_at", exch_seat.get(i).getUpdated_at());
             	exch.put("status", "exchange_seat");
+            	exch.put("notification", exch_seat.get(i).getNotification());
             	list.add(exch);
             }
         }catch (RuntimeException e) {
@@ -449,6 +572,7 @@ public class Student_Implement implements StudentDao{
 	   }
 	
 	public List<Map<String, Object>> permission_notification(NotificationModel noti) {
+		System.out.println("Value: "+noti.getValue());
 		Transaction trns = null;  
 		List<Permission> permission = new ArrayList<Permission>();
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
@@ -464,13 +588,15 @@ public class Student_Implement implements StudentDao{
             	query.setMaxResults(noti.getValue()*10);
             }
             permission = query.list(); 
+            System.out.println(permission.size());
             for(int i=0;i<permission.size();i++){
-            	Map<String,Object> exch = new HashMap<String,Object>();
-            	exch.put("date_of_request", permission.get(i).getDate_of_request());
-            	exch.put("reason", permission.get(i).getReason());
-            	exch.put("updated_at", permission.get(i).getUpdated_at());
-            	exch.put("status", permission.get(i).getStatus());
-            	list.add(exch);
+            	Map<String,Object> perm = new HashMap<String,Object>();
+            	perm.put("date_of_request", permission.get(i).getDate_of_request());
+            	perm.put("reason", permission.get(i).getReason());
+            	perm.put("updated_at", permission.get(i).getUpdated_at());
+            	perm.put("status", permission.get(i).getStatus());
+            	perm.put("notification", permission.get(i).getNotification());
+            	list.add(perm);
     		}
         } catch (RuntimeException e) {
             if (trns != null) {
@@ -508,44 +634,22 @@ public class Student_Implement implements StudentDao{
 	   }
 	
 	public static void main(String args[]){
-		Transaction trns = null;
+		String des="h4if59igbpu3kj3";
+		Student_Implement stu= new Student_Implement();
+		String date=stu.Date("Aug 19, 2017");
 		String user_id="t4jrtfh385";
-		StudentDao stu = new Student_Implement();
-		List<Passenger> pass = new ArrayList<Passenger>();
-		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
-		List<Schedule_Table> sch=new ArrayList<Schedule_Table>();
+		Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             trns = session.beginTransaction();
-            String hql ="FROM Passenger WHERE user_id=:us_id and date_of_travel >=:today";
-            Query query =  session.createQuery(hql);
-            query.setString("us_id", user_id);
-            query.setDate("today", new Date());
-            pass = query.list();
-            System.out.println(pass.size());
-    		if(pass.size()!=0){
-    			for(int i=0;i<pass.size();i++){
-    				Map<String,Object> passenger = new HashMap<String,Object>();
-    				passenger.put("destination_name",pass.get(i).getDestination_id().getDestination_name() );
-    				passenger.put("date_of_travel", pass.get(i).getDate_of_travel());
-    				passenger.put("updated_at", pass.get(i).getUpdated_at());
-    				if(pass.get(i).getBus_per_schedule_id()!=null){
-    					//Booking Approved
-    					passenger.put("status", "booking_approved");
-    				}else{
-    					sch=stu.checkSchedule(pass.get(i).getDestination_id().getDestination_id(),pass.get(i).getDate_of_travel());
-    					if(sch.size()==0){
-    						//waiting for booking approve
-    						passenger.put("status", "booking_waiting");
-    					}else{
-    						//Booking Conflict
-    						passenger.put("status", "booking_conflict");
-    					}
-    				}
-    				list.add(passenger);
-    			}
-    		}
-    		System.out.println(list);
+            String hql = "Delete Passenger where user_id = :id and date_of_travel=:date and destination_id=:des" ;
+		      Query query = session.createQuery(hql);
+		      query.setString("id", user_id);
+		      query.setString("date", date);
+		      query.setString("des", des);
+		      int result = query.executeUpdate();
+		      session.getTransaction().commit();
+		      System.out.println(result);
         }catch (RuntimeException e) {
             if (trns != null) {
                 trns.rollback();

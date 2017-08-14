@@ -40,7 +40,9 @@
             <column name="updated_at" not-null="true" />
         </property>
         
-       
+       <property name="notification" type="string">
+            <column name="notification" not-null="true" />
+        </property>
         
  	</class>
 </hibernate-mapping>

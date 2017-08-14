@@ -16,6 +16,15 @@ public class Permission {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated_at;
 	private String reason;
+	private String notification;
+	
+	
+	public String getNotification() {
+		return notification;
+	}
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
 	public int getId() {
 		return id;
 	}

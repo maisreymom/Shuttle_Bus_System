@@ -12,12 +12,12 @@ public class Emergency_Request {
 	private Schedule_Table schedule_id;
 	private String reason;
 	private String status;
-	/*
+	private String notification;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created_at;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated_at;
-	*/
+
 	public int getId() {
 		return id;
 	}
@@ -48,7 +48,6 @@ public class Emergency_Request {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	/*
 	public Date getCreated_at() {
 		return created_at;
 	}
@@ -60,7 +59,13 @@ public class Emergency_Request {
 	}
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
-	}*/
+	}
+	public String getNotification() {
+		return notification;
+	}
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
 	
 	
 }

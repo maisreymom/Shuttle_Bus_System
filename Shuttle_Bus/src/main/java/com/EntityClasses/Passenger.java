@@ -24,10 +24,9 @@ public class Passenger {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated_at;
 	 
+	private String notification;
 	
-	public Passenger(){
-		
-	}
+
 	
 	public Passenger(Date date_of_booking,User_Master user_id,Destination_Master destination_id,Date date_of_travel){
 		this.date_of_booking=date_of_booking;
@@ -110,6 +109,16 @@ public class Passenger {
 		this.updated_at = updated_at;
 	}
 
+	public String getNotification() {
+		return notification;
+	}
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
+	
+	public Passenger(){
+		
+	}
 	
 	
 }
