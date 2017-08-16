@@ -19,37 +19,28 @@
 <body>
 	
 <!--Header-->
-<div class="navbar-fixed">
-    <nav>
-		<div class="container">
-			<div class="nav-wrapper">
-			<div class="row">
-				<div class="col s12 m6">
-					 <a href="#" class="brand-logo">Logo</a>
-				</div>		
-				<div class="col s0 l6">
-					<ul id="nav-mobile" class="right hide-on-med-and-down">
-			        <li class="avatar">
-				        <a id="getProfile"  href="#">
-				      		<img src="https://s-media-cache-ak0.pinimg.com/736x/64/fb/c9/64fbc98e98bebd0c06dc5f9345724658.jpg" alt="" class="circle profile">
-				   		</a>
-			   		 </li>      
-			      </ul>
-				</div>
-			</div>
-	    </div>
-		</div> 
+<nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <ul class="right hide-on-med-and-down">
+        <li>
+        	<a class="dropdown-user-info" href="#" data-activates='user_info'><i class="material-icons Medium">account_circle</i></a>
+        </li>
+      </ul>
+	  <!-- User Detial Dropdoe -->
+	  <ul id='user_info' class='dropdown-content'>
+	  	<li>
+        	<a id="notifications_icon" class="dropdown-icon" data-activates='notification'></a>
+        </li>
+	  </ul>
+    </div>
   </nav>
-  </div>
 <br>
 <div class="container">
 		<div class="row">
-			<div class="col s12">
-				<h5 class="title">Shuttle Bus Information</h5>
+			<div id="my_schedule"></div>
+			<h5 class="title">Shuttle Bus Information</h5>
 				<br>
-			</div>
-			<div class="col s12">
-				<table class="bordered centered highlight">
+			<table class="bordered centered highlight">
 			        <thead>
 			          <tr>
 			              <th>Date</th>
@@ -66,12 +57,11 @@
 			          </tr>
 			        </thead>
 			        <tbody id="getSchedule"></tbody>
-     		 </table>	
-		</div>
+     		 </table>
 		</div>
 	</div>
 <!-- Modal Structure -->
-	  <div id="user_detail" class="modal modal-fixed-footer">
+<div id="user_detail" class="modal modal-fixed-footer">
 		    <div class="modal-content">
 		      <h5 class="center title">List of Passengers</h5>
 		      <table class="bordered centered highlight">
@@ -120,6 +110,7 @@
 </footer>		
 
 <script type="text/javascript">
+<<<<<<< HEAD
 $(document).ready(function(){
 $.ajax({
 		type : "GET",
@@ -301,6 +292,8 @@ $('.userDetail').click(function() {
 
    	    });
 }); 	 
+=======
+>>>>>>> 58076301d4c83333bc0b68eed0d0c97afd2072a6
 
 </script>
 </body>

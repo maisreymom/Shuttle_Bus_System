@@ -6,25 +6,31 @@
  	 	
  	   <id name= "id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="increment" />
         </id>
-        
-      
+
          <many-to-one name="user_id" class="com.EntityClasses.User_Master" fetch="select">
             <column name="user_id" not-null="true" />
          </many-to-one>
-          
-        
-         
-       
+
         <property name="date_of_request" type="date">
             <column name="date_of_request" not-null="true" />
         </property>
         <property name="status" type="string">
             <column name="status" not-null="true" />
         </property>
-        
-       
+        <property name="created_at" type="timestamp">
+            <column name="created_at" not-null="true" />
+        </property>
+        <property name="updated_at" type="timestamp">
+            <column name="updated_at" not-null="true" />
+        </property>
+        <property name="reason" type="string">
+            <column name="reason" not-null="true" />
+        </property>
+        <property name="notification" type="string">
+            <column name="notification" not-null="true" />
+        </property>
         
  	</class>
 </hibernate-mapping>

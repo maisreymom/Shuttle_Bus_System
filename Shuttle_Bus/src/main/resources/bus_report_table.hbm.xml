@@ -15,7 +15,7 @@
 	     
 	     
           <!-- relationship with other-->
-       
+
         <one-to-one name="bus_per_schedule" class="com.EntityClasses.Bus_Per_Schedule"
 			constrained="true"></one-to-one>
         

@@ -22,11 +22,15 @@ public class Schedule_Table {
 	
 	private Set<Bus_Per_Schedule> bus_per_schedule;
 	private Set<Emergency_Request> emergency_request;
+	private Set<Exchange_Seat> exchange_seat;
 	
 	public Schedule_Table(){
 		
 	}
-	
+	public Schedule_Table(String schedule_id) {
+		super();
+		this.schedule_id = schedule_id;
+	}
 	public String getSchedule_id() {
 		return schedule_id;
 	}
@@ -92,6 +96,12 @@ public class Schedule_Table {
 
 	public void setEmergency_request(Set<Emergency_Request> emergency_request) {
 		this.emergency_request = emergency_request;
+	}
+	public Set<Exchange_Seat> getExchange_seat() {
+		return exchange_seat;
+	}
+	public void setExchange_seat(Set<Exchange_Seat> exchange_seat) {
+		this.exchange_seat = exchange_seat;
 	}
 	
 }

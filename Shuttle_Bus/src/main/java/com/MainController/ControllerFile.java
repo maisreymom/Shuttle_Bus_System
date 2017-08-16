@@ -16,16 +16,49 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import com.DaoClasses.Diver_Impl;
+import com.DaoClasses.Driver_Inf;
+import com.DaoClasses.StudentDao;
+import com.DaoClasses.Student_Implement;
+import com.DaoClasses.TeacherDao;
 import com.DaoClasses.Teacher_Implement;
 import com.EntityClasses.Authentic;
+import com.EntityClasses.Batch_Master;
 import com.EntityClasses.Bus_Per_Schedule;
 import com.EntityClasses.Bus_Report_Table;
 import com.EntityClasses.Destination_Master;
+import com.EntityClasses.Exchange_Seat;
 import com.EntityClasses.Passenger;
+import com.EntityClasses.Permission;
 import com.EntityClasses.Schedule_Table;
+import com.EntityClasses.Ticket_Donation;
 import com.EntityClasses.User_Master;
-import com.ModelClasses.Teacher;
+import com.ModelClasses.Cancel_Ticket;
+import com.ModelClasses.Donate;
+import com.ModelClasses.EmergencyBooking;
+import com.ModelClasses.ExchangeSeat;
+import com.ModelClasses.NotificationModel;
+import com.ModelClasses.Booking;
 import com.ServiceClasses.usersService;
+import com.ModelClasses.PermissionRequest;
 
 
 @Controller
@@ -112,14 +145,15 @@ public class ControllerFile {
 	@RequestMapping(value="/mobileSchedule",method = RequestMethod.GET)
 	public ModelAndView getMobileSchedule(){
 		ModelAndView view =new ModelAndView("mobileSchedule");	
-		return view;
-		
+		return view;	
 	}
+	
+	//Driver Schedule for Mobile
 	@RequestMapping(value="/mobileSchedule_Service",method = RequestMethod.GET)
-	public @ResponseBody List<Map> getMobileSche_Service(){
-		List<Map> bus_per = new ArrayList<Map>();
+	public @ResponseBody List<Map<String,Object>> getMobileSche_Service(){
+		List<Map<String,Object>> bus_per = new ArrayList<Map<String,Object>>();
 		List<Bus_Per_Schedule> schedule = new ArrayList<Bus_Per_Schedule>();
-		Teacher_Implement sl= new Teacher_Implement();
+		Driver_Inf sl= new Diver_Impl();
 		schedule = sl.getdriverSche(); 
 		for(int i=0;i<schedule.size();i++){
         	Map<String,Object> sch = new HashMap<String,Object>();
@@ -140,29 +174,22 @@ public class ControllerFile {
 	}
 	
 	
-	
-	@RequestMapping(value="/userInfo",method = RequestMethod.GET)
-	public @ResponseBody List<Map> getUserInfo(){
-		List<User_Master> user = new ArrayList<User_Master>();
-		List<Map> userReturn = new ArrayList<Map>();
-		Teacher_Implement sl= new Teacher_Implement();
-		user=sl.getUserInfo();
-		for(int i=0;i<user.size();i++){
-        	Map<String,Object> users = new HashMap<String,Object>();
-        	users.put("fullname", user.get(i).getFullname());
-        	users.put("username", user.get(i).getUsername());
-        	users.put("no_of_ticket", user.get(i).getNo_of_ticket());
-        	userReturn.add(users);
-        }
+	//student, teacher and driver
+	@RequestMapping(value="/user_info",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String,Object>> getUserInfo(@RequestBody String user_id){
+		List<Map<String,Object>> userReturn = new ArrayList<Map<String,Object>>();
+		StudentDao sl= new Student_Implement();
+		userReturn=sl.getUserInfo(user_id);
+		
 		return userReturn;
 	}
 	
-	
+	//teacher and student
 	@RequestMapping(value="/selectService",method = RequestMethod.GET)
-	public @ResponseBody List<Map> select_service(){
+	public @ResponseBody List<Map<String,Object>> select_service(){
 		List<Destination_Master> dest = new ArrayList<Destination_Master>();
-		List<Map> destReturn = new ArrayList<Map>();
-		Teacher_Implement sl= new Teacher_Implement();
+		List<Map<String,Object>> destReturn = new ArrayList<Map<String,Object>>();
+		TeacherDao sl= new Teacher_Implement();
 		dest=sl.getDestinationId();
 		for(int i=0;i<dest.size();i++){
         	Map<String,Object> dests = new HashMap<String,Object>();
@@ -170,45 +197,38 @@ public class ControllerFile {
         	dests.put("destination_id", dest.get(i).getDestination_id());
         	destReturn.add(dests);
         }
-		System.out.println(destReturn);
 		return destReturn;
 	}
 	
-	//Check Leave Confirm
+	//Check Confirm driver
 	@RequestMapping(value="/checkConfirm",method = RequestMethod.POST)
 	public @ResponseBody Map<String, Object> getCheckConfirm(@RequestBody String bus_id){
-		System.out.println("Hello");
 		Map<String,Object> bus_per = new HashMap<String,Object>();
-		List<Bus_Report_Table> bus = new ArrayList<Bus_Report_Table>();
-		Teacher_Implement sl= new Teacher_Implement();
-		bus=sl.checkConfim(bus_id);
-		System.out.println(bus);
-		bus_per.put("actual_departure_time",bus.get(0).getActual_departure_time());
-		bus_per.put("actual_arrival_time",bus.get(0).getActual_arrival_time());
-		System.out.println(bus_per);
+		Driver_Inf sl= new Diver_Impl();
+		bus_per=sl.checkConfim(bus_id);
 		return bus_per;
 	}
+	//Check Leave Confirm driver
 	@RequestMapping(value="/leaveConfirm",method = RequestMethod.POST)
 	public @ResponseBody String getLeaveConfirm(@RequestBody String bus_id){
-			Teacher_Implement sl= new Teacher_Implement();
+			Driver_Inf sl= new Diver_Impl();
 			String bus_set=sl.leaveConfim(bus_id);
 			return bus_set;
 	}
-	
+	//Check arrived Confirm driver
 	@RequestMapping(value="/arriveConfirm",method = RequestMethod.POST)
 	public @ResponseBody String getArrivedConfirm(@RequestBody String bus_id){
-			Teacher_Implement sl= new Teacher_Implement();
+			Driver_Inf sl= new Diver_Impl();
 			String bus_set=sl.arrivedConfim(bus_id);
 			return bus_set;
 	}
 	
-
+	//Schedule same for both Student and Teacher
 	@RequestMapping(value="/scheduleData",method = RequestMethod.POST)
-	public @ResponseBody List<Map> getscheduleData(){
-		List<Map> scheReturn = new ArrayList<Map>();
-		System.out.println("Schedule1");
+	public @ResponseBody List<Map<String, Object>> getscheduleData(){
+		List<Map<String, Object>> scheReturn = new ArrayList<Map<String, Object>>();
 		List<Schedule_Table> schedule = new ArrayList<Schedule_Table>();
-		Teacher_Implement sl= new Teacher_Implement();
+		TeacherDao sl= new Teacher_Implement();
 		schedule = sl.getSchdule(); 
 		for(int i=0;i<schedule.size();i++){
         	Map<String,Object> sch = new HashMap<String,Object>();
@@ -222,59 +242,33 @@ public class ControllerFile {
         	sch.put("schedule_id",schedule.get(i).getSchedule_id());
         	scheReturn.add(sch);
         }
-		System.out.println(scheReturn);
 		return scheReturn;
 	}
 	
-
+	//Schedule same for both Student and Teacher
 	@RequestMapping(value="/passengerDetail",method = RequestMethod.POST)
 	public @ResponseBody List<Map<String, Object>> getpassengerDetail(@RequestBody String sch_id){
-		List<Bus_Per_Schedule> bus = new ArrayList<Bus_Per_Schedule>();
-		Teacher_Implement sl= new Teacher_Implement();
-		bus = sl.getPassengerDetail(sch_id); 
 		List<Map<String,Object>> passPerDriver = new ArrayList<Map<String, Object>>();
-		
-		Set<Passenger> pa=new HashSet<Passenger>(); 
-		for(int i=0;i<bus.size();i++){
-			List<Map> passPer = new ArrayList<Map>();
-			pa = bus.get(i).getPassenger();
-			for(Passenger b:pa)
-			{
-				Map<String,Object> sch = new HashMap<String,Object>();
-	        	sch.put("passenger_name",b.getUser_id().getFullname());
-	        	sch.put("user_id",b.getUser_id().getUser_id());
-	        	sch.put("batch",b.getUser_id().getBatch_id().getBatch_number());
-	        	sch.put("role",b.getUser_id().getRole_id().getRole_name());
-	        	sch.put("seat_number",b.getSeat_number());
-	        	passPer.add(sch);	
-			}
-			Map<String, Object> driver = new HashMap<String,Object>();
-			driver.put("bus_driver", bus.get(i).getUser_id().getFullname());
-			driver.put("bus_model", bus.get(i).getBus_id().getBus_model());
-			driver.put("departure_time", bus.get(i).getEst_departure_time());
-			driver.put("arrival_time", bus.get(i).getEst_arrival_time());
-			driver.put("passenger", passPer);
-			passPer.removeAll(pa);
-			passPerDriver.add(driver);
-			
-		}
+		TeacherDao sl= new Teacher_Implement();
+		passPerDriver = sl.getPassengerDetail(sch_id); 
 		return passPerDriver;
 		}
 	
-
+	//Booking for both student and teacher
 	@RequestMapping(value="/booking",method = RequestMethod.POST)
-	public @ResponseBody Boolean getBooking(@RequestBody Teacher[] book){
-		Teacher_Implement sl= new Teacher_Implement();
+	public @ResponseBody Boolean getBooking(@RequestBody Booking[] book){
+		TeacherDao sl= new Teacher_Implement();
 		sl.BookService(book);
 		return true;
 	}
 	
-	
+	//driver schedule for computer
 	@RequestMapping(value="/driverSchedule",method = RequestMethod.GET)
-	public @ResponseBody List<Map> getDriverSchedule(){
-		List<Map> bus_per = new ArrayList<Map>();
+	public @ResponseBody List<Map<String, Object>> getDriverSchedule(){
+		System.out.println("Hello");
+		List<Map<String, Object>> bus_per = new ArrayList<Map<String, Object>>();
 		List<Bus_Per_Schedule> schedule = new ArrayList<Bus_Per_Schedule>();
-		Teacher_Implement sl= new Teacher_Implement();
+		Driver_Inf sl= new Diver_Impl();
 		schedule = sl.getdriverSche(); 
 		for(int i=0;i<schedule.size();i++){
         	Map<String,Object> sch = new HashMap<String,Object>();
@@ -295,33 +289,245 @@ public class ControllerFile {
 	}
 	
 	
-	//Use for mobile teacher/student detail also 
+	//Use for Driver
 	@RequestMapping(value="/driverGetDetail",method = RequestMethod.POST)
-	public @ResponseBody List<Map> driverGetDetail(@RequestBody String bus_id){
-		System.out.println(bus_id);
-		List<Map> passReturn = new ArrayList<Map>();
-		List<Bus_Per_Schedule> bus = new ArrayList<Bus_Per_Schedule>();
-		Teacher_Implement sl= new Teacher_Implement();
-		bus = sl.getDetail(bus_id); 
-		Set<Passenger> pa=new HashSet<Passenger>(); 
-		for(int i=0;i<bus.size();i++){
-			pa = bus.get(i).getPassenger();
-			for(Passenger b:pa){
-				Map<String,Object> sch = new HashMap<String,Object>();
-	        	sch.put("passenger_name",b.getUser_id().getFullname());
-	        	sch.put("batch",b.getUser_id().getBatch_id().getBatch_number());
-	        	sch.put("role",b.getUser_id().getRole_id().getRole_name());
-	        	sch.put("seat_number",b.getSeat_number());
-	        	passReturn.add(sch);
-			}
-		}
-		System.out.println(passReturn);
+	public @ResponseBody List<Map<String, Object>> driverGetDetail(@RequestBody String bus_id){
+		List<Map<String, Object>> passReturn = new ArrayList<Map<String, Object>>();
+		Driver_Inf sl= new Diver_Impl();
+		passReturn = sl.getDetail(bus_id); 
 		return passReturn;
 		}
 	
 	
+	@RequestMapping(value="/req_donate",method = RequestMethod.GET)
+	public @ResponseBody List<Map<String, Object>> get_req_donate(){
+		List<Batch_Master> bat = new ArrayList<Batch_Master>();
+		List<Map<String, Object>> batReturn = new ArrayList<Map<String, Object>>();
+		StudentDao sl= new Student_Implement();
+		bat=sl.Batch();
+		for(int i=0;i<bat.size();i++){
+        	Map<String,Object> dests = new HashMap<String,Object>();
+        	dests.put("batch_id", bat.get(i).getBatch_id());
+        	dests.put("batch_number", bat.get(i).getBatch_number());
+        	batReturn.add(dests);
+        }
+		return batReturn;
+	}
+	
+	@RequestMapping(value="/req_donate_username",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String,Object>> get_req_donate_username(@RequestBody Donate donate){
+		List<User_Master> user = new ArrayList<User_Master>();
+		StudentDao admin = new Student_Implement();
+		user = admin.Bat_User(donate);
+		List<Map<String,Object>> userList = new ArrayList<Map<String,Object>>();
+		for(int i=0;i<user.size();i++){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("user_id", user.get(i).getUser_id());
+			map.put("username", user.get(i).getUsername());
+			userList.add(map);	
+		}
+		return userList;
+			
+	}
+	
+	@RequestMapping(value="/start_donate",method = RequestMethod.POST)
+	public @ResponseBody Boolean get_start_donate(@RequestBody Donate donate){
+		StudentDao stu = new Student_Implement();
+		Boolean ret = stu.donate(donate);
+		return ret;
+			
+	}
+	
+	@RequestMapping(value="/start_exchange_seat",method = RequestMethod.POST)
+	public @ResponseBody Boolean get_start_exchange_seat(@RequestBody ExchangeSeat exch){
+		StudentDao stu = new Student_Implement();
+		Boolean ret = stu.exchange(exch);
+		return ret;
+			
+	}
+	
+	@RequestMapping(value="/list_student_permission",method = RequestMethod.GET)
+	public @ResponseBody List<Map<String,Object>> list_student_permission(){
+		System.out.println("Student Permission");
+		TeacherDao stu = new Teacher_Implement();
+		List<Map<String,Object>> ret = stu.list_student_permission();
+		return ret;	
+	}
+	
+	@RequestMapping(value="/check_exchange",method = RequestMethod.POST)
+	public @ResponseBody Boolean check_exchange(@RequestBody String user_id){
+		StudentDao stu = new Student_Implement();
+		Boolean ret = stu.check_exchange(user_id);
+		return ret;	
+	}
+	
+	@RequestMapping(value="/checkEmergency",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String,Object>> checkEmergency(@RequestBody String user_id){
+		List<Map<String,Object>> scheReturn = new ArrayList<Map<String,Object>>();
+		List<Schedule_Table> schedule = new ArrayList<Schedule_Table>();
+		StudentDao sl= new Student_Implement();
+		schedule = sl.checkSchduleEmer(user_id); 
+		for(int i=0;i<schedule.size();i++){
+        	Map<String,Object> sch = new HashMap<String,Object>();
+        	sch.put("date_of_travel",schedule.get(i).getDate_of_travel());
+        	sch.put("destination_name",schedule.get(i).getDestination_id().getDestination_name());
+        	sch.put("total_available_seats",schedule.get(i).getTotal_available_seats());
+        	sch.put("customer_seats",schedule.get(i).getCustomer_seats());
+        	sch.put("staff_seats",schedule.get(i).getStaff_seats());
+        	sch.put("student_seats",schedule.get(i).getStudent_seats());
+        	sch.put("remaining_seats",schedule.get(i).getRemaining_seats());
+        	sch.put("schedule_id",schedule.get(i).getSchedule_id());
+        	scheReturn.add(sch);
+        }
+		return scheReturn;
+	}
 	
 	
+	@RequestMapping(value="/emergency_booking",method = RequestMethod.POST)
+	public @ResponseBody Boolean emergency_booking(@RequestBody EmergencyBooking book){
+		StudentDao stu = new Student_Implement();
+		Boolean ret = stu.emergencyBooking(book);
+		return ret;
+			
+	}
+	
+	@RequestMapping(value="/permission_request",method = RequestMethod.POST)
+	public @ResponseBody Boolean permission_request(@RequestBody PermissionRequest pr){
+		StudentDao stu = new Student_Implement();
+		Boolean ret = stu.permission_request(pr);
+		return ret;
+			
+	}
+	
+	@RequestMapping(value="/cancel_ticket",method = RequestMethod.POST)
+	public @ResponseBody Boolean cancel_ticket(@RequestBody Cancel_Ticket cancel){
+		StudentDao stu = new Student_Implement();
+		Boolean ret=stu.cancel_ticket(cancel);
+		return ret;	
+	}
+	
+	@RequestMapping(value="/student_book_notification",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> bookNotification(@RequestBody NotificationModel noti){
+		StudentDao stu = new Student_Implement();
+		List<Map<String, Object>> pass=stu.booking_notification(noti);
+		System.out.println(pass.size());
+		return pass;	
+	}
+	
+	@RequestMapping(value="/donate_notification",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> donate_notification(@RequestBody NotificationModel noti){
+		StudentDao stu = new Student_Implement();
+		List<Map<String, Object>> donate=stu.donate_notification(noti);
+		System.out.println(donate);
+		return donate;	
+	}
+	
+	@RequestMapping(value="/emergency_notification",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> emergency_notification(@RequestBody NotificationModel noti){
+		StudentDao stu = new Student_Implement();
+		List<Map<String, Object>> emer_book=stu.emergency_notification(noti);
+		System.out.println(emer_book);
+		return emer_book;	
+	}
+	
+	@RequestMapping(value="/exchange_seat_notification",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> exchange_seat_notification(@RequestBody NotificationModel noti){
+		StudentDao stu = new Student_Implement();
+		List<Map<String, Object>> exch_seat=stu.exchange_seat_notification(noti);
+		return exch_seat;	
+	}
+	@RequestMapping(value="/student_permission",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> student_permission(@RequestBody NotificationModel noti){
+		StudentDao stu = new Student_Implement();
+		List<Map<String, Object>> permission=stu.permission_notification(noti);
+		return permission;	
+	}
+	//for teach notification
+	@RequestMapping(value="/permission_teacher_noti",method = RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> permission_teacher_noti(@RequestBody NotificationModel noti){
+		TeacherDao tea = new Teacher_Implement();
+		List<Map<String, Object>>  ret = tea.permission_request_teacher(noti);
+		return ret;
+			
+	}
+	//for teach notification
+		@RequestMapping(value="/teacher_confirm_permission",method = RequestMethod.POST)
+		public @ResponseBody Boolean teacher_confirm_permission(@RequestBody PermissionRequest per){
+			TeacherDao tea = new Teacher_Implement();
+			Boolean  ret = tea.teacher_confirm_permission(per);
+			return ret;
+				
+		}
+		
+		
+		//driver schedule for computer
+		@RequestMapping(value="/myschedule_driver",method = RequestMethod.POST)
+		public @ResponseBody List<Map<String, Object>> myschedule_driver(@RequestBody String driver_id){
+			System.out.println("Hello");
+			List<Map<String, Object>> bus_per = new ArrayList<Map<String, Object>>();
+			List<Bus_Per_Schedule> schedule = new ArrayList<Bus_Per_Schedule>();
+			Driver_Inf sl= new Diver_Impl();
+			schedule = sl.myschedule_driver(driver_id); 
+			for(int i=0;i<schedule.size();i++){
+	        	Map<String,Object> sch = new HashMap<String,Object>();
+	        	sch.put("date_of_travel",schedule.get(i).getSchedule_id().getDate_of_travel());
+	        	sch.put("destination_name",schedule.get(i).getSchedule_id().getDestination_id().getDestination_name());
+	        	sch.put("bus_model",schedule.get(i).getBus_id().getBus_model());
+	        	sch.put("driver_name",schedule.get(i).getUser_id().getFullname());
+	        	sch.put("est_departure_time",schedule.get(i).getEst_departure_time());
+	        	sch.put("est_arrival_time",schedule.get(i).getEst_arrival_time());
+	        	sch.put("bus_per_schedule_id",schedule.get(i).getBus_per_schedule_id());
+	        	bus_per.add(sch);
+	        }
+			return bus_per;
+		}
+	/*
+	@RequestMapping(value="/student_book_notification",method = RequestMethod.POST)
+	public @ResponseBody List<List<Map<String, Object>>> donate_notification(@RequestBody String user_id){
+		StudentDao stu = new Student_Implement();
+		List<List<Map<String, Object>>> notification = new ArrayList<List<Map<String, Object>>>();
+		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+		List<Passenger> pass=stu.booking_notification(user_id);
+		List<Ticket_Donation> tic_donate =stu.donate_notification(user_id);
+		List<Exchange_Seat> exch_seat =stu.exchange_seat_notification(user_id);
+		List<Permission> permission =stu.permission_notification(user_id);
+		List<Schedule_Table> sch=new ArrayList<Schedule_Table>();
+		if(pass.size()!=0){
+			for(int i=0;i<pass.size();i++){
+				Map<String,Object> passenger = new HashMap<String,Object>();
+				if(pass.get(i).getBus_per_schedule_id()!=null){
+					
+				}else{
+					sch=stu.checkSchedule(pass.get(i).getDestination_id().toString(),pass.get(i).getDate_of_travel());
+					if(sch.size()==0){
+						//waiting for booking approve
+					}else{
+						//Booking Conflict
+					}
+				}
+			}
+		}
+		if(tic_donate.size()!=0){
+			//this user have donated from other
+		}
+		if(exch_seat.size()!=0){
+			//this user have other exchange seat to
+		}
+		for(int i=0;i<permission.size();i++){
+			if(permission.size()!=0){
+				if(permission.get(i).getStatus().equals("true")){
+					//permission approved
+				}else if(permission.get(i).getCreated_at().equals(permission.get(i).getUpdated_at())){
+					//permission waiting for approved
+				}else{
+					//permission ignore
+				}
+			}
+		}
+		
+		return null;
+			
+	}*/
 	
 	/*
 	@RequestMapping(value="/device",method = RequestMethod.GET)

@@ -19,9 +19,9 @@ public class User_Master {
 	private Set<Passenger> passenger;
 	private Set<Ticket_Donation> ticket_donation ;
 	private Set<Bus_Per_Schedule> bus_per_schedule;
-	
 	private Set<Emergency_Request> emergency_request;
 	private Set<Permission> permission;
+	private Set<Exchange_Seat> exchange_seat;
 	
 	public User_Master(){
 		
@@ -115,7 +115,7 @@ public class User_Master {
 	public void setNo_of_donate_ticket(int no_of_donate_ticket) {
 		this.no_of_donate_ticket = no_of_donate_ticket;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
@@ -133,6 +133,12 @@ public class User_Master {
 	}
 	public void setPermission(Set<Permission> permission) {
 		this.permission = permission;
+	}
+	public Set<Exchange_Seat> getExchange_seat() {
+		return exchange_seat;
+	}
+	public void setExchange_seat(Set<Exchange_Seat> exchange_seat) {
+		this.exchange_seat = exchange_seat;
 	}
 	
 	

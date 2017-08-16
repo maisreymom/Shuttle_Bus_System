@@ -14,9 +14,17 @@ public class Exchange_Seat {
 	private Date created_at;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updated_at;
-	
 
+	private String notification;
 	
+	
+	public String getNotification() {
+		return notification;
+	}
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
+
 	public Exchange_Seat() {
 		super();
 	}

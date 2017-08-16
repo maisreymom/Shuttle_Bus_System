@@ -16,7 +16,7 @@
         <property name="date_of_returning" type="date">
             <column name="date_of_returning" not-null="true" />
         </property>
-        <property name="status" type="boolean">
+        <property name="status" type="string">
             <column name="status" not-null="false" />
         </property>
         <property name="deadline_of_booking" type="timestamp">

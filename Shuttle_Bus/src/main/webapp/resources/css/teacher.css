@@ -1,92 +1,54 @@
-		body{
-		  background-color: #fff!important;
-		  color:#64B5F6!important;
-		  padding: 0em !important;
-		  }
-		  
-		  img.responsive-img, video.responsive-video {
-		    height: 50px !important;
-		    width: 50px;
-		    margin-top:2px;
-		}
-		#emer{
-			background-color:#64B5F6!important;
-		}
-		 #BookingSession{
-		  	background-color:#64B5F6;
-		  	padding-bottom: 100px;
-		  }
-		  .title{
-		  	color:#fff;
-		  }
-		h4{
-			margin: 0rem;
-			padding-top: 50px;
-		}
-		table,tr,td,th{
-			border: 0.1px solid #d5d1d1;
-			text-align: center;
-			color:black;
-		}
-		label{
-			color: white;
-		}
-		
-		#One, #Round{
-			background-color: white;
-			margin: 20px 0px;
-			height: 50px;
-			color: black;
-		}
-		input[type="date"]{
-			border-bottom: 0px solid #9e9e9e;
-		}
-		.input-field {
-		    margin-top: 0rem;
-		}
-		.bookOne{
-			width: 106%;
-			height: 100%;
-		}
-		.bookRound{
-			background-color: #fb810b !important;
-			margin-top: 15px;
-			margin-right: 10px;
-		}
-		.bookOne{
-			background-color: #fb810b !important;
-		}
-		.select-wrapper input.select-dropdown{
-			border-bottom: 0px solid #9e9e9e;
-		}
-		input[type=text]:not(.browser-default){
-		  
-			}
-		.material-icons {
-			line-height: 2;
-			}
-		 img.responsive-img, video.responsive-video {
-		    height: 50px !important;
-		    width: 50px;
-		    margin-top:2px;
-		}
-		.brand-logo{
-			color: #64B5F6!important;
-		}
-		nav {
-		    color: black;
-		    background-color: white;
-		}
-		nav ul a {
-		    color: gray;
-		}
-		span.badge.new{
-			background-color: #64B5F6 !important;
-		}
-		label{
-			color: white;
-		}
-		[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) + label::after {
+@CHARSET "UTF-8";
+.container {
+	    width: 80%;
+	}
+  	.pickmeup .pmu-instance nav {
+  		height: 25px!important;
+  		background-color: black;
+  	}
+  	input[type=text]:not(.browser-default){
+  		    border-bottom: 0px solid #9e9e9e!important;
+  	}
+  	.input-field{
+  		height: 39px;
+  		margin-top: -3px;
+  		margin-bottom: -3px;
+  	}
+  	.bookingBtn{
+  		width: 100%;
+  		height: 100%;
+  	}
+  	.custom_input{
+  		border-right: 1px solid #f8f4f4;
+  	}
+  	.row_book{
+  		background: white;
+  		padding: 0;
+  		border-radius: 2px;
+  	}
+  	.row_mobileBook {
+	    margin-left: 5px;
+	    margin-right: 5px;
+	}
+  	.custom_book{
+  		margin: 0;
+  		border-radius: 0;
+  		background-color: blue; 
+  	}
+  	.sch_table{
+  		border: 1 solid black!important;
+  	} 
+  	.mobile_schedule{
+  		width: 100%;
+  	}
+  	.profile{
+  		width: 60px;
+  		height: 60px;
+  	}
+  	.dropdown-user-info{
+  		height: 64px;
+  	}
+  	[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) + label::after {
   		  border: 2px solid #fffdfc;
 		}
 		[type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::after {
@@ -95,27 +57,54 @@
 		[type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::before, .with-gap[type="radio"]:checked + label::after {
 		    border: 2px solid #FFFFFF;
 		}
-		.select-wrapper input.select-dropdown{
-			border-bottom: 0px solid #9e9e9e;
+	.option_label{
+		color: white;
+	}
+	.modal_header{
+		color:blue;
+	}
+	.bordered th, .bordered td {
+   		 border: 1px solid gray;
+	}
+	.r_book{
+		padding-top: 10px;
+    	padding-bottom: 1px;
+	}
+	.r_book input[type=text]:not(.browser-default){
+		border-bottom: 1px solid #9e9e9e!important;
+	}
+	.r_book .option_label {
+    	color: black;
+	}
+	.r_book [type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) + label::after {
+  		  border: 2px solid #BDBDBD;
 		}
-		input[type=text]:not(.browser-default){
-		    margin: 0em 0 0em 0;
-		    padding: 0em;
-		    border-bottom: 0px solid #9e9e9e;
-			width: 88%;
-			}
-		.bookOne{
-			line-height: 50px;
+	.r_book [type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::after {
+		    background-color: #BDBDBD;
 		}
-		.sch {
-		    font-size: 1.64rem;
-		    line-height: 100%;
-		    margin: 3rem 0 1.6rem 0;
+	.r_book [type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::before, .with-gap[type="radio"]:checked + label::after {
+		    border: 2px solid #BDBDBD;
 		}
-		.page-footer {
-		    padding-top: 20px;
-		    background-color: #64B5F6;
-		    margin-top:100px;
-		}
-		
-		
+	.modal{
+		width: 80% !important;
+	}
+	.m_header{
+		    margin-bottom: -6px !important;
+			padding-bottom: 20px;
+		    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+	}
+	#exchangeSeat,#emer_reasonForm,#cancel_booking{
+		width:450px!important;
+		height: 400px!important;
+	}
+	#permission_date{
+		width: 60%!important;
+		//border-bottom: 1px solid #9e9e9e!important;
+	}
+	.donate_select{
+		margin-top: -10px;
+	}
+	
+	
+	
+	

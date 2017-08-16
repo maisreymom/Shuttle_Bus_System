@@ -221,13 +221,11 @@ input[type="text"]:disabled, input[type="text"]{
 	margin-bottom: 0rem;
 	width: 230px;
 }
-#des_name_label{
-	top: -0.2rem;
-}
-.dest_{
+.dest_form{
 	height: 250px!important;
 	width: 450px;
 }
+
 
 #toast-container {
   top: auto !important;
@@ -240,6 +238,7 @@ input[type="text"]:disabled, input[type="text"]{
 	color: #E91E63;
 }
 .jconfirm .jconfirm-box{
+<<<<<<< HEAD
 	width: 350px;
 }
 #emergency {
@@ -298,4 +297,8 @@ ul#profile li i:hover{
 .error {
     color: #ed3b3b;
     font-size: 12px;
+
+	width: 330px;
+
+
 }

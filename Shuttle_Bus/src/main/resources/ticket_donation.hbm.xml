@@ -25,6 +25,12 @@
          <many-to-one name="receive_from" class="com.EntityClasses.User_Master" fetch="select">
             <column name="receive_from" not-null="true" />
         </many-to-one>
+
+
+        <property name="notification" type="string">
+            <column name="notification" not-null="true" />
+        </property>
+
         
  	</class>
 </hibernate-mapping>

@@ -14,6 +14,7 @@ $(document).ready(function () {
         dismissible: false
     });
     $('#delete_bus_list').modal();
+
     $('#detail_c_pass').modal();
 
     $('#leaveDate').flatpickr({
@@ -1926,6 +1927,7 @@ $(document).ready(function () {
         }
     });
 
+
     function validateMandatary(problem) {
         var content = '';
 
@@ -1944,4 +1946,565 @@ $(document).ready(function () {
     }
 
 
-});
+
+    	
+
+			$(".report_btn").click(function() {
+    	 	  	var from = $('.from input').val();
+    	 	  	var to = $('.to input').val();
+    	 	  	var date = {"date_from":from,"date_to":to};
+    	 	  	console.log(date);
+			    	 $.ajax({
+						 	async:false,
+						 	cache:false,
+							type : "POST",
+							contentType : "application/json",
+							data: JSON.stringify(date),
+							url : "schedule_report",
+							timeout : 100000,
+							success : function(data) {
+								console.log(data);
+								var tr ='<tr>';
+								var td="";
+								var tr_add='<tr>';
+								var td_add= '';
+								var rowspan=1;
+								var tr_all='';
+								var header = '';
+								var th='';
+								var bus_model = '';
+								var driver_name= '';
+									
+									for(var i=0;i<data.length;i++){
+									rowspan = data[i]["bus"].length;
+									if(rowspan==0){
+										rowspan =1;
+									}
+										
+										if(data[i]["bus"].length>0){
+									  		
+									  		bus_model = '<td>' + data[i]["bus"][0]["bus_model"] + '</td>';
+
+									  		
+									  	}
+									  	else{
+									  		bus_model = '<td>Bus Has Deleted</td>';
+									  	}
+									  	if(data[i]["driver"].length>0){
+									  	
+									  		driver_name = '<td>' + data[i]["driver"][0]["driver_name"] + '</td>';
+									  	}
+									  	else{
+									  		driver_name = '<td>Driver Has Deleted</td>';
+									  	}
+									  td = '<td rowspan="'+rowspan+'">' + data[i]["date"] + '</td>'
+
+									  	 
+									     + bus_model
+									  	 + driver_name
+									  	
+										 + '<td rowspan="'+rowspan+'">' + data[i]["destination"] + '</td>'
+										 + '<td rowspan="'+rowspan+'">' + data[i]["total_seats"] + '</td>'
+										 + '<td rowspan="'+rowspan+'">' + data[i]["customer"] + '</td>'
+										 + '<td rowspan="'+rowspan+'">' + data[i]["staff"] + '</td>'
+										 + '<td rowspan="'+rowspan+'">' + data[i]["student"] + '</td>'
+										
+										 
+										 tr = tr + td + '</tr>';
+										 if(rowspan>1){
+										 	 for(var j=1;j<rowspan;j++){
+										 	 	if(data[i]["bus"].length>j){
+										 	 		td_add = td_add + '<td>' + data[i]["bus"][j]["bus_model"] + '</td>';
+										 	 	}
+										 	 	else{
+										 	 		td_add = td_add + '<td> Bus Has Deleted</td>';
+										 	 	}
+										 	 	if(data[i]["driver"].length>j){
+										 	 		td_add = td_add + '<td>' + data[i]["driver"][j]["driver_name"] + '</td>';
+										 	 	}
+										 	 	else{
+										 	 		td_add = td_add + '<td> Driver Has Deleted</td>';
+										 	 	}
+
+										 	 	
+										 	 	tr_add = tr_add + td_add + '</tr>';
+										 	 	td_add ='';
+			 							 	 }
+										 	
+										 }
+										 
+										 tr_all = tr_all + tr + tr_add;
+
+										 tr_add ='<tr>';
+										 tr = '<tr>';
+								                      		 
+								}
+								
+								document.getElementById('report_table').innerHTML = tr_all;
+							
+								
+							},
+							error : function(e) {
+								console.log("ERROR: ", e);
+								
+							},
+							done : function(e) {
+								console.log("DONE");
+							}
+						});
+    	});
+	
+    	 	 $(".agree_add").click(function() {
+    	 	 	var bus_model = $('.add_list_bus #bus_model').val();
+    	 	 	var plate_number = $('.add_list_bus #plate_number').val();
+    	 	 	var total_seats = $('.add_list_bus #total_seats').val();
+    	 	 	var add = {"bus_model":bus_model,"plate_number":plate_number,"total_seats":parseInt(total_seats)};
+    	 	 	
+    	 	 	
+    	 	 	 $.ajax({
+    				 	async:false,
+    				 	cache:false,
+    				 	contentType : 'application/json; charset=utf-8',
+    					type : "POST",
+    					data : JSON.stringify(add),
+    					url : "add_bus",
+    					timeout : 100000,
+    					success : function(data) {
+    						console.log(data);
+    						                      		 
+    					},
+    					error : function(e) {
+    						console.log("ERROR: ", e);
+    						
+    					},
+    					done : function(e) {
+    						console.log("DONE");
+    					}
+    				});
+    	 	 	
+    	 	 	
+    	 	 });
+
+
+
+    	 	  $("#pop_up_user").click(function() {
+    	 	  	var role = [];
+    	 	  	var batch = [];
+    	 	  	$.ajax({
+    				 	async:false,
+    				 	cache:false,
+    				 	contentType : 'application/json; charset=utf-8',
+    					type : "GET",
+    					
+    					url : "role",
+    					timeout : 100000,
+    					success : function(data) {
+    						role = data;
+    						                   		 
+    					},
+    					error : function(e) {
+    						console.log("ERROR: ", e);
+    						
+    					},
+    					done : function(e) {
+    						console.log("DONE");
+    					}
+    				});
+    	 	  	$.ajax({
+    				 	async:false,
+    				 	cache:false,
+    				 	contentType : 'application/json; charset=utf-8',
+    					type : "GET",
+    					
+    					url : "batch",
+    					timeout : 100000,
+    					success : function(data) {
+    						batch = data;
+    						console.log(batch);
+    						                      		 
+    					},
+    					error : function(e) {
+    						console.log("ERROR: ", e);
+    						
+    					},
+    					done : function(e) {
+    						console.log("DONE");
+    					}
+    				});
+    	 	  		var selectbatch= '<select>';
+    	 	  		var optionbatch = '';
+    	 	  		var selectrole = '<select>';
+    	 	  		var optionrole = '';
+    	 	  		for (var i = 0 ; i < batch.length; i++) {
+    	 	  			optionbatch = optionbatch +'<option value="'+ batch[i]["batch_id"] + '">' + batch[i]["batch_number"] + '</option>' 
+    	 	  		}
+    	 	  		for (var i = 0 ; i < role.length; i++) {
+    	 	  			optionrole = optionrole +'<option value="'+ role[i]["role_id"] + '">' + role[i]["role_name"] + '</option>' 
+    	 	  		}
+    	 	  		selectbatch = selectbatch + optionbatch + '</select>';
+    	 	  		selectrole = selectrole + optionrole + '</select>';
+    	 	  		
+    	 	  		document.getElementById('batch').innerHTML = selectbatch;
+    	 	  		document.getElementById('role').innerHTML = selectrole;
+    	 	  		 $('select').material_select();
+
+
+
+    	 	  });
+
+
+    	 	  $(".add_user").click(function() {
+    	 	  	console.log("add");
+    	 	  	var name = $('#name').val();
+    	 	  	var batch = $('#batch select').val();
+    	 	  	var gender = $('#gender select').val();
+    	 	  	var role = $('#role select').val();
+    	 	  	var password =$('#password').val();
+    	 	  	var email = $('#email').val();
+    	 	  	var phone = $('#phone').val();
+    	 	  	var image = $('#image').val();
+    	 	  	var user = {"username":name,"batch":batch,"gender":gender,"role":role,
+    	 	  	"password":password,"email":email,"image":image,"phone_number":phone};
+    	 	  
+    	 	  	$.ajax({
+    				 	async:false,
+    				 	cache:false,
+    				 	contentType : 'application/json; charset=utf-8',
+    					type : "POST",
+    					data : JSON.stringify(user),
+    					url : "add_user",
+    					timeout : 100000,
+    					success : function(data) {
+    						console.log(data);
+    						                      		 
+    					},
+    					error : function(e) {
+    						console.log("ERROR: ", e);
+    						
+    					},
+    					done : function(e) {
+    						console.log("DONE");
+    					}
+    				});
+
+
+    	 	  });
+    	 	  
+    	 	  
+    	 	var batch=[];
+    	 	var new_batch;
+    	 	//Get Batch
+     	     $.ajax({
+     	 	 	async:false,
+     	 	 	cache:false,
+     	 	 	contentType : 'application/json',
+     	 		type : "GET",
+     	 		url : "get_batch",
+     	 		timeout : 100000,
+     	 		success : function(data) {
+					Console.log("Get Batch "+data);
+     	 			batch=data;
+     	 			new_batch=data[data.length-1].batch_number+1;
+     	 			var batch_form="";
+     	 			for(i=0;i<data.length;i++){
+     	 				batch_form+='<tr><td>'+(i+1)
+     	 						+'</td><td> Batch &nbsp'+data[i].batch_number
+     	 						+'</td><td>'+data[i].date_of_leaving
+     	 						+'</td><td>'+data[i].date_of_returning
+     	 						+'</td><td>'+data[i].deadline_of_booking
+     	 						+'</td><td><a class="editBatch" value="'+i
+     	 						+'" href="#batchEdit">Edit</a> / <a class="deleteBatch" value="'+i
+     	 						+'" href="#batchDelete">Delete</a></td></tr>';
+     	 			}
+     	 			batch_form+='<tr><td></td><td></td><td></td><td></td><td></td><td><a id="clk_add_batch" href="#addBatch">Add</a></td></tr>';
+     	 			document.getElementById("get_batch_info").innerHTML = batch_form;
+
+     	 		},
+     	 		error : function(e) {
+     	 			console.log("ERROR: ", e);
+     	 			
+     	 		},
+     	 		done : function(e) {
+     	 			console.log("DONE");
+     	 		}
+     	 	});
+     	     
+     	    //Edit Batch Button
+     	     $('.editBatch').click(function(){
+     	     	var index = $(this).attr('value');
+     	     	var e_batch='<tr><td>Batch Number<span class="right">:</span></td><td>Batch&nbsp'+batch[index].batch_number
+     	     				+'</td></tr><tr><td>Leave Date<span class="right">:</span></td><td><div class="input-field s6 flatpickr">'
+				   	        +'<input type="text" placeholder="'+batch[index].date_of_leaving
+				   	        +'" id="leaveDate" data-input class="input flatpickr-input active">' 
+				   	        +'</div></td></tr><tr><td>Return Date<span class="right">:</span></td><td>'
+				   	        +'<div class="input-field s6 flatpickr">'
+				   	        +'<input type="text" placeholder="'+batch[index].date_of_returning
+				   	        +'" id="returnDate" data-input class="input flatpickr-input active">'
+				   	        +'</div></td></tr><tr><td>Deadline Booking<span class="right">:</span></td>'
+				   	        +'<td><div class="input-field s6 flatpickr">'
+				   	        +'<input type="text" placeholder="'+batch[index].deadline_of_booking
+				   	        +'" id="deadlineBooking" data-input  class="input flatpickr-input active">'
+				   	        +'</div></td></tr>'
+				var button_update='<a value="'+batch[index].batch_id+'" class="modal-action modal-close waves-effect waves-green btn-flat bat_update">Update</a> '
+     	     	document.getElementById('table_edit_batch').innerHTML=e_batch;
+     	     	document.getElementById('bat_update').innerHTML=button_update;
+     	     	$('#leaveDate').flatpickr({
+     	    		mode: "single",
+     	    		minDate: "today",
+     	    		dateFormat: "Y-m-d"
+     	        });
+     	        $('#returnDate').flatpickr({
+     	    		mode: "single",
+     	    		minDate: "today",
+     	    		dateFormat: "Y-m-d"
+     	        });
+     	        $('#deadlineBooking').flatpickr({
+     	    		mode: "single",
+     	    		minDate: "today",
+     	    		dateFormat: "Y-m-d H:i:S",
+     	    		enableTime: true
+     	        });
+     	     	$('.bat_update').click(function(){
+     	     		var batch_id=batch[index].batch_id;
+     	     		var leaveDate=$('#leaveDate').val();
+     	     		var returnDate=$('#returnDate').val();
+     	     		var deadlineBooking=$('#deadlineBooking').val();
+     	     		console.log(leaveDate+" "+returnDate+" "+deadlineBooking);
+         	     	updateBatch(batch_id, leaveDate, returnDate, deadlineBooking);
+         	     	
+         	     })
+     	     })
+     	     //Batch Update Button des_update
+     	     function updateBatch(batch_id, leaveDate, returnDate, deadlineBooking){
+     	    	 var submit={"batch_id":batch_id, "date_of_leaving":leaveDate,"date_of_returning":returnDate,"deadline_of_booking":deadlineBooking};
+     	    	 $.ajax({
+     	    	 	 	contentType : 'application/json',
+     	    	 		type : "POST",
+     	    	 		data:JSON.stringify(submit),
+     	    	 		url : "update_batch",
+     	    	 		timeout : 100000,
+     	    	 		success : function(data) {
+     	    	 			console.log(data);
+
+     	    	 		},
+     	    	 		error : function(e) {
+     	    	 			console.log("ERROR: ", e);
+     	    	 			
+     	    	 		},
+     	    	 		done : function(e) {
+     	    	 			console.log("DONE");
+     	    	 		}
+     	    	 	});
+     	     } 	
+     	     
+	     	  //Delete Batch Button
+	     	     $('.deleteBatch').click(function(){
+	     	     	var index=$(this).attr('value');
+	     	     	var warning='<span>Are you sure, you want to delete <b class="red-text"> Batch '+batch[index].batch_number+'</b>?</span>';
+	     	     	var delete_form='<a value="'+batch[index].batch_id+'" class="modal-action modal-close waves-effect waves-green btn-flat delete_batch">Yes</a>';
+	     	     	document.getElementById('delete_batch_id').innerHTML=delete_form;
+	     	     	document.getElementById('delete_batch_warning').innerHTML=warning;
+	     	     	$('.delete_batch').click(function(){
+	     	     	  deleteBatch(batch[index].batch_id);
+	         	    })
+	     	     })
+	     	  //Batch Delete Button delete_batch
+	     	     function deleteBatch(bat_id){
+	     	    	 $.ajax({
+	     	    	 	 	contentType : 'application/json',
+	     	    	 		type : "POST",
+	     	    	 		data:bat_id,
+	     	    	 		url : "delete_batch",
+	     	    	 		timeout : 100000,
+	     	    	 		success : function(data) {
+	     	    	 			console.log(data);
+	
+	     	    	 		},
+	     	    	 		error : function(e) {
+	     	    	 			console.log("ERROR: ", e);
+	     	    	 			
+	     	    	 		},
+	     	    	 		done : function(e) {
+	     	    	 			console.log("DONE");
+	     	    	 		}
+	     	    	 	});
+	     	     }
+	     	     
+	     	     
+	     	  $('#clk_add_batch').click(function(){
+	     		  var new_batch_form='<span>Batch  '+new_batch+'</span>';
+	     		  document.getElementById('new_batch').innerHTML=new_batch_form;
+	     		  $('#new_leaveDate').flatpickr({
+	     	    		mode: "single",
+	     	    		minDate: "today",
+	     	    		dateFormat: "Y-m-d"
+	     	        });
+	     	        $('#new_returnDate').flatpickr({
+	     	    		mode: "single",
+	     	    		minDate: "today",
+	     	    		dateFormat: "Y-m-d"
+	     	        });
+	     	        $('#new_deadline').flatpickr({
+	     	    		mode: "single",
+	     	    		minDate: "today",
+	     	    		dateFormat: "Y-m-d H:i:S",
+	     	    		enableTime: true
+	     	        });
+	     	  })
+     	     $('.add_new_batch').click(function(){
+	     	       var new_ldate = $('#new_leaveDate').val();
+	     	       var new_rdate = $('#new_returnDate').val();
+	     	       var new_ddate = $('#new_deadline').val();
+	     	       console.log(new_batch);
+	     	       var submit={"batch_number":new_batch, "date_of_leaving":new_ldate,"date_of_returning":new_rdate,"deadline_of_booking":new_ddate};
+	     	    	 $.ajax({
+	     	    	 	 	contentType : 'application/json',
+	     	    	 		type : "POST",
+	     	    	 		data:JSON.stringify(submit),
+	     	    	 		url : "add_batch",
+	     	    	 		timeout : 100000,
+	     	    	 		success : function(data) {
+	     	    	 			new_batch++;
+	     	    	 			console.log(new_batch);
+	     	    	 			console.log(data);
+
+	     	    	 		},
+	     	    	 		error : function(e) {
+	     	    	 			console.log("ERROR: ", e);
+	     	    	 			
+	     	    	 		},
+	     	    	 		done : function(e) {
+	     	    	 			console.log("DONE");
+	     	    	 		}
+	     	    	 	});
+     	     })
+     	     
+     	     
+     	     
+     	     //Get Destination
+     	     $.ajax({
+     	 	 	async:false,
+     	 	 	cache:false,
+     	 	 	contentType : 'application/json',
+     	 		type : "GET",
+     	 		url : "get_destionation",
+     	 		timeout : 100000,
+     	 		success : function(data) {
+     	 			var des_form="";
+     	 			for(i=0;i<data.length;i++){
+     	 				des_form+='<tr><td>'+(i+1)
+     	 						+'</td><td>'+data[i].destination_name
+     	 						+'</td><td><a class="editDest" id="'+data[i].destination_name+'" value="'+data[i].destination_id
+     	 						+'" href="#destinationEdit">Edit</a> / <a class="deleteDes" id="'+data[i].destination_name+'" value="'+data[i].destination_id
+     	 						+'" href="#destinationDelete">Delete</a></td></tr>';
+     	 			}
+     	 			des_form+='<tr><td></td><td></td><td><a href="#addDestination">Add</a></td></tr>';
+     	 			document.getElementById("getDes").innerHTML = des_form;
+
+     	 		},
+     	 		error : function(e) {
+     	 			console.log("ERROR: ", e);
+     	 			
+     	 		},
+     	 		done : function(e) {
+     	 			console.log("DONE");
+     	 		}
+     	 	});
+     	   //Delete Destination Button
+     	     $('.deleteDes').click(function(){
+     	     	var des_name = this.id;
+     	     	var des_id=$(this).attr('value');
+     	     	var delete_des_form='<a class="modal-action modal-close waves-effect waves-green btn-flat delete_des">Yes</a>';
+     	     	document.getElementById('getDesDelete').innerHTML=delete_des_form;
+     	     	$('.delete_des').click(function(){
+         	     	deleteDes(des_id);
+         	     })
+     	     })
+     	   //Destination Delete Button delete_des
+     	     function deleteDes(des_id){
+     	    	 console.log(des_id);
+     	    	 $.ajax({
+     	    	 	 	contentType : 'application/json',
+     	    	 		type : "POST",
+     	    	 		data:des_id,
+     	    	 		url : "delete_destination",
+     	    	 		timeout : 100000,
+     	    	 		success : function(data) {
+     	    	 			console.log(data);
+
+     	    	 		},
+     	    	 		error : function(e) {
+     	    	 			console.log("ERROR: ", e);
+     	    	 			
+     	    	 		},
+     	    	 		done : function(e) {
+     	    	 			console.log("DONE");
+     	    	 		}
+     	    	 	});
+     	     }
+     	     
+     	     //Edit Destination Button
+     	     $('.editDest').click(function(){
+     	     	var des_name = this.id;
+     	     	var des_id=$(this).attr('value');
+     	     	var desText='<input id="des_name_update" type="text" class="validate" value="'+ des_name +'">';
+     	     	var editFooter='<a class="modal-action modal-close btn-flat des_update">Update</a>'
+     	     	document.getElementById('des_edit_footer').innerHTML=editFooter;
+     	     	document.getElementById('getDesText').innerHTML=desText;
+     	     	$('.des_update').click(function(){
+     	     		var des_update=$('#des_name_update').val();
+         	     	updateDes(des_id, des_update); 	
+         	     })
+     	     })
+     	     
+     	     //Add Destination Link
+     	     $('.add_new_des').click(function(){
+     	     	var new_des=$('#new_des_name').val();
+     	     	$.ajax({
+ 	    	 	 	contentType : 'application/json',
+ 	    	 		type : "POST",
+ 	    	 		data:new_des,
+ 	    	 		url : "add_destination",
+ 	    	 		timeout : 100000,
+ 	    	 		success : function(data) {
+ 	    	 			console.log(data);
+
+ 	    	 		},
+ 	    	 		error : function(e) {
+ 	    	 			console.log("ERROR: ", e);
+ 	    	 			
+ 	    	 		},
+ 	    	 		done : function(e) {
+ 	    	 			console.log("DONE");
+ 	    	 		}
+ 	    	 	});
+     	     })
+     	     
+     	     //Destination Update Button des_update
+     	     function updateDes(des_id,des_update){
+     	    	 var submit={"des_id":des_id, "des_update":des_update};
+     	    	 $.ajax({
+     	    	 	 	contentType : 'application/json',
+     	    	 		type : "POST",
+     	    	 		data:JSON.stringify(submit),
+     	    	 		url : "update_destination",
+     	    	 		timeout : 100000,
+     	    	 		success : function(data) {
+     	    	 			console.log(data);
+
+     	    	 		},
+     	    	 		error : function(e) {
+     	    	 			console.log("ERROR: ", e);
+     	    	 			
+     	    	 		},
+     	    	 		done : function(e) {
+     	    	 			console.log("DONE");
+     	    	 		}
+     	    	 	});
+     	     } 	   
+
+    	 	  
+
+    	 	  
+  });
+

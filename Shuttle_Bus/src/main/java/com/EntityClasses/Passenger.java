@@ -19,10 +19,14 @@ public class Passenger {
 	private String ticket_qrcode;
 	private Bus_Per_Schedule bus_per_schedule_id;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created_at;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated_at;
+	 
+	private String notification;
 	
-	public Passenger(){
-		
-	}
+
 	
 	public Passenger(Date date_of_booking,User_Master user_id,Destination_Master destination_id,Date date_of_travel){
 		this.date_of_booking=date_of_booking;
@@ -89,4 +93,32 @@ public class Passenger {
 		this.bus_per_schedule_id = bus_per_schedule_id;
 	}
 
+	public Date getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
+	}
+
+	public Date getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(Date updated_at) {
+		this.updated_at = updated_at;
+	}
+
+	public String getNotification() {
+		return notification;
+	}
+	public void setNotification(String notification) {
+		this.notification = notification;
+	}
+	
+	public Passenger(){
+		
+	}
+	
+	
 }

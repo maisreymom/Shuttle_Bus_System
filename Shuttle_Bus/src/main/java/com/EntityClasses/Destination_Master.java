@@ -6,7 +6,7 @@ public class Destination_Master{
 	
 	private String destination_id;
 	private String destination_name;
-	private boolean status;
+	private String status;
 	
 	private Set<Passenger> passenger;
 	
@@ -31,10 +31,10 @@ public class Destination_Master{
 		this.destination_name = destination_name;
 	}
 	
-	public boolean isStatus() {
+	public String isStatus() {
 		return status;
 	}
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public Set<Schedule_Table> getSchedule_table() {

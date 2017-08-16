@@ -4,167 +4,205 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Teacher</title>
+  <title>KIT Admin</title>
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
   
-  
+  <!-- 
+    <spring:url value="/resources/css/library/css_materialize.min.css" var="css_materialize" />
+  <link href="${css_materialize}" rel="stylesheet" />
+  <spring:url value="/resources/css/library/flatpickr.min.css" var="css_flatpickr" />
+  <link href="${css_flatpickr}" rel="stylesheet" />
+  <spring:url value="/resources/css/library/Material_Icons.css" var="material_icons" />
+  <link href="${material_icons}" rel="stylesheet" />
+   -->
+
+  <spring:url value="/resources/css/teacher.css" var="teachercss" />
+  <link href="${teachercss}" rel="stylesheet" />
   <style type="text/css">
-  
-	.container {
-	    width: 80%;
+  	.more_noti {
+	    margin: 0rem 0 1rem 0!important;
+    }
+    #seemore{
+    	width:60%!important;
+    }
+	.img_rqcode{
+		width: 300px;
+    	height: 280px;
 	}
-  	.pickmeup .pmu-instance nav {
-  		height: 25px!important;
-  		background-color: black;
-  	}
-  	input[type=text]:not(.browser-default){
-  		    border-bottom: 0px solid #9e9e9e!important;
-  	}
-  	.input-field{
-  		height: 39px;
-  		margin-top: -3px;
-  		margin-bottom: -3px;
-  	}
-  	.bookingBtn{
-  		width: 100%;
-  		height: 100%;
-  	}
-  	.custom_input{
-  		border-right: 1px solid #f8f4f4;
-  	}
-  	.row_book{
-  		background: white;
-  		padding: 0;
-  		border-radius: 2px;
-  	}
-  	.row_mobileBook {
-	    margin-left: 5px;
-	    margin-right: 5px;
+	#rqcodeForm,#cancel_booking{
+		width: 500px!important;
+    	height: 500px!important;
 	}
-  	.custom_book{
-  		margin: 0;
-  		border-radius: 0;
-  		background-color: blue; 
-  	}
-  	.sch_table{
-  		border: 1 solid black!important;
-  	} 
-  	.mobile_schedule{
-  		width: 100%;
-  	}
-  	.profile{
-  		width: 60px;
-  		height: 60px;
-  	}
-  	.dropdown-user-info{
-  		height: 64px;
-  	}
-  	[type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) + label::after {
-  		  border: 2px solid #fffdfc;
-		}
-		[type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::after {
-		    background-color: White;
-		}
-		[type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::before, .with-gap[type="radio"]:checked + label::after {
-		    border: 2px solid #FFFFFF;
-		}
-	.option_label{
-		color: white;
-	}
-	.modal_header{
-		color:blue;
-	}
-	.bordered th, .bordered td {
-   		 border: 1px solid gray;
-	}
-	.r_book{
-		padding-top: 10px;
-    	padding-bottom: 1px;
-	}
-	.r_book input[type=text]:not(.browser-default){
-		border-bottom: 1px solid #9e9e9e!important;
-	}
-	.r_book .option_label {
-    	color: black;
-	}
-	.r_book [type="radio"]:not(:checked) + label::before, [type="radio"]:not(:checked) + label::after {
-  		  border: 2px solid #BDBDBD;
-		}
-	.r_book [type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::after {
-		    background-color: #BDBDBD;
-		}
-	.r_book [type="radio"]:checked + label::after, .with-gap[type="radio"]:checked + label::before, .with-gap[type="radio"]:checked + label::after {
-		    border: 2px solid #BDBDBD;
-		}
-	.modal{
-		width: 80% !important;
-	}
-	.m_header{
-		    margin-bottom: -6px !important;
-			padding-bottom: 20px;
-		    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+	#cancel_booking{
+		width: 350px!important;
+    	height: 250px!important;
 	}
   </style>
-  
 </head>
 <body>
  <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
       <ul class="right hide-on-med-and-down">
-      <!-- 
-      	  <li>
-        	<a class="dropdown-icon" href="#" data-activates='request'><i class="large material-icons">dialpad</i></a>
-        </li>	
-       -->
+      	<li>
+        	<a class="dropdown-icon" data-activates='request'><i class="large material-icons">dialpad</i></a>
+        </li>
         <li>
-        	<a href="#" class="dropdown-user-info" href="#" data-activates='user_info'><img src="https://s-media-cache-ak0.pinimg.com/736x/64/fb/c9/64fbc98e98bebd0c06dc5f9345724658.jpg" alt="" class="responsive-img circle profile"></a>
+        	<a id="notifications_icon" class="dropdown-icon" data-activates='notification'></a>
+        </li>
+        <li>
+        	<a class="dropdown-user-info" data-activates='user_info'><i class="material-icons Medium">account_circle</i></a>
         </li>
       </ul>
-
-      <!-- Dropdown .dropdown-icon 
-      	<ul id='request' class='dropdown-content'>
-	    <li><a href="#!">Emergency Booking</a></li><li class="divider"></li>
-	    <li><a href="#!">Donate Ticket</a></li><li class="divider"></li>
+      <ul id='request' class='dropdown-content'>
+	    <li><a id="list_permission" href="#permission">Student Permission</a></li><li class="divider"></li>
+	    <span id="li_exchange"></span>
+		<span id="li_emergency"><li><a id="emer_booking" href="#emergencyForm">Emergency Booking</a></li></span>
 	  </ul>
-      -->
-	  
-
-	  <ul id='user_info' class='dropdown-content'>
-		  <!-- 
-		  	<li><a href="#!">username</a></li><li class="divider"></li>
-		    <li><a href="#!">No.Ticket:&nbsp &nbsp<span>10</span></a></li>
-		    <li><a href="#!">Log Out</a></li><li class="divider"></li>
-		   --> 
-	  </ul>
+	  <!-- For Notification -->
+	  <ul id='notification' class='dropdown-content'></ul>
+	  <!-- User Detial Dropdoe -->
+	  <ul id='user_info' class='dropdown-content'></ul>
 	  <ul id="nav-mobile" class="side-nav">
 	  		<li><div class="divider"></div></li>
-		    <li><a href="#!"><i class="material-icons">account_circle</i>Name: Mai Mom</a></li>
+		    <li><a href="#!"><i class="material-icons">account_circle</i>Name: Mai Mom </a></li>
 		    <li><div class="divider"></div></li>
 		    <li><a href="#!"><i class="material-icons">loyalty</i>No. of Ticket:&nbsp &nbsp<span>10</span></a></li>
 		    <li><div class="divider"></div></li>
 		    <li><a href="mobileSchedule"><i class="material-icons">event</i>Schedule Up to Date</a></li>
 		    <li><div class="divider"></div></li>
-		    <!-- 
-		    	<li><a href="#!"><i class="material-icons">assignment_late</i>Emergency Booking</a></li>
-			    <li><div class="divider"></div></li>
-			    <li><a href="#!"><i class="material-icons">cached</i>Donate Ticket</a></li>
-			    <li><div class="divider"></div></li>
-			    <li><a href="#!"><i class="material-icons">settings</i>Setting</a></li>
-		     -->
 	  </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
   </nav>
+ <!-- Request Form Modals Not Yet-->           
+  <div>
+	<div id="emergencyForm" class="modal modal-fixed-footer modal_request">
+		    <div class="modal-content">
+		      <h5 class="center sch light-blue-text">Schedule Up to Date</h5><br>
+		      <table class="centered highlight bordered">
+		        <thead>
+		          <tr>
+		              <th>Date</th>
+		              <th>Destination</th>         
+		              <th>Total Seats</th>
+		              <th>Customer</th>
+		              <th>Staff</th>
+		              <th>Student</th>
+		              <th>Remaining</th>
+		              <th>Passenger</th>
+		              <th>Request</th>
+		          </tr>
+		        </thead>
+		        <tbody id="getEmergencyForm"></tbody>
+		      </table>
+		      <br><br>
+		    </div>
+		    <div class="modal-footer">
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat">Back</a>
+		    </div>
+		</div>
+	<div id="emer_reasonForm" class="modal modal-fixed-footer modal_request">
+		    <div class="modal-content">
+		      <h5 class="center red-text">Emergency Booking Request </h5>
+		      <br>
+		      <div class="row">
+			     <form class="col l12">
+			         <div class="input-field ">
+			            <textarea id="emer_reason" class="materialize-textarea"></textarea>
+			            <label for="permission_reason">Please give some reason here before request!</label>
+			         </div>
+			    </form>
+			  </div>
+		    </div>
+		    <div class="modal-footer">
+		      <span id="getBtnEnergency"></span>
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		    </div>
+	</div>
+	<div id="permission" class="modal modal-fixed-footer modal_request">
+		    <div class="modal-content">
+		      <h5 class="center light-blue-text">Permission Request</h5>
+		      <br>
+		      <table class="centered highlight bordered">
+		      	<thead>
+		          <tr>
+		              <th>No.</th>
+		              <th>Name</th>
+		              <th>Username</th>
+		              <th>Batch Number</th>
+		              <th>Date of Request</th>
+		              <th>Option</th>
+		          </tr>
+		        </thead>
+		        <tbody id="get_list_student">
+		        </tbody>
+		      </table>
+		    </div>
+		    <div class="modal-footer">
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		    </div>
+		</div>
+	<div id="exchangeSeat" class="modal modal-fixed-footer modal_request">
+		    <div class="modal-content">
+		      <h5 class="center light-blue-text">Exchange Shuttle Bus Seat</h5>
+		      <br>
+		      <div class="row">
+			     <form class="col l12">
+			          Exchange Seat to:&nbsp&nbsp
+			          <div class="input-field inline right donate_select">
+			            <select id="exchange_batch">
+					    </select>
+			            <select id="exchange_to_username">
+					    </select>
+			          </div>
+			    </form>
+			  </div>
+		    </div>
+		    <div class="modal-footer">
+		      <a id="exchange_seat" class="modal-action modal-close waves-effect waves-green btn-flat ">Exchange</a>
+		      <a class="modal-action modal-close waves-effect waves-green btn-flat ">Cancel</a>
+		    </div>
+		</div>
+  </div>
+  <!-- Request Form Modals Not Yet-->  
+  <div id="confirm_permission" class="modal modal-fixed-footer modal_request">
+</div>
+  <!-- View Ticket -->
+  <div id="rqcodeForm" class="modal modal-fixed-footer modal_request">
+	<div class="modal-content center">
+		<h5 class="center light-blue-text">Bus ticket Qrcode</h5>
+		 <div id="rqcode"></div>
+	</div>
+	<div class="modal-footer">
+		 <a class="modal-action modal-close waves-effect waves-green btn-flat ">Back</a>
+	</div>
+  </div>
+  <!-- Concel Booking Before Deadline -->
+  <div id="cancel_booking" class="modal modal-fixed-footer modal_request">
+	<div class="modal-content center">
+		<h5 class="center light-blue-text">Cancel Confirm</h5>
+		 <div id="getCancelInfo"></div>
+	</div>
+	<div class="modal-footer">
+		<span id="clk_cancel_booking"></span>
+		 <a class="modal-action modal-close waves-effect waves-green btn-flat ">No</a>
+	</div>
+</div>
+  <!-- See more  -->
+  <div id="seemore" class="modal modal-fixed-footer">
+  	<div><h5 class="center light-blue-text">Notification List</h5></div>
+		<ul id="list_noti" class="collection more_noti">
+  </div>
 <div class="container hide-on-med-and-down">
   	<br>
       <h5 class="header center orange-text"><b>vKirirom Shuttle Bus System</b></h5>
       <p class="header col s12 light center">A modern responsive front-end framework based on Material Design</p>
 </div>
-<div id="session" class="section hide-on-med-and-down">    
+<div id="session" class="section hide-on-med-and-down" disabled>    
       <div class="light-blue lighten-1">
       		<br><br>
       		<div class="container">
@@ -251,7 +289,10 @@
 			</div>
 	  </div>   	
   </div>
+
+<!-- Show Schedule Up to date -->
 <div class="container hide-on-med-and-down" >
+	 <div id="my_schedule"></div>
    	 <h5 class="center sch light-blue-text">Schedule Up to Date</h5><br>
       <table class="centered highlight bordered">
         <thead>
@@ -271,7 +312,7 @@
       <br><br>
     </div>
 <div class="container">
-    <!-- Modal Structure -->
+    <!-- User Detial Modal Structure -->
 	  <div id="user_detail" class="modal modal-fixed-footer">
 		  <div id="modal_body" class="modal-content"> 
 		  </div>
@@ -309,11 +350,11 @@
     </div>
   </footer>
 
-
   <!--  Scripts  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script> 
   <script src="https://unpkg.com/flatpickr"></script>
+
   <script type="text/javascript">		
 	$(document).ready(function() {
 		var date_of_travel=[];
@@ -734,5 +775,16 @@
 	});
 
  </script>
+
+  <!-- 
+  <spring:url value="/resources/js/library/https _ajax.googleapis.com_ajax_libs_jquery_3.2.1_jquery.min.js" var="jquery" />
+  <script src ="${jquery}" type="text/javascript"></script>
+  <spring:url value="/resources/js/library/materialize_0.98.0_js_materialize.min.js" var="js_materialize" />
+  <script src ="${js_materialize}" type="text/javascript"></script>
+   -->
+  
+  <spring:url value="/resources/js/teacher.js" var="teacherjs" />
+  <script src ="${teacherjs}" type="text/javascript"></script>
+
   </body>
 </html>
