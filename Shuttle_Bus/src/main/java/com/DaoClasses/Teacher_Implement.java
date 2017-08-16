@@ -89,6 +89,9 @@ public class Teacher_Implement{
             }
             e.printStackTrace();
      	}
+     	finally{
+     		session.close();
+     	}
         return sche;
 	}
 	
@@ -105,8 +108,8 @@ public class Teacher_Implement{
             e.printStackTrace();
             return bus;
         } finally {
-           // session.flush();
-            //session.close();
+            session.flush();
+            session.close();
         }
         return bus;
 	}
@@ -190,6 +193,9 @@ public class Teacher_Implement{
             }
             e.printStackTrace();
      	}
+     	finally{
+     		session.close();
+     	}
         return sche;
 	}
 	
@@ -209,7 +215,7 @@ public class Teacher_Implement{
             return bus;
         } finally {
            // session.flush();
-            //session.close();
+            session.close();
         }
         return bus;
 	}
@@ -360,7 +366,7 @@ public class Teacher_Implement{
             return ;
         } finally {
            
-            //session.close();
+            session.close();
         }
 	}
 

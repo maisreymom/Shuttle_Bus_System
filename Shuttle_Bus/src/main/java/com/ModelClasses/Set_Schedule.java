@@ -16,7 +16,7 @@ public class Set_Schedule {
 	private String destination_id;
 	private String est_arrival;
 	private String est_departure;
-	
+	private String customer_only;
 	public String getEst_arrival() {
 		return est_arrival;
 	}
@@ -91,6 +91,13 @@ public class Set_Schedule {
 	public void setTotal_seats(int total_seats) {
 		this.total_seats = total_seats;
 	}
+	public String getCustomer_only() {
+		return customer_only;
+	}
+	public void setCustomer_only(String customer_only) {
+		this.customer_only = customer_only;
+	}
+	
 	
 	
 }

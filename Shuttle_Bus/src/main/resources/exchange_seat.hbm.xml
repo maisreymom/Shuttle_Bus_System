@@ -2,28 +2,28 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
 <hibernate-mapping>
- 	<class name="com.EntityClasses.Ticket_Donation" table="ticket_donation">
+ 	<class name="com.EntityClasses.Exchange_Seat" table="exchange_seat">
  	 	
  	   <id name= "id" type="java.lang.Integer">
             <column name="id" />
             <generator class="increment" />
         </id>
-        <property name="no_of_ticket" type="java.lang.Integer">
-            <column name="no_of_ticket" not-null="true" />
-        </property>
         <property name="created_at" type="timestamp">
             <column name="created_at" not-null="true" />
         </property>
         <property name="updated_at" type="timestamp">
             <column name="updated_at" not-null="true" />
         </property>
+        <many-to-one name="exchange_from" class="com.EntityClasses.User_Master" fetch="select">
+            <column name="exchange_from" not-null="true" />
+        </many-to-one>
       
-         <many-to-one name="donate_to" class="com.EntityClasses.User_Master" fetch="select">
-            <column name="donate_to" not-null="true" />
+         <many-to-one name="exchange_to" class="com.EntityClasses.User_Master" fetch="select">
+            <column name="exchange_to" not-null="true" />
         </many-to-one>
         
-         <many-to-one name="receive_from" class="com.EntityClasses.User_Master" fetch="select">
-            <column name="receive_from" not-null="true" />
+         <many-to-one name="schedule_id" class="com.EntityClasses.Schedule_Table" fetch="select">
+            <column name="schedule_id" not-null="true" />
         </many-to-one>
         
  	</class>

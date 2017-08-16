@@ -44,15 +44,23 @@
         <property name="no_of_staff" type="int">
             <column name="no_of_staff" not-null="true" />
         </property>
+        
+        <property name="customer_only" type="string">
+            <column name="customer_only" not-null="true" />
+        </property>
+        
+        <property name="remaining_seats" type="int">
+            <column name="remaining_seats" not-null="true" />
+        </property>
       	<set name="passenger" table="passenger_table"
-				inverse="true" lazy="false" fetch="select">
+				inverse="true" lazy="false" fetch="select" >
             <key>
                 <column name="bus_per_schedule_id" />
             </key>
             <one-to-many class="com.EntityClasses.Passenger" />
         </set>
         <one-to-one name="bus_report_table" class="com.EntityClasses.Bus_Report_Table"
-			cascade="save-update"></one-to-one>
+			cascade="all"></one-to-one>
  
  	</class>
 </hibernate-mapping>

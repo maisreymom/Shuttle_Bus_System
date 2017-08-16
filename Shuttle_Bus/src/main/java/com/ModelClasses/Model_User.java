@@ -3,7 +3,8 @@ package com.ModelClasses;
 public class Model_User {
 
 	private String user_id;
-	private String username;
+	private String fname;
+	private String lname;
 	private String password;
 	private String gender;
 	private String batch;
@@ -19,11 +20,18 @@ public class Model_User {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public String getUsername() {
-		return username;
+	
+	public String getFname() {
+		return fname;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getLname() {
+		return lname;
+	}
+	public void setLname(String lname) {
+		this.lname = lname;
 	}
 	public String getPassword() {
 		return password;

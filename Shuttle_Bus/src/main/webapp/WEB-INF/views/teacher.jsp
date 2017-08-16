@@ -355,7 +355,7 @@
 					userInfoForm+='<li><a href="#!">'+data.username
 								+'</a></li><li class="divider"></li><li><a href="#!">'+
 								data.user_id+'</a></li><li class="divider"></li><li><a href="#!">No.Ticket:&nbsp &nbsp'+
-								date.number_of_ticket+'</a></li><li class="divider"><li><a href="logout">Log Out</a></li><li class="divider"></li>'
+								date.number_of_ticket+'</a></li><li class="divider"><li><a href="logout">Log Out</a></li><li class="divider"></li>';
 					document.getElementById("user_info").innerHTML = select;
 				},
 				error : function(e) {
@@ -378,11 +378,12 @@
  				timeout : 100000,
  				success : function(data) {
  					destination=data;
- 					var select='<select id="fromDes" class="validate"><option disabled selected>From</option>'
+ 					var select='<select id="fromDes" class="validate"><option disabled selected>From</option>';
  					for(i=0;i<destination.length;i++){
- 						select +='<option value="'+destination[i].destination_id+'">'+destination[i].destination_name+'</option>';								
- 					};
- 					select+='</select>';
+ 						select +='<option value="'+destination[i].destination_id+'">'+destination[i].destination_name+'</option>';
+
+}
+    select+='</select>';
  					document.getElementById("getSelectFrom").innerHTML = select;						
  					$('#fromDes').material_select();
  					},
@@ -406,7 +407,7 @@
 				minDate: "today",
 				dateFormat: "Y-m-d"
 			});
-		 })
+		 });
 		 $('#oneWay').change(function(){
 		 	itera_date_travel=1;
 		 	optionSelect(itera_date_travel);
@@ -416,7 +417,7 @@
 				minDate: "today",
 				dateFormat: "Y-m-d"
 			});
-		 })
+		 });
 
 		
 		
@@ -608,7 +609,7 @@
 				minDate: "today",
 				dateFormat: "Y-m-d",
 			});
-		 })
+		 });
 		 $('#m_oneWay').change(function(){
 		 	m_itera_date_travel=1;
 		 	m_date_of_travel=null;
@@ -620,7 +621,7 @@
 				dateFormat: "Y-m-d",
 				disableMobile: "true",
 			});
-		 })
+		 });
 
 		//select form
 		var m_destination="";  //user in select
@@ -634,11 +635,12 @@
 				success : function(data) {
 					console.log("select");
 					m_destination=data;
-					var select='<select id="m_fromDes" class="validate"><option disabled selected>From</option>'
+					var select='<select id="m_fromDes" class="validate"><option disabled selected>From</option>';
 					for(i=0;i<m_destination.length;i++){
-						select +='<option value="'+m_destination[i].destination_id+'">'+m_destination[i].destination_name+'</option>';								
-					};
-					select+='</select>';
+						select +='<option value="'+m_destination[i].destination_id+'">'+m_destination[i].destination_name+'</option>';
+
+}
+    select+='</select>';
 					document.getElementById("m_getSelectFrom").innerHTML = select;						
 					$('#m_fromDes').material_select();
 				},

@@ -44,7 +44,7 @@
         <property name="no_of_donate_ticket" type="int">
             <column name="no_of_donate_ticket" not-null="false" />
         </property>
-        <property name="status" type="boolean">
+        <property name="status" type="string">
             <column name="status" not-null="false" />
         </property>
         
@@ -57,13 +57,6 @@
             <one-to-many class="com.EntityClasses.Passenger" />
         </set>
         
-        <set name="ticket_donation" table="ticket_donation"
-				inverse="true" lazy="false" fetch="select">
-            <key>
-                <column name="user_id" not-null="true" />
-            </key>
-            <one-to-many class="com.EntityClasses.Ticket_Donation" />
-        </set>
          <set name="bus_per_schedule" table="bus_per_schedule"
 				inverse="true" lazy="false" fetch="select">
             <key>
@@ -85,7 +78,6 @@
             </key>
             <one-to-many class="com.EntityClasses.Emergency_Request" />
         </set>
-       
  	 	
  	</class>
 </hibernate-mapping>

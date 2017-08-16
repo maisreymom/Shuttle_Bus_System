@@ -20,7 +20,7 @@
             <column name="bus_image" not-null="true" />
         </property>
       
-         <property name="status" type="boolean">
+         <property name="status" type="string">
             <column name="status" not-null="true" />
         </property>
         <set name="bus_per_schedule" cascade="delete" table="bus_per_schedule"

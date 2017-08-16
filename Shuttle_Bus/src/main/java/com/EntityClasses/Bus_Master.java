@@ -12,7 +12,7 @@ public class Bus_Master {
 	private int no_of_seat;
 	
 	private String bus_image;
-	private boolean status;
+	private String status;
 	private Set<Bus_Per_Schedule> bus_per_schedule;
 	
 	public String getBus_id() {
@@ -55,11 +55,12 @@ public class Bus_Master {
 	public void setBus_per_schedule(Set<Bus_Per_Schedule> bus_per_schedule) {
 		this.bus_per_schedule = bus_per_schedule;
 	}
-	public boolean isStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
+	
 	
 }

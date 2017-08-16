@@ -143,10 +143,10 @@ $.ajax({
    								+'</td><td><a class="userDetail" value="'+data[i].bus_per_schedule_id
    						        +'" style="color:#ff9800;cursor:pointer">detail</a></td>';
    					//Get today
-   					var currentTime = new Date()
-					var month = currentTime.getMonth() + 1
-					var day = currentTime.getDate()
-					var year = currentTime.getFullYear()
+   					var currentTime = new Date();
+					var month = currentTime.getMonth() + 1;
+					var day = currentTime.getDate();
+					var year = currentTime.getFullYear();
 					if(day<10) {
 						day = '0'+day
 					} 
@@ -215,7 +215,7 @@ $('.leaveConfirm').click(function() {
    	   				url : "leaveConfirm",
    	   				timeout : 100000,
    	   				success : function(bus_set) {
-   	   					var arriveForm='<a class="btn light-blue lighten-1 arriveConfirm" value="'+bus_set+'">Arrive</a>'
+   	   					var arriveForm='<a class="btn light-blue lighten-1 arriveConfirm" value="'+bus_set+'">Arrive</a>';
    	   					document.getElementById(bus_set).innerHTML = arriveForm;
    	   				},
    	   				error : function(e) {
@@ -249,7 +249,7 @@ function arriveConfirm(bus_per_id){
 				url : "arriveConfirm",
 				timeout : 100000,
 				success : function(bus_set) {
-					var arriveForm='<a class="btn red lighten-4 driverConfirm"  disabled>Arrived</a>'
+					var arriveForm='<a class="btn red lighten-4 driverConfirm"  disabled>Arrived</a>';
 					document.getElementById(bus_set).innerHTML = arriveForm;
 				},
 				error : function(e) {

@@ -313,7 +313,7 @@
 					userInfoForm+='<li><a href="#!">'+data.username
 								+'</a></li><li class="divider"></li><li><a href="#!">'+
 								data.user_id+'</a></li><li class="divider"></li><li><a href="#!">No.Ticket:&nbsp &nbsp'+
-								date.number_of_ticket+'</a></li><li class="divider"><li><a href="logout">Log Out</a></li><li class="divider"></li>'
+								date.number_of_ticket+'</a></li><li class="divider"><li><a href="logout">Log Out</a></li><li class="divider"></li>';
 					document.getElementById("user_info").innerHTML = select;
 				},
 				error : function(e) {
@@ -335,7 +335,7 @@
 				minDate: "today",
 				dateFormat: "Y-m-d"
 			});
-		 })
+		 });
 		 $('#oneWay').change(function(){
 		 	checkDate=false;
 		 	itera_date_travel=1;
@@ -345,7 +345,7 @@
 				minDate: "today",
 				dateFormat: "Y-d-m"
 			});
-		 })
+		 });
 
 		//select form
 		var destination="";  //user in select
@@ -358,11 +358,12 @@
 				timeout : 100000,
 				success : function(data) {
 					destination=data;
-					var select='<select id="fromDes" class="validate"><option disabled selected>From</option>'
+					var select='<select id="fromDes" class="validate"><option disabled selected>From</option>';
 					for(i=0;i<destination.length;i++){
-						select +='<option value="'+destination[i].destination_id+'">'+destination[i].destination_name+'</option>';								
-					};
-					select+='</select>';
+						select +='<option value="'+destination[i].destination_id+'">'+destination[i].destination_name+'</option>';
+
+}
+    select+='</select>';
 					document.getElementById("getSelectFrom").innerHTML = select;						
 					$('#fromDes').material_select();
 					},

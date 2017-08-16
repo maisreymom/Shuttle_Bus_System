@@ -21,7 +21,8 @@ public class Bus_Per_Schedule {
 	private int no_of_customer;
 	private int no_of_student;
 	private int no_of_staff;
-	
+	private int remaining_seats;
+	private String customer_only;
 	
 	private Set<Passenger> passenger;
 	private Bus_Report_Table bus_report_table;
@@ -102,5 +103,18 @@ public class Bus_Per_Schedule {
 	public void setNo_of_staff(int no_of_staff) {
 		this.no_of_staff = no_of_staff;
 	}
+	public String getCustomer_only() {
+		return customer_only;
+	}
+	public void setCustomer_only(String customer_only) {
+		this.customer_only = customer_only;
+	}
+	public int getRemaining_seats() {
+		return remaining_seats;
+	}
+	public void setRemaining_seats(int remaining_seats) {
+		this.remaining_seats = remaining_seats;
+	}
+	
 	
 }

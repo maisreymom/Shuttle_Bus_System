@@ -182,7 +182,7 @@
 				minDate: "today",
 				dateFormat: "d-m-Y"
 			});
-		 })
+		 });
 		 $('#m_oneWay').change(function(){
 		 	m_itera_date_travel=1;
 		 	m_date_of_travel=null;
@@ -194,7 +194,7 @@
 				dateFormat: "d-m-Y",
 				disableMobile: "true",
 			});
-		 })
+		 });
 
 		//select form
 		var m_destination="";  //user in select
@@ -208,11 +208,12 @@
 				success : function(data) {
 					console.log("select");
 					m_destination=data;
-					var select='<select id="m_fromDes" class="validate"><option disabled selected>From</option>'
+					var select='<select id="m_fromDes" class="validate"><option disabled selected>From</option>';
 					for(i=0;i<m_destination.length;i++){
-						select +='<option value="'+m_destination[i].destination_id+'">'+m_destination[i].destination_name+'</option>';								
-					};
-					select+='</select>';
+						select +='<option value="'+m_destination[i].destination_id+'">'+m_destination[i].destination_name+'</option>';
+
+}
+    select+='</select>';
 					document.getElementById("m_getSelectFrom").innerHTML = select;						
 					$('#m_fromDes').material_select();
 				},

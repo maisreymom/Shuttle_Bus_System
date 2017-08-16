@@ -33,11 +33,13 @@ import com.EntityClasses.Role_Master;
 import com.EntityClasses.Schedule_Table;
 import com.EntityClasses.User_Master;
 import com.ModelClasses.Date_Dest;
+import com.ModelClasses.EMR;
 import com.ModelClasses.Model_User;
 import com.ModelClasses.Report_Date;
 import com.ModelClasses.Set_Schedule;
 import com.ModelClasses.Teacher;
 import com.ModelClasses.Add_Bus;
+import com.ServiceClasses.AdminServiceInf;
 import com.ServiceClasses.usersService;
 
 
@@ -47,7 +49,7 @@ import com.ServiceClasses.usersService;
 public class ControllerFile1{
 		
 	@Autowired
-	usersService usersService1;	
+	AdminServiceInf admin;
 	
 	@RequestMapping(value="/admin",method = RequestMethod.GET)
 	public ModelAndView Admin(){
@@ -59,105 +61,52 @@ public class ControllerFile1{
 	@RequestMapping(value="/user",method = RequestMethod.GET)
 	public  @ResponseBody List<Map<String,Object>> User(){
 			
-		List<User_Master> user = new ArrayList<User_Master>();
-		Admin_Inf admin = new Admin_Imp();
-		user = admin.User();
-		List<Map<String,Object>> userList = new ArrayList<Map<String,Object>>();
+		List<Map<String,Object>> userList = new ArrayList<Map<String,Object>>(); 
 		
+		userList = admin.User();
 		
-		for(int i=0;i<user.size();i++){
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("full_name", user.get(i).getFullname());
-			map.put("batch", user.get(i).getBatch_id().getBatch_number());
-			map.put("role", user.get(i).getRole_id().getRole_name());
-			map.put("phone", user.get(i).getPhone_number());
-			map.put("email", user.get(i).getEmail());
-			map.put("gender", user.get(i).getGender());
-			map.put("password", user.get(i).getPassword());
-			userList.add(map);
-			
-		}
 			return userList;
 	}
 	
 	@RequestMapping(value="/schedule_bus",method = RequestMethod.GET)
 	public @ResponseBody List<Map<String,Object>> Schedule_Bus(){
 			
-		List<Bus_Master> bus = new ArrayList<Bus_Master>();
-		Admin_Inf admin = new Admin_Imp();
-		bus = admin.Schedule_Bus();
+		
 		List<Map<String,Object>> schedule_busList = new ArrayList<Map<String,Object>>();
 		
+		schedule_busList = admin.Schedule_Bus();
 		
-		for(int i=0;i<bus.size();i++){
-			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("no_seats", bus.get(i).getNo_of_seat());
-			map.put("bus_model", bus.get(i).getBus_model());
-			map.put("image", bus.get(i).getBus_image());
-			map.put("plate_number", bus.get(i).getPlate_number());
-			map.put("bus_id", bus.get(i).getBus_id());
-			schedule_busList.add(map);
-			
-		}
+		
+		
+		
 			return schedule_busList;
 	}
 	
 	@RequestMapping(value="/schedule_report",method = RequestMethod.POST)
 	public @ResponseBody List<Map<String,Object>> Schedule(@RequestBody Report_Date rep){
-		System.out.println(rep.getDate_from()+rep.getDate_to());
-		List<Schedule_Table> report = new ArrayList<Schedule_Table>();
-		Admin_Inf admin = new Admin_Imp();
-		report = admin.Schedule_Report();
+		
+		System.out.println("ll"+rep.getDate_from() + rep.getDate_to());
 		List<Map<String,Object>> report_List = new ArrayList<Map<String,Object>>();
 		
+		report_List = admin.Schedule_Report(rep);
 		
-		for(int i=0;i<report.size();i++){
-			
-			Map<String,Object> map = new HashMap<String,Object>();
-			List<Map<String,Object>> driver_list = new ArrayList<Map<String,Object>>();
-			List<Map<String,Object>> bus_list = new ArrayList<Map<String,Object>>();
-			List<Map<String,Object>> time_list = new ArrayList<Map<String,Object>>();
-			map.put("date", report.get(i).getDate_of_travel());
-			map.put("destination", report.get(i).getDestination_id().getDestination_name());
-			map.put("total_seats", report.get(i).getTotal_available_seats());
-			map.put("student", report.get(i).getStudent_seats());
-			map.put("staff", report.get(i).getStaff_seats());
-			map.put("customer", report.get(i).getCustomer_seats());
-			
-			for(Bus_Per_Schedule driver : report.get(i).getBus_per_schedule()){
-				Map<String,Object> driver_name = new HashMap<String,Object>();
-				driver_name.put("driver_name", driver.getUser_id().getFullname());
-				driver_list.add(driver_name);
-			}
-			
-			map.put("driver", driver_list);
-			
-			for(Bus_Per_Schedule bus : report.get(i).getBus_per_schedule()){
-				Map<String,Object> bus_model = new HashMap<String,Object>();
-				bus_model.put("bus_model", bus.getBus_id().getBus_model());
-				bus_list.add(bus_model);
-			}	
-			
-			map.put("bus", bus_list);
-			
-			
-			map.put("total_time", time_list);
-			
-			
-			report_List.add(map);
-			//two_List.clear();
-			
-		}
-			return report_List;
+		
+		
+		return report_List;
 	}
 
+	@RequestMapping(value="/schedule",method = RequestMethod.GET)
+	public @ResponseBody List<Map<String,Object>> Sc(){
+			
+			return admin.Schedule();
+	}
 	
 	@RequestMapping(value="/add_bus",method = RequestMethod.POST)
 	public @ResponseBody Map<String,Object> Add_Bus(@RequestBody Add_Bus add){
 				System.out.println(add.getTotal_seats());
 				boolean status;
 				Map<String,Object> mp = new HashMap<String,Object>();
-				Admin_Inf admin = new Admin_Imp();
+				
 				status = admin.Add_Shuttle(add);
 				mp.put("status", status);
 				return mp;
@@ -169,7 +118,7 @@ public class ControllerFile1{
 	public @ResponseBody List<Map<String,Object>> Role(){
 			
 		List<Role_Master> bus = new ArrayList<Role_Master>();
-		Admin_Inf admin = new Admin_Imp();
+		
 		bus = admin.Role();
 		List<Map<String,Object>> roleList = new ArrayList<Map<String,Object>>();
 		
@@ -189,7 +138,7 @@ public class ControllerFile1{
 	public @ResponseBody List<Map<String,Object>> Batch(){
 			
 		List<Batch_Master> bus = new ArrayList<Batch_Master>();
-		Admin_Inf admin = new Admin_Imp();
+		
 		bus = admin.Batch();
 		List<Map<String,Object>> batchList = new ArrayList<Map<String,Object>>();
 		
@@ -210,7 +159,7 @@ public class ControllerFile1{
 				
 				boolean status;
 				Map<String,Object> mp = new HashMap<String,Object>();
-				Admin_Inf admin = new Admin_Imp();
+				
 				status = admin.Add_User(add);
 				mp.put("status", status);
 				System.out.println(add.getEmail()+add.getBatch()+add.getRole());
@@ -223,7 +172,7 @@ public class ControllerFile1{
 				
 				boolean status;
 				Map<String,Object> mp = new HashMap<String,Object>();
-				Admin_Inf admin = new Admin_Imp();
+				
 				status = admin.Edit_Bus(add);
 				mp.put("status", status);
 				
@@ -236,7 +185,7 @@ public class ControllerFile1{
 				System.out.println(delete_id);
 				boolean status;
 				Map<String,Object> mp = new HashMap<String,Object>();
-				Admin_Inf admin = new Admin_Imp();
+				
 				status = admin.Delete_Bus(delete_id);
 				mp.put("status", status);
 				
@@ -248,7 +197,7 @@ public class ControllerFile1{
 	public @ResponseBody List<Map<String,Object>> Driver(){
 			
 		List<User_Master> driver = new ArrayList<User_Master>();
-		Admin_Inf admin = new Admin_Imp();
+		
 		driver = admin.Driver();
 		List<Map<String,Object>> driverlist = new ArrayList<Map<String,Object>>();
 		
@@ -269,13 +218,12 @@ public class ControllerFile1{
 				String schedule_id;
 				boolean status=false;
 				Map<String,Object> mp = new HashMap<String,Object>();
-				Admin_Inf admin = new Admin_Imp();
 				
+				for(int i=0;i<set.length;i++){
+					System.out.println(set[i].getDriver_name());
+				}
 				status = admin.setSchedule(set);
-				//if(!schedule_id.equals("null")){
-					//status = admin.setBus(set,"o1tv2d7si23oiln");
-					//System.out.println(schedule_id);
-				//}
+				
 				
 				mp.put("status", status);
 				
@@ -285,22 +233,84 @@ public class ControllerFile1{
 	
 	@RequestMapping(value="/show_schedule",method = RequestMethod.GET)
 	public @ResponseBody List<Map<String,Object>> showSchedule(){
-				Admin_Imp ad = new Admin_Imp();
 				
 				
-				return ad.showSchedule();
+				
+				return admin.showSchedule();
 				
 	}
 	
 	@RequestMapping(value="/detail_pass_schedule",method = RequestMethod.POST)
 	public @ResponseBody List<Map<String,Object>> detailPassSchedule(@RequestBody Date_Dest obj){
-				Admin_Imp ad = new Admin_Imp();
+				
 				System.out.println(obj.getDate_of_travel());
 				
-				return ad.detailSchedule(obj.getDate_of_travel(), obj.getDestination_id());
+				return admin.detailSchedule(obj.getDate_of_travel(), obj.getDestination_id());
 				
 	}
 	
+	@RequestMapping(value="/edit_schedule_passenger",method = RequestMethod.POST)
+	public @ResponseBody Map<String,Object> editSchedulePassenger(@RequestBody Set_Schedule[] edit){
+				//System.out.println(edit[0].getDate_of_travel());
+				String schedule_id;
+				boolean status=false;
+				Map<String,Object> mp = new HashMap<String,Object>();
+				
+				
+				status = admin.editSchedule(edit);
+				
+				mp.put("status", status);
+				System.out.println(status);
+				return mp;
+				
+	}
+	
+	@RequestMapping(value="/emergency_show",method = RequestMethod.GET)
+	public @ResponseBody List<Map<String,Object>> emergency_show(){
+				
+				
+				
+				return admin.showEmergency();
+				
+	}
+	
+	@RequestMapping(value="/emergency_status",method = RequestMethod.POST)
+	public @ResponseBody Map<String,Object> emergencyStatus(@RequestBody EMR[] confirm_schedule ){
+				for(int i=0;i<confirm_schedule.length;i++){
+					System.out.println(confirm_schedule[i].getSchedule_id());
+				}
+				Map<String,Object> mp = new HashMap<String,Object>();
+				
+				boolean status =true;
+				if(confirm_schedule.length>0){
+					status = admin.setEmergency(confirm_schedule);
+					mp.put("status", status);
+				}
+				else {
+					mp.put("status", status);
+				}
+			
+				
+				return mp;
+				
+	}
+	@RequestMapping(value="/rejectEmergecy",method = RequestMethod.POST)
+	public @ResponseBody Map<String,Object> rejectEmergency(@RequestBody List<String> reject){
+				
+				Map<String,Object> mp = new HashMap<String,Object>();
+				
+				boolean status =true;
+				if(reject.size()>0){
+					status = admin.rejectEmergency(reject);
+					mp.put("status", status);
+				}
+				else {
+					mp.put("status", status);
+				}
+			
+				
+				return mp;
+	}
 	
 }
 	

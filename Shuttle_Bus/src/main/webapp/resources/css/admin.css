@@ -159,14 +159,14 @@ margin-top: 0px;
 		margin-top:100px;
 		background-color:#29b6f6;
 }
-.add_s{
+.add_s,.add_edit,.view_reason{
 	display:block;
 	font-size:17px;
 	color:#29b6f6;
 	padding: 2px;
 	width: 80px;
 }
-.add_s:hover{
+.add_s:hover,.add_edit:hover,.view_reason:hover{
 	cursor:pointer;
 	
 }
@@ -203,7 +203,11 @@ input[type="text"]:disabled, input[type="text"]{
 	cursor: pointer;
 	color:#F50057;
 }
-.delete_icon {
+.add_edit_icon i:hover{
+	cursor: pointer;
+	color:#F50057;
+}
+.delete_icon,.add_edit_icon {
 	color: #E91E63;
 }
 .select-wrapper span.caret{
@@ -236,5 +240,62 @@ input[type="text"]:disabled, input[type="text"]{
 	color: #E91E63;
 }
 .jconfirm .jconfirm-box{
-	width: 330px;
+	width: 350px;
+}
+#emergency {
+    width: 250px !important;
+    overflow: auto;
+}
+.dropdown-content li{
+	line-height: 3rem;
+}
+li.detail_notif {
+    background-color: white !important;
+    margin-left: 0px;
+    width: 100% !important;
+    height: 100% !important;
+    line-height: 40px;
+}
+nav ul a{
+	height: 100%;
+	width: 100%;
+}
+div#modal_notif {
+    width: 70%;
+  
+}
+#view_emr {
+    background-color: transparent;
+}
+nav ul a:hover {
+    background-color: transparent;
+}
+ul#profile {
+    width: 175px;
+}
+ul#profile li{
+    width: 100% !important;
+    margin-left: 0px;
+    line-height: 0px;
+    color:gray;
+    
+    height: 40px !important;
+}
+ul#profile li a{
+    color:gray;
+    padding: 10px 16px;
+    font-size: 13px;
+}
+ul#profile li i{
+	font-size: 15px;
+}
+ul#profile li i:hover{
+	text-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 
+	0 1px 5px 0 rgba(0,0,0,0.12), 
+	0 3px 1px -2px rgba(0,0,0,0.2);
+	color:orange;
+}
+.error {
+    color: #ed3b3b;
+    font-size: 12px;
 }
